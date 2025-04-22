@@ -1,0 +1,62 @@
+{
+  "Import color utility": {
+    "prefix": "impc",
+    "body": ["import color from '@/utils/color';"],
+    "description": "Import color utility function",
+  },
+  "Import typo utility": {
+    "prefix": "impt",
+    "body": ["import typo from '@/utils/typo';"],
+    "description": "Import typography utility function",
+  },
+  "Use color": {
+    "prefix": "color",
+    "body": ["color('$1')"],
+    "description": "Use color utility function",
+  },
+  "Use typo": {
+    "prefix": "typo",
+    "body": ["typo('$1')"],
+    "description": "Use typography utility function",
+  },
+  "Typography 48sb": {
+    "prefix": "tp48sb",
+    "body": ["typo('48sb')"],
+    "description": "48px semi-bold typography",
+  },
+  "Typography 24sb": {
+    "prefix": "tp24sb",
+    "body": ["typo('24sb')"],
+    "description": "24px semi-bold typography",
+  },
+  "Typography 20sb": {
+    "prefix": "tp20sb",
+    "body": ["typo('20sb')"],
+    "description": "20px semi-bold typography",
+  },
+  "Typography 20m": {
+    "prefix": "tp20m",
+    "body": ["typo('20m')"],
+    "description": "20px medium typography",
+  },
+  "Typography 16sb": {
+    "prefix": "tp16sb",
+    "body": ["typo('16sb')"],
+    "description": "16px semi-bold typography",
+  },
+  "Gray color": {
+    "prefix": "clgray",
+    "body": ["color('gray$1')"],
+    "description": "Use gray color",
+  },
+  "Green color": {
+    "prefix": "clgreen",
+    "body": ["color('green$1')"],
+    "description": "Use green color",
+  },
+  "Red color": {
+    "prefix": "clred",
+    "body": ["color('red$1')"],
+    "description": "Use red color",
+  },
+}

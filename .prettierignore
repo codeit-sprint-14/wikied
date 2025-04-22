@@ -1,0 +1,31 @@
+# 빌드 산출물
+.next/
+out/
+build/
+dist/
+
+# 패키지 디렉토리
+node_modules/
+
+# 로그 파일
+*.log
+
+# 환경 및 비밀 파일
+.env*
+!.env.example
+
+# 캐시 디렉토리
+.cache/
+
+# 기타 생성된 파일
+coverage/
+public/
+
+# 패키지 파일
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# 기타 무시할 파일
+*.min.js
+*.bundle.js 
