@@ -1,40 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 📖 Wikied
 
-## Getting Started
+> 위키드, 남들이 만드는 나만의 위키
 
-First, run the development server:
+</br></br></br>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 💪 Developers
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<table>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/82707286?v=4" width="100"></td>
+    <td><img src="https://avatars.githubusercontent.com/u/134246428?v=4" width="100"></td>
+    <td><img src="https://avatars.githubusercontent.com/u/193219745?v=4" width="100"></td>
+    <td><img src="https://avatars.githubusercontent.com/u/192935871?v=4" width="100"></td>
+    <td><img src="https://avatars.githubusercontent.com/u/87702194?v=4" width="100"></td>
+  </tr>
+  <tr>
+    <th><a href="https://github.com/kim-1997">김성빈</a></th>
+    <th><a href="https://github.com/KingsMinn">김승민</a></th>
+    <th><a href="https://github.com/BANGHoYeong">방호영</a></th>
+    <th><a href="https://github.com/zeon0xx0">조지현</a></th>
+    <th><a href="https://www.naver.com">최혜윤</a></th>
+  </tr>
+</table>
+</br></br></br>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 🔗 배포 주소
+</br></br>
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## 🚀 배포 환경
+- Vercel
+</br></br>
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## 📅 프로젝트 기간
+2025년 4월 22일 ~ 2025년 5월 12일
