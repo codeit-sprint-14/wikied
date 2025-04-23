@@ -2,14 +2,28 @@ import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sign from '@/styles/sign';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 export default function Signup() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      const profile = session?.user?.profile;
+
+      if (!profile) {
+        router.push('/mypage');
+      } else {
+        router.push(`/wiki/${profile.code}`);
+      }
+    }
+  }, [session, status]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,7 +55,6 @@ export default function Signup() {
       setIsLoading(false);
 
       if (result?.ok && !result?.error) {
-        router.push('/');
       } else {
         console.error('NextAuth 로그인 실패:', result?.error);
         setError(result?.error || '이메일 또는 비밀번호가 잘못되었습니다.');

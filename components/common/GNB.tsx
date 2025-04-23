@@ -7,7 +7,7 @@ import Logo from '@/public/icons/ico-logo.svg';
 import Image from 'next/image';
 
 const GNBContainer = styled.nav`
-  position: fixed;
+  // position: fixed;
   display: flex;
   width: 100vw;
   height: 80px;
