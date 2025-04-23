@@ -16,7 +16,6 @@ const GNBContainer = styled.nav`
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
   background: ${color('gray50')};
   align-items: center;
-  /* justify-content: space-between; */
   gap: 40px;
 
   :nth-child(3) {

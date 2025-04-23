@@ -1,5 +1,5 @@
-import Button from '@/componenets/common/Button';
-import Input from '@/componenets/common/Input';
+import Button from '@/components/common/Button';
+import Input from '@/components/common/Input';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
