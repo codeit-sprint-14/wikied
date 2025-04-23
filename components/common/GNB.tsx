@@ -33,7 +33,7 @@ export default function GNB() {
       <Link href="/boards">자유게시판</Link>
       {session ? (
         <>
-          <span>안녕 {session.user.name || '홍길동'}</span>
+          <Link href="/mypage">안녕 {session.user.name || '홍길동'}</Link>
           <Button onClick={() => signOut()}>로그아웃</Button>
         </>
       ) : (

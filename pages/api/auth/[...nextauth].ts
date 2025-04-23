@@ -28,7 +28,7 @@ export const authOptions = {
 
       async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) {
-          console.log('이메일 또는 비밀번호 누락');
+          console.log('이메일 또는 비밀번호 없음');
           return null;
         }
 
@@ -41,7 +41,7 @@ export const authOptions = {
           if (response.status === 200 && response.data) {
             console.log('외부 API 로그인 성공:', response.data);
 
-            const apiUser = response.data.user;
+            const apiUser = response.data;
 
             return {
               // {
@@ -57,9 +57,11 @@ export const authOptions = {
               //     "accessToken": "~~~~"",
               //     "refreshToken": "~~~~~"
               //   }
-              id: apiUser.id,
-              name: apiUser.name,
-              profile: apiUser.profile,
+              id: apiUser.user.id,
+              name: apiUser.user.name,
+              profile: apiUser.user.profile,
+              accessToken: apiUser.accessToken,
+              refreshToken: apiUser.refreshToken,
             };
           } else {
             console.log('API 로그인 실패:', response.status, response.data);
@@ -83,6 +85,8 @@ export const authOptions = {
         token.id = user.id;
         token.name = user.name;
         token.profile = user.profile;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
 
         console.log(`token data : ${JSON.stringify(user)}`);
       }
@@ -91,9 +95,11 @@ export const authOptions = {
 
     session: async ({ session, token }) => {
       if (token) {
-        session.user.id = token.id;
+        session.user.id = token.id as string;
         session.user.name = token.name;
         session.user.profile = token.profile;
+        session.accessToken = token.accessToken as string;
+        session.refreshToken = token.refreshToken as string;
       }
       return session;
     },
