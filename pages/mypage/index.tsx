@@ -119,6 +119,8 @@ export default function Mypage() {
         }
       );
       console.log('위키 생성 성공:', response.data);
+      const code = response.data.code;
+      router.push(`/wiki/${code}`);
     } catch (err) {
       console.error(err);
       setError('네트워크 오류가 발생했습니다.');
