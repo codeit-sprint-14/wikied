@@ -41,6 +41,7 @@ export default function Signup() {
         passwordConfirmation,
       });
       console.log('API Success Response:', response.data);
+      router.push('/login');
     } catch (err) {
       console.error(err);
       setError('네트워크 오류가 발생했습니다.');

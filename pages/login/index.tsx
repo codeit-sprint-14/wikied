@@ -2,9 +2,9 @@ import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sign from '@/styles/sign';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 export default function Signup() {
   const router = useRouter();
