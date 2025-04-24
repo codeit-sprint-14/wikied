@@ -79,24 +79,10 @@ export default function Signup() {
           value={pw.value}
           onChange={pw.onChange}
         />
-        {/* <label htmlFor="email">
-          이메일
-          <Input name="email" id="email" type="email" placeholder="이메일을 입력해주세요" />
-          {error && <span className="error">{error}</span>}
-        </label>
-        <label htmlFor="password">
-          비밀번호
-          <Input
-            name="password"
-            id="password"
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
-          />
-          {error && <span className="error">{error}</span>}
-        </label> */}
         <Button type="submit" width="100%" disabled={!passInputs()}>
           로그인
         </Button>
+        <span>{error && '아이디/비밀번호가 틀렸어요'}</span>
 
         <Button onClick={() => signIn('google')} variant="outline" width="100%">
           구글
