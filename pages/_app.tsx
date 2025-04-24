@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import theme from '../styles/theme';
 import GNB from '@/components/common/GNB';
 import { SessionProvider } from 'next-auth/react';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
