@@ -11,20 +11,6 @@ export default function Signup() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      const profile = session?.user?.profile;
-
-      if (!profile) {
-        router.push('/mypage');
-      } else {
-        router.push(`/wiki/${profile.code}`);
-      }
-    }
-  }, [session, status]);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -55,6 +41,7 @@ export default function Signup() {
       setIsLoading(false);
 
       if (result?.ok && !result?.error) {
+        router.push('/');
       } else {
         console.error('NextAuth 로그인 실패:', result?.error);
         setError(result?.error || '이메일 또는 비밀번호가 잘못되었습니다.');
