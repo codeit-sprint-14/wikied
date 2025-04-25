@@ -1,78 +1,14 @@
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import styled from 'styled-components';
-import color from '@/utils/color';
 import Logo from '@/public/icons/ico-logo.svg';
 import Profile from '@/public/icons/ico-profile.svg';
 import Alarm from '@/public/icons/ico-alarm.svg';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { MenuContainer, MenuItem } from '@/components/common/Menu';
-import typo from '@/utils/typo';
+import Menu from './Menu';
 import { useUserStore } from '@/stores/userStore';
-import axios from 'axios';
 import { useNotificationStore } from '@/stores/notificationStore';
-const GNBContainer = styled.nav`
-  position: fixed;
-  display: flex;
-  width: 100vw;
-  height: 80px;
-  padding: 20px 80px;
-  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
-  background: ${color('gray50')};
-  align-items: center;
-  gap: 40px;
-
-  .profile {
-    border-radius: 100px;
-    border: 1px solid ${color('gray100')};
-  }
-
-  :nth-child(3) {
-    flex-grow: 1;
-  }
-
-  .right-container {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-
-    .alarm {
-      cursor: pointer;
-    }
-
-    .login-button {
-      ${typo('14m')};
-      color: ${color('gray400')};
-      cursor: pointer;
-    }
-  }
-`;
-
-const ProfileContainer = styled.div`
-  position: relative;
-  cursor: pointer;
-`;
-
-function Menu({ isOpen, session }: { isOpen: boolean; session: any }) {
-  const { userData } = useUserStore();
-
-  return (
-    <MenuContainer isOpen={isOpen}>
-      <MenuItem>
-        <Link href="/mypage">계정 설정</Link>
-      </MenuItem>
-      <MenuItem>
-        {userData?.profile?.code ? (
-          <Link href={`/wiki/${userData?.profile?.code}`}>내 위키</Link>
-        ) : (
-          <Link href="/mypage">내 위키 만들기</Link>
-        )}
-      </MenuItem>
-      <MenuItem onClick={() => signOut()}>로그아웃</MenuItem>
-    </MenuContainer>
-  );
-}
+import * as S from './style';
 
 export default function GNB() {
   const { data: session, status } = useSession();
@@ -80,26 +16,22 @@ export default function GNB() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const { userData, fetchUserData } = useUserStore();
   const { notification, fetchNotification } = useNotificationStore();
-  useEffect(() => {
-    if (session?.accessToken) {
-      fetchUserData(session.accessToken);
-      userData?.image && setProfile(userData.image);
-      typeof userData?.profile === 'string' && setProfile(userData.profile);
-    }
-  }, [session, fetchUserData]);
 
   useEffect(() => {
     if (session?.accessToken) {
+      fetchUserData(session.accessToken);
       fetchNotification(session.accessToken);
+      userData?.image && setProfile(userData.image);
+      typeof userData?.profile === 'string' && setProfile(userData.profile);
     }
-  }, [session, fetchNotification]);
+  }, [session, fetchUserData, fetchNotification]);
 
   const handleProfileClick = () => {
     setIsProfileMenuOpen(prev => !prev);
   };
 
   return (
-    <GNBContainer>
+    <S.GNBContainer>
       <Link href="/">
         <Image src={Logo} width={107} alt="logo" />
       </Link>
@@ -110,14 +42,14 @@ export default function GNB() {
         {session ? (
           <>
             <Image className="alarm" src={Alarm} width={32} alt="alarm" />
-            <ProfileContainer onClick={handleProfileClick}>
+            <S.ProfileContainer onClick={handleProfileClick}>
               {profile ? (
                 <img src={profile} className="profile" width="32px" height="32px" alt="profile" />
               ) : (
                 <Image src={Profile} className="profile" width={32} height={32} alt="profile" />
               )}
               <Menu isOpen={isProfileMenuOpen} session={session} />
-            </ProfileContainer>
+            </S.ProfileContainer>
           </>
         ) : (
           <span className="login-button" onClick={() => signIn()}>
@@ -125,6 +57,6 @@ export default function GNB() {
           </span>
         )}
       </div>
-    </GNBContainer>
+    </S.GNBContainer>
   );
 }

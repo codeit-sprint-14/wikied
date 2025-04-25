@@ -20,7 +20,7 @@ export const useUserStore = create<UserState>()(
           });
           set({ userData: response.data });
         } catch (err) {
-          console.error('유저 데이터 get 오류:', err);
+          console.log('유저 데이터 get 오류:', err);
         }
       },
     }),
