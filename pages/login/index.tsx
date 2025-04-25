@@ -66,6 +66,7 @@ export default function Signup() {
           title={'이메일'}
           autoComplete={'email'}
           id={'email'}
+          required
         />
         <SignInput
           inputState={pw}
@@ -78,6 +79,7 @@ export default function Signup() {
           pw={pw.value}
           value={pw.value}
           onChange={pw.onChange}
+          required
         />
         <Button type="submit" width="100%" disabled={!passInputs()}>
           로그인

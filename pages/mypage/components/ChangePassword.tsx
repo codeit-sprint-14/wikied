@@ -76,6 +76,7 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
         pw={oldPw.value}
         value={oldPw.value}
         onChange={oldPw.onChange}
+        required
       />
       <SignInput
         inputState={pw}
@@ -88,6 +89,7 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
         pw={pw.value}
         value={pw.value}
         onChange={pw.onChange}
+        required
       />
       <SignInput
         inputState={confirmPw}
@@ -98,6 +100,7 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
         autoComplete={'new-password'}
         id={'passwordConfirmation'}
         pw={pw.value}
+        required
       />
       <Button type="submit" width="100%">
         변경하기

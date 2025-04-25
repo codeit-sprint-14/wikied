@@ -50,9 +50,8 @@ export default function CreateWiki({ isLoading, setIsLoading }) {
         </Button>
       ) : (
         <form onSubmit={handleWikiSubmit}>
-          위키 생성하기
-          <Input name="question" placeholder="질문을 입력해주세요" />
-          <Input name="answer" placeholder="답변을 입력해주세요" />
+          <Input name="question" placeholder="질문을 입력해주세요" required />
+          <Input name="answer" placeholder="답변을 입력해주세요" required />
           <Button type="submit" width="100%">
             생성하기
           </Button>

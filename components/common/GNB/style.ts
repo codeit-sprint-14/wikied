@@ -5,6 +5,7 @@ import styled from 'styled-components';
 export const GNBContainer = styled.nav`
   position: fixed;
   display: flex;
+  top: 0;
   width: 100vw;
   height: 80px;
   padding: 20px 80px;
@@ -12,7 +13,7 @@ export const GNBContainer = styled.nav`
   background: ${color('gray50')};
   align-items: center;
   gap: 40px;
-
+  z-index: 100;
   .profile {
     border-radius: 100px;
     border: 1px solid ${color('gray100')};
