@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import router from 'next/router';
+import router, { useRouter } from 'next/router';
 import Image from 'next/image';
 import * as S from './style';
 
@@ -27,6 +27,7 @@ export default function Boards() {
   const [pageSize, setPageSize] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,8 +103,11 @@ export default function Boards() {
             <Image className="search-icon" src={Search} alt="search" />
             <Input
               placeholder="검색어를 입력해주세요"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
+              onKeyPress={e => {
+                if (e.key === 'Enter') {
+                  setSearch(e.target.value);
+                }
+              }}
             />
           </div>
           <div className="order-container" onClick={() => setIsOpen(prev => !prev)}>

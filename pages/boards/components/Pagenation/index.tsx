@@ -14,13 +14,14 @@ function Pagination({
   pageSection: number;
 }) {
   const [page, setPage] = pages;
+  const remainedPage = ~~(count / quantity) + 1;
 
   return (
     <S.Pagination>
       <button disabled={page === 1} onClick={() => setPage(prev => prev - 1)}>
-        <Image src={PageArrow} alt="" width={24} height={24} style={{ rotate: '90deg' }} />
+        <Image src={PageArrow} alt="prev page" width={24} height={24} style={{ rotate: '90deg' }} />
       </button>
-      {Array(Math.min(~~(count / quantity) - pageSection + 2, 5))
+      {Array(Math.min(remainedPage + 1 - pageSection, 5))
         .fill('')
         .map((_, i) => (
           <button
@@ -32,11 +33,14 @@ function Pagination({
             {pageSection + i}
           </button>
         ))}
-      <button
-        disabled={page === ~~(count / quantity) + 1}
-        onClick={() => setPage(prev => prev + 1)}
-      >
-        <Image src={PageArrow} alt="" width={24} height={24} style={{ rotate: '-90deg' }} />
+      <button disabled={page === remainedPage} onClick={() => setPage(prev => prev + 1)}>
+        <Image
+          src={PageArrow}
+          alt="next page"
+          width={24}
+          height={24}
+          style={{ rotate: '-90deg' }}
+        />
       </button>
     </S.Pagination>
   );
