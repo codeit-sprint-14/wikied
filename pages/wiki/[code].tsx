@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
-import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import Profile from '@/public/icons/ico-profile.svg';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import {
+  WikiSection,
+  WikiSectionInner,
+  Name,
+  WikiLink,
+  Sidebar,
+  ImageWrap,
+  UserInfoWrap,
+  UserInfo,
+} from './style';
 
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+import WikiStepInit from './components/WikiStepInit';
+import WikiStepQuestion from './components/WikiStepQuestion';
+import WikiStepEditor from './components/WikiStepEditor';
+import WikiStepDone from './components/WikiStepDone';
+import InfoInputItem from './components/InfoInputItem';
 
 export default function WikiPage() {
   const { data: session } = useSession();
@@ -13,24 +28,70 @@ export default function WikiPage() {
 
   const [question, setQuestion] = useState<string | null>(null); // 질문
   const [inputAnswer, setInputAnswer] = useState(''); // 답변 인풋
-  const [step, setStep] = useState<'init' | 'question' | 'editor'>('init'); // 기본/질문/에디터 상태 값
+  const [step, setStep] = useState<'init' | 'question' | 'editor' | 'done'>('init'); // 기본/질문/에디터/에디터작성후 상태 값
   const [loading, setLoading] = useState(true); // 로딩
   const [error, setError] = useState<string | null>(null); // 에러
+  const [content, setContent] = useState('');
+  const [imageUrl, setImageUrl] = useState<string>(''); // 이미지
 
+  const [profileData, setProfileData] = useState({
+    city: '',
+    mbti: '',
+    job: '',
+    sns: '',
+    birthday: '',
+    nickname: '',
+    bloodType: '',
+    nationality: '',
+    image: '',
+    family: '',
+  });
+
+  const fields = [
+    { title: '거주 도시', name: 'city' },
+    { title: 'MBTI', name: 'mbti' },
+    { title: '직업', name: 'job' },
+    { title: 'SNS 계정', name: 'sns' },
+    { title: '생일', name: 'birthday' },
+    { title: '별명', name: 'nickname' },
+    { title: '혈액형', name: 'bloodType' },
+    { title: '국적', name: 'nationality' },
+  ] as const;
+
+  // GET
   useEffect(() => {
-    if (!code) return;
+    if (!code || !session?.accessToken) return;
 
-    // 질문 가져오고
     const fetchWikiData = async () => {
       try {
-        const res = await axios.get(`https://wikied-api.vercel.app/14-6/profiles/${code}`, {
+        const response = await axios.get(`https://wikied-api.vercel.app/14-6/profiles/${code}`, {
           headers: {
             Authorization: `Bearer ${session?.accessToken}`,
           },
         });
+        const data = response.data;
 
-        // 여기다가 저장
-        setQuestion(res.data.securityQuestion);
+        setProfileData({
+          city: data.city || '',
+          mbti: data.mbti || '',
+          job: data.job || '',
+          sns: data.sns || '',
+          birthday: data.birthday || '',
+          nickname: data.nickname || '',
+          bloodType: data.bloodType || '',
+          nationality: data.nationality || '',
+          image: data.image || '',
+          family: data.family || '',
+        });
+        setImageUrl(encodeURI(data.image));
+        setContent(data.content);
+        setQuestion(response.data.securityQuestion);
+
+        if (data.content && data.content.trim() !== '') {
+          setStep('done');
+        } else {
+          setStep('init');
+        }
       } catch (err) {
         console.error(err);
         setError('질문을 불러오는 데 실패했습니다.');
@@ -40,14 +101,86 @@ export default function WikiPage() {
     };
 
     fetchWikiData();
-  }, [code]);
+  }, [code, session]);
 
-  // 시작하기 전용 누르면 질문 보임
-  const handleStart = () => {
-    setStep('question');
+  // 저장 (PATCH)
+  const handleSave = async () => {
+    try {
+      await axios.patch(
+        `https://wikied-api.vercel.app/14-6/profiles/${code}`,
+        {
+          ...profileData,
+          content: content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+      alert('저장');
+      setStep('done');
+    } catch (err) {
+      console.error(err);
+      alert('저장에 실패했습니다.');
+      console.error('에러 응답:', err.response?.data || err.message);
+    }
   };
 
-  // 답변 입력하고 ping 보냄
+  // 파일 선택 처리
+  const handleImageClick = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const file = target.files?.[0];
+
+      console.log(file);
+
+      if (file) {
+        uploadImage(file);
+      }
+    };
+    input.click();
+  };
+
+  // 이미지 업로드 함수
+  const uploadImage = async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      console.log(formData);
+
+      const response = await axios.post(
+        `https://wikied-api.vercel.app/14-6/images/upload`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+
+      console.log('formData', formData);
+
+      const uploadedImageUrl = response.data.url;
+      setProfileData(prevData => ({
+        ...prevData,
+        image: uploadedImageUrl,
+      }));
+      setImageUrl(encodeURI(uploadedImageUrl));
+      console.log('imageUrl:', imageUrl);
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+    }
+  };
+  const handleStart = () => setStep('question'); // 질문
+  const handleCancel = () => setStep('done'); // 취소
+
+  // 제출하기
   const handleVerifyAnswer = async () => {
     try {
       const res = await axios.post(
@@ -62,55 +195,75 @@ export default function WikiPage() {
 
       // 답 맞으면 리액트퀼 염
       setStep('editor');
+      setInputAnswer('');
     } catch (err) {
       console.error(err);
       alert('답변이 틀렸습니다.');
     }
   };
 
-  // 진행 중..
-  const handleSave = () => {
-    console.log('저장!');
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProfileData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
   };
-
-  const handleCancel = () => {
-    setStep('init');
+  const handleEditorChange = (value: string) => {
+    setContent(value);
+    setProfileData(prev => ({ ...prev }));
   };
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>{error}</div>;
 
   return (
-    <>
-      <h1>{session?.user?.name}</h1>
-      <p>https://wikied-api.vercel.app/{code}</p>
+    <WikiSection>
+      <WikiSectionInner>
+        <Name>{session?.user?.name}</Name>
+        <WikiLink>https://wikied-api.vercel.app/{code}</WikiLink>
 
-      {step === 'init' && <button onClick={handleStart}>시작하기</button>}
-
-      {step === 'question' && (
-        <div>
-          <p>질문: {question}</p>
-          <input
-            type="text"
-            value={inputAnswer}
-            onChange={e => setInputAnswer(e.target.value)}
-            placeholder="답변을 입력하세요"
+        {step === 'init' && <WikiStepInit onStart={handleStart} />}
+        {step === 'question' && (
+          <WikiStepQuestion
+            question={question}
+            inputAnswer={inputAnswer}
+            onChange={setInputAnswer}
+            onSubmit={handleVerifyAnswer}
           />
-          <button onClick={handleVerifyAnswer}>제출하기</button>
-        </div>
-      )}
-
-      {step === 'editor' && (
-        <div>
-          <div style={{ height: '500px' }}>
-            <ReactQuill style={{ height: '400px' }} />
-          </div>
-          <div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
-            <button onClick={handleSave}>저장하기</button>
-            <button onClick={handleCancel}>취소하기</button>
-          </div>
-        </div>
-      )}
-    </>
+        )}
+        {step === 'editor' && (
+          <WikiStepEditor
+            content={content}
+            onChange={handleEditorChange}
+            onSave={handleSave}
+            onCancel={handleCancel}
+          />
+        )}
+        {step === 'done' && <WikiStepDone content={content} onStart={handleStart} />}
+      </WikiSectionInner>
+      <Sidebar>
+        <ImageWrap
+          step={step as 'editor'}
+          onClick={step === 'editor' ? handleImageClick : undefined}
+        >
+          <Image src={imageUrl || Profile} width={200} height={200} alt="infoProfile" />
+        </ImageWrap>
+        <UserInfoWrap>
+          <UserInfo>
+            {fields.map(field => (
+              <InfoInputItem
+                key={field.name}
+                title={field.title}
+                name={field.name}
+                value={profileData[field.name]}
+                step={step}
+                onChange={handleInputChange}
+              />
+            ))}
+          </UserInfo>
+        </UserInfoWrap>
+      </Sidebar>
+    </WikiSection>
   );
 }
