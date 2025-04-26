@@ -3,6 +3,7 @@ import { styled, keyframes } from 'styled-components';
 import checkIcon from '@/public/icons/ico-check.svg';
 import errorIcon from '@/public/icons/ico-error.svg';
 import Image from 'next/image';
+import typo from '@/utils/typo';
 
 interface SnackBarProps {
   isVisible: boolean;
@@ -75,7 +76,7 @@ const SnackBarWrapper = styled.div<{ type: 'success' | 'error' }>`
   color: ${({ theme, type }) => theme.color[typeColors[type].color]};
   border: ${({ theme, type }) => theme.color[typeColors[type].border]};
 
-  ${({ theme }) => theme.typo['14sb']};
+  ${typo('14sb')};
   border-radius: 10px;
   padding: 15px 20px;
 
@@ -83,7 +84,7 @@ const SnackBarWrapper = styled.div<{ type: 'success' | 'error' }>`
 
   @media (max-width: 480px) {
     width: 90%;
-    ${({ theme }) => theme.typo['12sb']};
+    ${typo('12sb')};
   }
 `;
 

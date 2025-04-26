@@ -1,5 +1,7 @@
-import Button from '@/componenets/common/Button';
+import Button from '@/components/common/Button';
 import styled from 'styled-components';
+import color from '@/utils/color';
+import typo from '@/utils/typo';
 
 interface EmptysectionProps {
   text: string;
@@ -17,11 +19,11 @@ export default function EmptySection({ text, buttonText, onClickButton }: Emptys
 }
 
 const EmptySectionWrapper = styled.div`
-  background-color: ${({ theme }) => theme.color['gray100']};
-  color: ${({ theme }) => theme.color['gray400']};
-  ${({ theme }) => theme.typo['18r']};
+  background-color: ${color('gray100')};
+  color: ${color('gray400')};
+  ${typo('18r')};
+
   border-radius: 10px;
-  border: none;
 
   display: flex;
   flex-direction: column;
@@ -29,13 +31,12 @@ const EmptySectionWrapper = styled.div`
   text-align: center;
   gap: 10px;
   padding: 40px 20px;
-  max-width: 859px;
+  max-width: 860px;
   width: 100%;
   margin: 0 auto;
 
   @media (max-width: 1024px) {
     width: 624px;
-    padding: 40px 20px;
   }
 
   @media (max-width: 767px) {
