@@ -55,7 +55,7 @@ export default function Signup() {
       router.push('/login');
     } catch (err) {
       console.error(err);
-      setError('네트워크 오류가 발생했습니다.');
+      setError('이미 존재하는 이메일입니다.');
     } finally {
       setIsLoading(false);
     }
@@ -73,6 +73,7 @@ export default function Signup() {
           title={'이름'}
           autoComplete={'username'}
           id={'name'}
+          required
         />
         <SignInput
           inputState={email}
@@ -82,6 +83,7 @@ export default function Signup() {
           title={'이메일'}
           autoComplete={'email'}
           id={'email'}
+          required
         />
         <SignInput
           inputState={pw}
@@ -94,6 +96,7 @@ export default function Signup() {
           pw={pw.value}
           value={pw.value}
           onChange={pw.onChange}
+          required
         />
         <SignInput
           inputState={confirmPw}
@@ -104,6 +107,7 @@ export default function Signup() {
           autoComplete={'new-password'}
           id={'passwordConfirmation'}
           pw={pw.value}
+          required
         />
         <Button disabled={!passInputs()} type="submit" width="100%">
           가입하기
