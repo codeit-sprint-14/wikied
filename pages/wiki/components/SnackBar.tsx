@@ -69,7 +69,7 @@ const SnackBarWrapper = styled.div<{ type: 'success' | 'error' }>`
   display: flex;
   align-items: center;
 
-  z-index: 9999;
+  z-index: 200;
   gap: 10px;
 
   background-color: ${({ theme, type }) => theme.color[typeColors[type].bg]};
