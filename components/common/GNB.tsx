@@ -10,6 +10,7 @@ const GNBContainer = styled.nav`
   position: fixed;
   display: flex;
   width: 100vw;
+  top: 0;
   height: 80px;
   overflow: hidden;
   padding: 20px 80px;
