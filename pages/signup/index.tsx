@@ -7,6 +7,8 @@ import Sign from '@/styles/sign';
 import SignInput from '@/components/feature/SignInput';
 import useInputConfirm from '@/hooks/useInputConfirm';
 import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import LogoDark from '@/public/icons/ico-logo-dark.svg';
 
 export default function Signup() {
   const router = useRouter();
@@ -63,60 +65,62 @@ export default function Signup() {
 
   return (
     <Sign>
-      <form className="signContainer" onSubmit={handleSubmit}>
-        <h1>반가워요</h1>
-        <SignInput
-          inputState={userName}
-          name={'name'}
-          placeholder={'이름을 입력해주세요'}
-          type={'text'}
-          title={'이름'}
-          autoComplete={'username'}
-          id={'name'}
-          required
-        />
-        <SignInput
-          inputState={email}
-          name={'email'}
-          placeholder={'이메일을 입력해주세요'}
-          type={'text'}
-          title={'이메일'}
-          autoComplete={'email'}
-          id={'email'}
-          required
-        />
-        <SignInput
-          inputState={pw}
-          name={'password'}
-          placeholder={'비밀번호를 입력해주세요'}
-          type={'password'}
-          title={'비밀번호'}
-          autoComplete={'new-password'}
-          id={'password'}
-          pw={pw.value}
-          value={pw.value}
-          onChange={pw.onChange}
-          required
-        />
-        <SignInput
-          inputState={confirmPw}
-          name={'passwordConfirmation'}
-          placeholder={'비밀번호를 다시 한 번 입력해주세요'}
-          type={'password'}
-          title={'비밀번호 확인'}
-          autoComplete={'new-password'}
-          id={'passwordConfirmation'}
-          pw={pw.value}
-          required
-        />
-        <Button disabled={!passInputs()} type="submit" width="100%">
-          가입하기
-        </Button>
-
-        <span>
-          이미 회원이신가요? <Link href="/login">로그인하기</Link>
-        </span>
-      </form>
+      <div className="form-container">
+        <form className="sign-container" onSubmit={handleSubmit}>
+          <Image src={LogoDark} className="logo" alt="logo" width={107} height={30} />
+          <span>회원가입</span>
+          <h1>반가워요</h1>
+          <SignInput
+            inputState={userName}
+            name={'name'}
+            type={'text'}
+            title={'이름'}
+            autoComplete={'username'}
+            id={'name'}
+            required
+          />
+          <SignInput
+            inputState={email}
+            name={'email'}
+            type={'text'}
+            title={'이메일'}
+            autoComplete={'email'}
+            id={'email'}
+            required
+          />
+          <SignInput
+            inputState={pw}
+            name={'password'}
+            type={'password'}
+            title={'비밀번호'}
+            autoComplete={'new-password'}
+            id={'password'}
+            pw={pw.value}
+            value={pw.value}
+            onChange={pw.onChange}
+            required
+          />
+          <SignInput
+            inputState={confirmPw}
+            name={'passwordConfirmation'}
+            type={'password'}
+            title={'비밀번호 확인'}
+            autoComplete={'new-password'}
+            id={'passwordConfirmation'}
+            pw={pw.value}
+            required
+          />
+          <Button disabled={!passInputs()} type="submit" width="100%">
+            가입하기
+          </Button>
+          <span className="signup-link">
+            이미 회원이신가요?{' '}
+            <Link href="/login" className="signup-link-bold">
+              로그인하기
+            </Link>
+          </span>
+        </form>
+      </div>
     </Sign>
   );
 }

@@ -3,14 +3,28 @@ import { useState } from 'react';
 function useInputConfirm(compareToValue = null) {
   const [msg, setMsg] = useState('');
   const [value, setValue] = useState('');
+  const [isActive, setIsActive] = useState(false);
 
+  function checkIsActive(
+    e: React.ChangeEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>
+  ) {
+    if (e) {
+      setIsActive(e.target.value.length > 0);
+    }
+  }
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     setValue(e.target.value);
+    checkIsActive(e);
+
     if (msg) {
       setMsg('');
     }
   }
+  function onFocus(e: React.FocusEvent<HTMLInputElement>) {
+    setIsActive(true);
+  }
   function onBlur(e: React.FocusEvent<HTMLInputElement>) {
+    checkIsActive(e);
     const regEmail =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
@@ -45,7 +59,7 @@ function useInputConfirm(compareToValue = null) {
     }
   }
 
-  return { onBlur, msg, value, onChange };
+  return { onBlur, msg, value, onChange, isActive, onFocus };
 }
 
 export default useInputConfirm;
