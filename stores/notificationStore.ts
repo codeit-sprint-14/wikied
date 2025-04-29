@@ -23,7 +23,7 @@ export const useNotificationStore = create<NotificationState>()(
           );
           set({ notification: response.data });
         } catch (err) {
-          console.error('알림 get 오류:', err);
+          console.log('알림 get 오류:', err);
         }
       },
     }),
