@@ -124,6 +124,48 @@ export const InfoInput = styled.input`
 
 export const QuillWrap = styled.div`
   margin-top: 40px;
+  .ql-toolbar.ql-snow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    background: ${color('gray100')};
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+  }
+
+  .ql-container.ql-snow {
+    border: none;
+  }
+
+  .ql-editor {
+    padding: 16px;
+    min-height: 200px;
+    white-space: pre-wrap;
+  }
+  /* 아이콘 활성화 시 배경색 변경 */
+  .ql-toolbar .ql-formats .ql-active {
+    background-color: ${color('gray200')}; /* 활성화된 아이콘의 배경 색 */
+    color: white; /* 활성화된 아이콘의 색을 흰색으로 변경 */
+    border-radius: 5px; /* 배경을 원형으로 만들기 (원하는 형태로 조정 가능) */
+  }
+  .ql-picker.ql-header {
+    .ql-picker-label,
+    .ql-picker-item {
+      color: ${color('gray400')};
+      font-weight: 500;
+    }
+
+    .ql-picker-options {
+      background-color: #fff;
+      border: 1px solid ${color('gray400')};
+    }
+
+    .ql-picker-item:hover {
+      color: ${color('gray500')};
+    }
+  }
 `;
 export const QuillBox = styled.div`
   height: 500px;

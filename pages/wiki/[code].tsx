@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Profile from '@/public/icons/ico-profile.svg';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -20,6 +19,9 @@ import WikiStepQuestion from './components/WikiStepQuestion';
 import WikiStepEditor from './components/WikiStepEditor';
 import WikiStepDone from './components/WikiStepDone';
 import InfoInputItem from './components/InfoInputItem';
+import SnackBar from './components/SnackBar';
+
+const DEFAULT_PROFILE_IMAGE = '/icons/ico-profile.svg';
 
 export default function WikiPage() {
   const { data: session } = useSession();
@@ -31,8 +33,19 @@ export default function WikiPage() {
   const [step, setStep] = useState<'init' | 'question' | 'editor' | 'done'>('init'); // 기본/질문/에디터/에디터작성후 상태 값
   const [loading, setLoading] = useState(true); // 로딩
   const [error, setError] = useState<string | null>(null); // 에러
+  const [isError, setIsError] = useState(false); // 스낵바
+
+  // 에디터 컨텐츠
   const [content, setContent] = useState('');
+  const [draftContent, setDraftContent] = useState('');
+
   const [imageUrl, setImageUrl] = useState<string>(''); // 이미지
+  const [draftImageUrl, setDraftImageUrl] = useState<string>(''); // 이미지
+
+  const [questionModal, setQuestionModal] = useState(false);
+  const [isSnackBarVisible, setIsSnackBarVisible] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState('');
+  const [snackBarType, setSnackBarType] = useState<'success' | 'error'>('success');
 
   const [profileData, setProfileData] = useState({
     city: '',
@@ -43,9 +56,9 @@ export default function WikiPage() {
     nickname: '',
     bloodType: '',
     nationality: '',
-    image: '',
     family: '',
   });
+  const [draftProfileData, setDraftProfileData] = useState(profileData);
 
   const fields = [
     { title: '거주 도시', name: 'city' },
@@ -71,7 +84,7 @@ export default function WikiPage() {
         });
         const data = response.data;
 
-        setProfileData({
+        let profile = {
           city: data.city || '',
           mbti: data.mbti || '',
           job: data.job || '',
@@ -80,11 +93,17 @@ export default function WikiPage() {
           nickname: data.nickname || '',
           bloodType: data.bloodType || '',
           nationality: data.nationality || '',
-          image: data.image || '',
           family: data.family || '',
-        });
-        setImageUrl(encodeURI(data.image));
+        };
+
+        setProfileData(profile);
+        setDraftProfileData(profile);
+
+        setImageUrl(data.image || DEFAULT_PROFILE_IMAGE);
+        setDraftImageUrl(data.image || DEFAULT_PROFILE_IMAGE);
+
         setContent(data.content);
+
         setQuestion(response.data.securityQuestion);
 
         if (data.content && data.content.trim() !== '') {
@@ -105,25 +124,33 @@ export default function WikiPage() {
 
   // 저장 (PATCH)
   const handleSave = async () => {
+    let updatedProfileData = {
+      ...draftProfileData,
+      image: draftImageUrl,
+      content: draftContent,
+    };
+
     try {
-      await axios.patch(
-        `https://wikied-api.vercel.app/14-6/profiles/${code}`,
-        {
-          ...profileData,
-          content: content,
+      await axios.patch(`https://wikied-api.vercel.app/14-6/profiles/${code}`, updatedProfileData, {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        }
-      );
-      alert('저장');
+      });
+
+      setProfileData(updatedProfileData);
+      setDraftProfileData(updatedProfileData);
+      setContent(draftContent);
+      setImageUrl(draftImageUrl);
+      setDraftImageUrl(draftImageUrl);
+
+      setIsSnackBarVisible(true);
+      setSnackBarMessage('저장되었습니다');
       setStep('done');
+
+      console.log('patch', updatedProfileData);
     } catch (err) {
-      console.error(err);
-      alert('저장에 실패했습니다.');
-      console.error('에러 응답:', err.response?.data || err.message);
+      setIsSnackBarVisible(true);
+      setSnackBarMessage('저장에 실패했습니다');
     }
   };
 
@@ -164,26 +191,43 @@ export default function WikiPage() {
         }
       );
 
-      console.log('formData', formData);
-
       const uploadedImageUrl = response.data.url;
-      setProfileData(prevData => ({
-        ...prevData,
-        image: uploadedImageUrl,
-      }));
-      setImageUrl(encodeURI(uploadedImageUrl));
-      console.log('imageUrl:', imageUrl);
+
+      setDraftImageUrl(uploadedImageUrl);
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
     }
   };
-  const handleStart = () => setStep('question'); // 질문
-  const handleCancel = () => setStep('done'); // 취소
 
-  // 제출하기
-  const handleVerifyAnswer = async () => {
+  // 처음(init) 시작하기 버튼 모달
+  const handleStart = () => {
+    setQuestionModal(true);
+  };
+
+  // 에디터 취소
+  const handleCancel = () => {
+    if (!content || content.trim() === '') {
+      setStep('init');
+      setDraftContent(content);
+      setDraftProfileData(profileData);
+      setDraftImageUrl(imageUrl);
+    } else {
+      setDraftContent(content);
+      setDraftProfileData(profileData);
+      setDraftImageUrl(imageUrl);
+      setStep('done');
+    }
+  };
+
+  const handleCloseQuestionModal = () => {
+    setQuestionModal(false);
+  };
+
+  // 정답 제출
+  const handleVerifyAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      const res = await axios.post(
+      await axios.post(
         `https://wikied-api.vercel.app/14-6/profiles/${code}/ping`,
         { securityAnswer: inputAnswer },
         {
@@ -195,46 +239,81 @@ export default function WikiPage() {
 
       // 답 맞으면 리액트퀼 염
       setStep('editor');
+      setDraftContent(content);
+      setQuestionModal(false);
       setInputAnswer('');
+      setIsError(false);
     } catch (err) {
       console.error(err);
-      alert('답변이 틀렸습니다.');
+      setIsError(true);
     }
   };
 
+  // 에디터 수정
+  const handleEditorChange = (value: string) => {
+    setDraftContent(value);
+  };
+
+  // 우측 정보 input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfileData(prev => ({
+    setDraftProfileData(prev => ({
       ...prev,
       [name]: value,
     }));
-  };
-  const handleEditorChange = (value: string) => {
-    setContent(value);
-    setProfileData(prev => ({ ...prev }));
   };
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>{error}</div>;
 
+  const handleCloseSnackBar = () => {
+    setIsSnackBarVisible(false);
+  };
+  const handleCopyLink = () => {
+    const link = `https://wikied-api.vercel.app/${code}`;
+
+    // 링크 복사
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        setSnackBarMessage('링크가 복사되었습니다.');
+        setSnackBarType('success');
+        setIsSnackBarVisible(true);
+      })
+      .catch(() => {
+        setSnackBarMessage('링크 복사에 실패했습니다.');
+        setSnackBarType('error');
+        setIsSnackBarVisible(true);
+      });
+  };
+
   return (
     <WikiSection>
+      <SnackBar
+        isVisible={isSnackBarVisible}
+        message={snackBarMessage}
+        type={snackBarType}
+        onClose={handleCloseSnackBar}
+      />
       <WikiSectionInner>
         <Name>{session?.user?.name}</Name>
-        <WikiLink>https://wikied-api.vercel.app/{code}</WikiLink>
+        <WikiLink onClick={handleCopyLink}>https://wikied-api.vercel.app/{code}</WikiLink>
 
         {step === 'init' && <WikiStepInit onStart={handleStart} />}
-        {step === 'question' && (
-          <WikiStepQuestion
-            question={question}
-            inputAnswer={inputAnswer}
-            onChange={setInputAnswer}
-            onSubmit={handleVerifyAnswer}
-          />
-        )}
+        <WikiStepQuestion
+          isOpen={questionModal}
+          onClose={handleCloseQuestionModal}
+          question={question}
+          inputAnswer={inputAnswer}
+          onChange={setInputAnswer}
+          setInputAnswer={setInputAnswer}
+          onSubmit={handleVerifyAnswer}
+          setIsError={setIsError}
+          isError={isError}
+        />
         {step === 'editor' && (
           <WikiStepEditor
-            content={content}
+            content={draftContent}
             onChange={handleEditorChange}
             onSave={handleSave}
             onCancel={handleCancel}
@@ -247,7 +326,7 @@ export default function WikiPage() {
           step={step as 'editor'}
           onClick={step === 'editor' ? handleImageClick : undefined}
         >
-          <Image src={imageUrl || Profile} width={200} height={200} alt="infoProfile" />
+          <Image src={encodeURI(draftImageUrl)} width={200} height={200} alt="infoProfile" />
         </ImageWrap>
         <UserInfoWrap>
           <UserInfo>
@@ -256,7 +335,7 @@ export default function WikiPage() {
                 key={field.name}
                 title={field.title}
                 name={field.name}
-                value={profileData[field.name]}
+                value={draftProfileData[field.name]}
                 step={step}
                 onChange={handleInputChange}
               />

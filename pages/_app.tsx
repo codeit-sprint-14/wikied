@@ -1,11 +1,10 @@
+import 'react-quill-new/dist/quill.snow.css';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import theme from '../styles/theme';
 import GNB from '@/components/common/GNB';
 import { SessionProvider } from 'next-auth/react';
-import 'react-quill-new/dist/quill.snow.css';
-import { Quill } from 'react-quill-new';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (

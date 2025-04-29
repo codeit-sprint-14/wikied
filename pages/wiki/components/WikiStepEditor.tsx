@@ -3,8 +3,9 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Button from '@/components/common/Button';
 import { ButtonWrap, QuillBox, QuillWrap } from '../style';
+import { quillIcons } from '../icon';
 
-let ReactQuill: any; // 컴포넌트를 동적으로 불러올 변수
+let ReactQuill: any;
 
 interface Props {
   content: string;
@@ -16,14 +17,28 @@ interface Props {
 export default function WikiStepEditor({ content, onChange, onSave, onCancel }: Props) {
   const quillRef = useRef<any>(null);
   const { data: session } = useSession();
-
   const [isMounted, setIsMounted] = useState(false);
 
-  // 클라이언트에서만 ReactQuill 불러오기
+  // ReactQuill 불러오기
   useEffect(() => {
     import('react-quill-new').then(module => {
-      ReactQuill = module.default; // ReactQuill 동적으로 임포트
-      setIsMounted(true); // 마운트가 끝났으니 상태 업데이트
+      ReactQuill = module.default;
+      setIsMounted(true);
+
+      const Quill = module.Quill;
+      const icons: Record<string, any> = Quill.import('ui/icons') as Record<string, string>;
+
+      console.log(icons);
+      icons.bold = quillIcons.bold;
+      icons.italic = quillIcons.italic;
+      icons.underline = quillIcons.underline;
+      icons.list.ordered = quillIcons.ordered;
+      icons.list.bullet = quillIcons.bullet;
+      icons.align[''] = quillIcons.left;
+      icons.align.right = quillIcons.right;
+      icons.image = quillIcons.image;
+      icons.link = quillIcons.link;
+      icons.video = quillIcons.video;
     });
   }, []);
 
@@ -51,7 +66,7 @@ export default function WikiStepEditor({ content, onChange, onSave, onCancel }: 
           {
             headers: {
               'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${session?.accessToken}`, // 세션 토큰 필요
+              Authorization: `Bearer ${session?.accessToken}`,
             },
           }
         );
@@ -68,12 +83,11 @@ export default function WikiStepEditor({ content, onChange, onSave, onCancel }: 
   const modules = {
     toolbar: {
       container: [
+        ['bold', 'italic', 'underline'],
         [{ header: [1, 2, 3, 4, 5, false] }],
-        ['bold', 'italic', 'underline', 'strike' /* , 'blockquote' */],
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        [{ color: [] }, { background: [] }],
-        ['link', 'image', 'video'],
-        ['clean'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ align: '' }, { align: 'center' }, { align: 'right' }],
+        ['image', 'video', 'link'],
       ],
       handlers: {
         image: imageHandler,
@@ -81,12 +95,19 @@ export default function WikiStepEditor({ content, onChange, onSave, onCancel }: 
     },
   };
 
-  if (!isMounted || !ReactQuill) return null; // ReactQuill이 준비될 때까지 렌더링하지 않음
+  // ReactQuill이 준비될 때까지 렌더링x
+  if (!isMounted || !ReactQuill) return <div>로딩 중...</div>;
 
   return (
     <QuillWrap>
       <QuillBox>
-        <ReactQuill ref={quillRef} value={content} onChange={onChange} modules={modules} />
+        <ReactQuill
+          ref={quillRef}
+          value={content}
+          onChange={onChange}
+          modules={modules}
+          theme="snow"
+        />
       </QuillBox>
       <ButtonWrap>
         <Button onClick={onCancel} variant="outline">

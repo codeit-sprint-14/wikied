@@ -1,10 +1,10 @@
 import { InfoItem, InfoTitle, InfoData, InfoInput } from '../style'; // styled-components 재사용
 
 interface InfoInputItemProps {
-  title: string;
+  title?: string;
   name: string;
   value: string;
-  step: string;
+  step?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
