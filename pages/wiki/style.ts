@@ -81,7 +81,7 @@ export const ImageWrap = styled.div<{ step: 'editor' }>`
   }
   &:hover::before {
     background-color: ${({ step }) =>
-      step === 'editor' ? 'rgba(0,0,0,0.6)' : ''}; /* 호버 시 배경 색상 변경 */
+      step === 'editor' ? 'rgba(0,0,0,0.6)' : ''};
   }
 `;
 export const UserInfoWrap = styled.div`
@@ -144,11 +144,10 @@ export const QuillWrap = styled.div`
     min-height: 200px;
     white-space: pre-wrap;
   }
-  /* 아이콘 활성화 시 배경색 변경 */
   .ql-toolbar .ql-formats .ql-active {
-    background-color: ${color('gray200')}; /* 활성화된 아이콘의 배경 색 */
-    color: white; /* 활성화된 아이콘의 색을 흰색으로 변경 */
-    border-radius: 5px; /* 배경을 원형으로 만들기 (원하는 형태로 조정 가능) */
+    background-color: ${color('gray200')}; 
+    color: white;
+    border-radius: 5px;
   }
   .ql-picker.ql-header {
     .ql-picker-label,
