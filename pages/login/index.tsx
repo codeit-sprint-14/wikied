@@ -1,7 +1,7 @@
 import Button from '@/components/common/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sign from '@/styles/sign';
 import { signIn } from 'next-auth/react';
 import useInputConfirm from '@/hooks/useInputConfirm';
@@ -15,13 +15,7 @@ export default function Signup() {
   const email = useInputConfirm();
   const pw = useInputConfirm();
 
-  function passInputs() {
-    if (email.msg || pw.msg) {
-      return false;
-    }
-
-    return true;
-  }
+  const isValid = email.msg || pw.msg;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -81,7 +75,7 @@ export default function Signup() {
           onChange={pw.onChange}
           required
         />
-        <Button type="submit" width="100%" disabled={!passInputs()}>
+        <Button type="submit" width="100%" disabled={!isValid}>
           로그인
         </Button>
         <span>{error && '아이디/비밀번호가 틀렸어요'}</span>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import * as S from './style';
 
@@ -17,27 +17,44 @@ import Arrow from '@/public/icons/ico-arrow.svg';
 import Thumbnail from '@/public/images/img-thumbnail.png';
 import { MenuContainer, MenuItem } from '@/components/common/Menu';
 
+type ValueOf<T> = T[keyof T];
+
+const INIT_QUERY_FORM = {
+  orderBy: 'recent',
+  search: '',
+  page: 1,
+  pageSize: 10,
+};
+
 export default function Boards() {
-  const [articles, setArticles] = useState([]);
+  const [articlePageData, setArticlePageData] = useState({
+    list: [],
+    totalCount: 0,
+  });
+
+  const [queryForm, setQueryForm] = useState(INIT_QUERY_FORM);
   const [bestArticles, setBestArticles] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState('');
-  const [orderBy, setOrderBy] = useState('recent');
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalCount, setTotalCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { list: articles, totalCount } = articlePageData;
+
+  const handleChangeQueryForm = (
+    key: keyof typeof INIT_QUERY_FORM,
+    value: ValueOf<typeof INIT_QUERY_FORM>
+  ) => {
+    setQueryForm(prev => ({ ...prev, [key]: value }));
+  };
+
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `https://wikied-api.vercel.app/14-6/articles?page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&keyword=${search}`
-        );
-        console.log(res.data);
-        setArticles(res.data.list);
-        setTotalCount(res.data.totalCount);
+        const res = await axios.get('https://wikied-api.vercel.app/14-6/articles', {
+          params: queryForm,
+        });
+        setArticlePageData(res.data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -46,7 +63,7 @@ export default function Boards() {
     };
 
     fetchData();
-  }, [search, orderBy, page, pageSize]);
+  }, [queryForm]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +71,6 @@ export default function Boards() {
         const res = await axios.get(
           `https://wikied-api.vercel.app/14-6/articles?page=1&pageSize=4&orderBy=like`
         );
-        console.log(res.data);
         setBestArticles(res.data.list);
       } catch (err) {
         console.error(err);
@@ -65,6 +81,7 @@ export default function Boards() {
 
     fetchData();
   }, []);
+
   return (
     <S.Container>
       <S.BestListContainer>
@@ -105,17 +122,17 @@ export default function Boards() {
               placeholder="검색어를 입력해주세요"
               onKeyPress={e => {
                 if (e.key === 'Enter') {
-                  setSearch(e.target.value);
+                  handleChangeQueryForm('search', e.currentTarget.value);
                 }
               }}
             />
           </div>
           <div className="order-container" onClick={() => setIsOpen(prev => !prev)}>
-            {orderBy === 'recent' ? '최신순' : '좋아요순'}
+            {queryForm.orderBy === 'recent' ? '최신순' : '좋아요순'}
             <Image src={Arrow} alt="arrow" width={22} height={22} />
             <MenuContainer isOpen={isOpen}>
-              <MenuItem onClick={() => setOrderBy('recent')}>최신순</MenuItem>
-              <MenuItem onClick={() => setOrderBy('like')}>좋아요순</MenuItem>
+              <MenuItem onClick={() => handleChangeQueryForm('orderBy', 'recent')}>최신순</MenuItem>
+              <MenuItem onClick={() => handleChangeQueryForm('orderBy', 'like')}>좋아요순</MenuItem>
             </MenuContainer>
           </div>
         </div>
@@ -140,10 +157,11 @@ export default function Boards() {
         </ul>
       </S.ListContainer>
       <Pagination
-        pages={[page, setPage]}
+        page={queryForm.page}
+        onPageChange={page => handleChangeQueryForm('page', page)}
         count={totalCount}
-        quantity={pageSize}
-        pageSection={page}
+        quantity={queryForm.pageSize}
+        pageSection={queryForm.page}
       />
       <TempForm />
     </S.Container>
