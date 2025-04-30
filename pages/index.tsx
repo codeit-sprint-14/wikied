@@ -2,13 +2,19 @@ import color from '@/utils/color';
 import styled from 'styled-components';
 import Section_01 from './home/Section_01';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import typo from '@/utils/typo';
 import router from 'next/router';
 
 import HeroTitle from '@/public/images/img-hero-title.svg';
 import Qna from '@/public/images/img-qna.svg';
+import CtaBackground from '@/public/images/img-background-cta.png';
 import Image from 'next/image';
+import LottieWiki from '@/public/lotties/lottie-wiki.json';
+import LottieShare from '@/public/lotties/lottie-share.json';
+
+import dynamic from 'next/dynamic';
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 const Container = styled.div`
   scroll-snap-type: y mandatory;
@@ -60,8 +66,9 @@ const Container = styled.div`
 
     //위키드 사용중
     &#section-05 {
-      top: 96px;
+      top: 45%;
       left: 96px;
+      transform: translateY(-50%);
     }
 
     //CTA
@@ -74,6 +81,89 @@ const Container = styled.div`
       flex-direction: column;
       justify-content: center;
       align-items: center;
+    }
+  }
+  .graphic {
+    position: absolute;
+
+    &#graphic-02 {
+      bottom: 0;
+      right: 2%;
+      width: 45%;
+    }
+    &#graphic-03 {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &#graphic-04 {
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &#graphic-05 {
+      top: 0;
+      right: 42px;
+      display: flex;
+      gap: 40px;
+      width: 900px;
+    }
+    &#graphic-06 {
+      bottom: 0;
+    }
+    .reviews {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .review {
+      width: 412px;
+      height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 12px;
+
+      background: ${color('gray600')};
+      color: ${color('gray100')};
+
+      border-radius: 32px;
+      padding: 42px;
+
+      span {
+        ${typo('18sb')};
+      }
+
+      p {
+        ${typo('14m')};
+      }
+
+      &.go-up {
+        animation: upAnimation 10s linear infinite;
+        @keyframes upAnimation {
+          0% {
+            transform: translateY(0);
+          }
+          100% {
+            transform: translateY(-1440px);
+          }
+        }
+      }
+
+      &.go-down {
+        animation: downAnimation 10s linear infinite;
+        @keyframes downAnimation {
+          0% {
+            transform: translateY(-1440px);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+      }
     }
   }
 
@@ -111,6 +201,7 @@ const Container = styled.div`
       background: ${color('gray50')};
       border-radius: 40px;
       position: relative;
+      overflow: hidden;
     }
   }
 `;
@@ -138,46 +229,84 @@ export const CTA = styled.button`
   }
 `;
 
-function SectionContainer({ lines, children, sleep = 1, ...rest }: { lines: string[] }) {
+function SectionContainer({ lines, sleep = 1, ...rest }: { lines: string[] }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
   return (
     <div ref={ref} {...rest}>
-      {children && (
-        <motion.div
-          initial={{ opacity: 0, y: 300 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.5, ease: 'easeOut', type: 'tween' }}
-        >
-          {children}
-        </motion.div>
-      )}
       {lines.map((line, i) => (
         <motion.div
           key={i}
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: sleep + i * 0.25, ease: 'easeOut', type: 'tween' }}
+          transition={{
+            delay: sleep + i * 0.2,
+            ease: [0, 0.5, 0.5, 1],
+            type: 'tween',
+            duration: 0.7,
+          }}
           dangerouslySetInnerHTML={{ __html: line }}
         />
       ))}
     </div>
   );
 }
-function Graphic({ children, sleep = 0.5, posY = '300px', ...rest }) {
+function Graphic({
+  children,
+  sleep = 0.5,
+  posY = '300px',
+  initialOpacity = 0,
+  lottieRef,
+  ...rest
+}) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView && lottieRef?.current) {
+      lottieRef.current.play();
+    }
+  }, [isInView]);
 
   return (
     <div ref={ref} {...rest}>
       <motion.div
-        initial={{ opacity: 0, y: posY }}
+        initial={{ opacity: initialOpacity, y: posY }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ delay: sleep, ease: 'easeOut', type: 'tween' }}
+        transition={{ delay: sleep, ease: [0, 0.7, 0.3, 1], type: 'tween', duration: 0.6 }}
       >
         {children}
       </motion.div>
+    </div>
+  );
+}
+
+function Reviews({ isGoUp }) {
+  const contents = [
+    '동아리 애들끼리 위키 만들어서 놀고 있는데, 무슨 작은 커뮤니티 하나 차린 기분임',
+    '친구들이 썰 푸는 맛에 하루 한번은 꼭 들어온다. 진짜 이거 중독됨',
+    '수업 중에 친구 위키 보다가 터졌음. 교수님 죄송해요… 너무 재밌어요…',
+    '친구 위키 하나 둘 보다가, 어느새 내 것도 만들고 있었음. 은근히 빠져든다.',
+    'TMI 정리한다는 게 이렇게 재밌을 줄 몰랐다. 의외로 성취감도 있다',
+    '우리 반 애 위키 봤는데, 맨날 무뚝뚝한 애가 은근 귀엽게 적어놔서 놀람ㅋㅋ',
+    '자기소개서 쓰기 전에 위키 정리했는데, 진짜 내 이야기 정돈되는 느낌임',
+    '친구들이랑 추억 회상 겸 위키 만들었는데, 기분이 따뜻하네요',
+  ];
+  return (
+    <div className="reviews">
+      {contents.map((content, i) => (
+        <div key={i} className={`review ${isGoUp ? 'go-up' : 'go-down'}`}>
+          <span>{`${String(i + 53326).toLocaleString()}번째 리뷰 `}</span>
+          <p>{content}</p>
+        </div>
+      ))}
+      {contents.map((content, i) => (
+        <div key={i} className={`review ${isGoUp ? 'go-up' : 'go-down'}`}>
+          <span>{`${String(i + 53326).toLocaleString()}번째 리뷰 `}</span>
+          <p>{content}</p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -198,9 +327,13 @@ export default function Home() {
     ],
     [`<h2>이제 <b>친구의 TMI를 정리</b>해줄 시간.</h2>`, `<h2><b>준비</b>되셨나요?<br/><br/></h2>`],
   ];
+  const lottieRefWiki = useRef(null);
+  const lottieRefShare = useRef(null);
+
   return (
     <>
       <Container>
+        {/* hero */}
         <section>
           <div className="section-container">
             <div className="contents" id="section-01">
@@ -211,55 +344,77 @@ export default function Home() {
             <Section_01 />
           </div>
         </section>
+        {/* 위키 정리하기 */}
         <section>
           <div className="section-container">
             <div className="contents" id="section-02">
-              <SectionContainer lines={contents[0]} />
-              <Graphic>
-                <Image src={Qna} width={746} height={774} />
-              </Graphic>
+              <SectionContainer lines={contents[0]} sleep={1.5} />
             </div>
+            <Graphic
+              className="graphic"
+              initialOpacity={1}
+              posY="0px"
+              id="graphic-02"
+              lottieRef={lottieRefWiki}
+            >
+              <Lottie
+                animationData={LottieWiki}
+                loop={false}
+                autoplay={false}
+                lottieRef={lottieRefWiki}
+              />
+            </Graphic>
           </div>
         </section>
+        {/* 친구 확인 질문 */}
         <section>
           <div className="section-container">
             <div className="contents" id="section-03">
               <SectionContainer lines={contents[1]} />
-              <Graphic>
-                <Image src={Qna} width={746} height={774} />
-              </Graphic>
             </div>
+            <Graphic className="graphic" id="graphic-03">
+              <Image src={Qna} width={840} />
+            </Graphic>
           </div>
         </section>
+        {/* 링크 공유 */}
         <section>
           <div className="section-container">
             <div className="contents" id="section-04">
-              <SectionContainer lines={contents[2]} />
-              <Graphic>
-                <Image src={Qna} width={746} height={774} />
-              </Graphic>
+              <SectionContainer lines={contents[2]} sleep={3.5} />
             </div>
+            <Graphic className="graphic" id="graphic-04" posY="0px" lottieRef={lottieRefShare}>
+              <Lottie
+                animationData={LottieShare}
+                loop={false}
+                autoplay={false}
+                lottieRef={lottieRefShare}
+              />
+            </Graphic>
           </div>
         </section>
+        {/* 리뷰 */}
         <section>
           <div className="section-container">
             <div className="contents" id="section-05">
               <SectionContainer lines={contents[3]} />
-              <Graphic>
-                <Image src={Qna} width={746} height={774} />
-              </Graphic>
+            </div>
+            <div className="graphic" id="graphic-05">
+              <Reviews isGoUp={true} />
+              <Reviews isGoUp={false} />
             </div>
           </div>
         </section>
+        {/* CTA */}
         <section>
           <div className="section-container">
             <div className="contents" id="section-06">
               <SectionContainer lines={contents[4]} />
               <CTA onClick={() => router.push('/login')}>지금 시작하기</CTA>
-              <Graphic>
-                <Image src={Qna} width={746} height={774} />
-              </Graphic>
             </div>
+            <Graphic className="graphic" id="graphic-06">
+              <Image src={CtaBackground} width={1920} />
+            </Graphic>
           </div>
         </section>
       </Container>

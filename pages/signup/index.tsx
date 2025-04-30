@@ -74,7 +74,7 @@ export default function Signup() {
             inputState={userName}
             name={'name'}
             type={'text'}
-            title={'이름'}
+            title={'닉네임'}
             autoComplete={'username'}
             id={'name'}
             required

@@ -38,9 +38,9 @@ function useInputConfirm(compareToValue = null) {
 
     if (e.target.id === 'name') {
       if (!e.target.value) {
-        setMsg('이름을 입력해주세요');
+        setMsg('닉네임을 입력해주세요');
       } else if (e.target.value.length > 10) {
-        setMsg('이름을 10자 이하로 입력해주세요');
+        setMsg('닉네임을 10자 이하로 입력해주세요');
       }
     }
 
