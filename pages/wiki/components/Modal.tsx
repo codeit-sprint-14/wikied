@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import closeIcon from '@/public/icons/ico-close.svg';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
+import color from '@/utils/color';
 
 interface ModalProps {
   isOpen: boolean;
@@ -53,9 +54,8 @@ export const Content = styled.div`
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+
   margin-top: 30px;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   gap: 12px;
 `;
@@ -73,7 +73,6 @@ const StyledDialog = styled.dialog<{ $visible: boolean }>`
   background: none;
   width: 100%;
   display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
-
   justify-content: center;
   align-items: center;
   z-index: 100;
@@ -88,8 +87,7 @@ const ModalWrapper = styled.div<{ $size: 'large' | 'medium' }>`
   position: relative;
   display: flex;
   flex-direction: column;
-
-  background-color: ${({ theme }) => theme.color['gray50']};
+  background: ${color('gray50')};
   border-radius: 10px;
   width: 100%;
   max-width: 395px;

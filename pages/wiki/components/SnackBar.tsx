@@ -68,13 +68,13 @@ const SnackBarWrapper = styled.div<{ type: 'success' | 'error' }>`
   position: fixed;
   display: flex;
   align-items: center;
-
+  top: 100px;
   z-index: 200;
   gap: 10px;
 
   background-color: ${({ theme, type }) => theme.color[typeColors[type].bg]};
   color: ${({ theme, type }) => theme.color[typeColors[type].color]};
-  border: ${({ theme, type }) => theme.color[typeColors[type].border]};
+  border: 1px solid ${({ theme, type }) => theme.color[typeColors[type].border]};
 
   ${typo('14sb')};
   border-radius: 10px;
