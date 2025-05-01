@@ -6,6 +6,8 @@ import Sign from '@/styles/sign';
 import { signIn } from 'next-auth/react';
 import useInputConfirm from '@/hooks/useInputConfirm';
 import SignInput from '@/components/feature/SignInput';
+import LogoDark from '@/public/icons/ico-logo-dark.svg';
+import Image from 'next/image';
 
 export default function Signup() {
   const router = useRouter();
@@ -56,50 +58,56 @@ export default function Signup() {
 
   return (
     <Sign>
-      <form className="signContainer" onSubmit={handleSubmit}>
-        <h1>어서와요</h1>
-        <SignInput
-          inputState={email}
-          name={'email'}
-          placeholder={'이메일을 입력해주세요'}
-          type={'text'}
-          title={'이메일'}
-          autoComplete={'email'}
-          id={'email'}
-          required
-        />
-        <SignInput
-          inputState={pw}
-          name={'password'}
-          placeholder={'비밀번호를 입력해주세요'}
-          type={'password'}
-          title={'비밀번호'}
-          autoComplete={'new-password'}
-          id={'password'}
-          pw={pw.value}
-          value={pw.value}
-          onChange={pw.onChange}
-          required
-        />
-        <Button type="submit" width="100%" disabled={!passInputs()}>
-          로그인
-        </Button>
-        <span>{error && '아이디/비밀번호가 틀렸어요'}</span>
+      <div className="form-container">
+        <form className="sign-container" onSubmit={handleSubmit}>
+          <Image src={LogoDark} className="logo" alt="logo" width={107} height={30} />
+          <span>로그인</span>
+          <h1>어서와요</h1>
+          <SignInput
+            inputState={email}
+            name={'email'}
+            type={'text'}
+            title={'이메일'}
+            autoComplete={'email'}
+            id={'email'}
+            required
+          />
+          <SignInput
+            inputState={pw}
+            name={'password'}
+            type={'password'}
+            title={'비밀번호'}
+            autoComplete={'new-password'}
+            id={'password'}
+            pw={pw.value}
+            value={pw.value}
+            onChange={pw.onChange}
+            required
+          />
+          <Button className="login-btn" type="submit" width="100%" disabled={!passInputs()}>
+            로그인
+          </Button>
+          <span className="error-msg">{error && '아이디/비밀번호가 틀렸어요'}</span>
 
-        <Button onClick={() => signIn('google')} variant="outline" width="100%">
-          구글
-        </Button>
-        <Button onClick={() => signIn('naver')} variant="outline" width="100%">
-          네이버
-        </Button>
-        <Button onClick={() => signIn('kakao')} variant="outline" width="100%">
-          카카오
-        </Button>
+          <div className="divider-container">
+            <hr />
+            <span>또는</span>
+            <hr />
+          </div>
+          <div className="social-container">
+            <button id="google" className="social-btn" onClick={() => signIn('google')} />
+            <button id="naver" className="social-btn" onClick={() => signIn('naver')} />
+            <button id="kakao" className="social-btn" onClick={() => signIn('kakao')} />
+          </div>
 
-        <span>
-          위키드가 처음이신가요? <Link href="/signup">10초만에 가입하기</Link>
-        </span>
-      </form>
+          <span className="signup-link">
+            위키드가 처음이신가요?{' '}
+            <Link href="/signup" className="signup-link-bold">
+              10초만에 가입하기
+            </Link>
+          </span>
+        </form>
+      </div>
     </Sign>
   );
 }

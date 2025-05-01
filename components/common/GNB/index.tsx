@@ -9,6 +9,9 @@ import Menu from './Menu';
 import { useUserStore } from '@/stores/userStore';
 import { useNotificationStore } from '@/stores/notificationStore';
 import * as S from './style';
+import Input from '../Input';
+import { useRouter } from 'next/router';
+import Search from '@/public/icons/ico-search.svg';
 
 export default function GNB() {
   const { data: session, status } = useSession();
@@ -16,6 +19,25 @@ export default function GNB() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const { userData, fetchUserData } = useUserStore();
   const { notification, fetchNotification } = useNotificationStore();
+  const router = useRouter();
+  const [showSearch, setShowSearch] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      if (router.asPath === '/wikilist') {
+        setShowSearch(window.scrollY > 140);
+      } else {
+        setShowSearch(false);
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [router.asPath]);
 
   useEffect(() => {
     if (session?.accessToken) {
@@ -37,7 +59,19 @@ export default function GNB() {
       </Link>
       <Link href="/wikilist">위키목록</Link>
       <Link href="/boards">자유게시판</Link>
-
+      <div className="search-container">
+        <div className={`search-bar ${showSearch ? 'show' : 'hide'}`}>
+          <Image className="search-icon" src={Search} alt="search" />
+          <Input
+            placeholder="닉네임 검색"
+            // onKeyPress={e => {
+            //   if (e.key === 'Enter') {
+            //     setSearch(e.target.value);
+            //   }
+            // }}
+          />
+        </div>
+      </div>
       <div className="right-container">
         {session ? (
           <>
