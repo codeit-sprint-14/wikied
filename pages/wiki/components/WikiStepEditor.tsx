@@ -12,9 +12,16 @@ interface Props {
   onChange: (value: string) => void;
   onSave: () => void;
   onCancel: () => void;
+  showSaveCancelButtons?: boolean;
 }
 
-export default function WikiStepEditor({ content, onChange, onSave, onCancel }: Props) {
+export default function WikiStepEditor({
+  content,
+  onChange,
+  onSave,
+  onCancel,
+  showSaveCancelButtons,
+}: Props) {
   const quillRef = useRef<any>(null);
   const { data: session } = useSession();
   const [isMounted, setIsMounted] = useState(false);
@@ -35,6 +42,7 @@ export default function WikiStepEditor({ content, onChange, onSave, onCancel }: 
       icons.list.ordered = quillIcons.ordered;
       icons.list.bullet = quillIcons.bullet;
       icons.align[''] = quillIcons.left;
+      icons.align.center = quillIcons.center;
       icons.align.right = quillIcons.right;
       icons.image = quillIcons.image;
       icons.link = quillIcons.link;
@@ -109,12 +117,14 @@ export default function WikiStepEditor({ content, onChange, onSave, onCancel }: 
           theme="snow"
         />
       </QuillBox>
-      <ButtonWrap>
-        <Button onClick={onCancel} variant="outline">
-          취소
-        </Button>
-        <Button onClick={onSave}>저장</Button>
-      </ButtonWrap>
+      {showSaveCancelButtons && (
+        <ButtonWrap>
+          <Button onClick={onCancel} variant="outline">
+            취소
+          </Button>
+          <Button onClick={onSave}>저장</Button>
+        </ButtonWrap>
+      )}
     </QuillWrap>
   );
 }
