@@ -28,6 +28,7 @@ export default function WikiPage() {
   const router = useRouter();
   const { code } = router.query;
 
+  const [name, setName] = useState<string>('');
   const [question, setQuestion] = useState<string | null>(null); // 질문
   const [inputAnswer, setInputAnswer] = useState(''); // 답변 인풋
   const [step, setStep] = useState<'init' | 'question' | 'editor' | 'done'>('init'); // 기본/질문/에디터/에디터작성후 상태 값
@@ -71,6 +72,7 @@ export default function WikiPage() {
     { title: '국적', name: 'nationality' },
   ] as const;
 
+  const isEditableUser = session?.user?.profile?.code === code;
   // GET
   useEffect(() => {
     if (!code || !session?.accessToken) return;
@@ -96,6 +98,7 @@ export default function WikiPage() {
           family: data.family || '',
         };
 
+        setName(data.name);
         setProfileData(profile);
         setDraftProfileData(profile);
 
@@ -126,8 +129,9 @@ export default function WikiPage() {
   const handleSave = async () => {
     let updatedProfileData = {
       ...draftProfileData,
-      image: draftImageUrl,
+      // image: draftImageUrl,
       content: draftContent,
+      ...(draftImageUrl !== DEFAULT_PROFILE_IMAGE && { image: draftImageUrl }),
     };
 
     try {
@@ -296,7 +300,7 @@ export default function WikiPage() {
         onClose={handleCloseSnackBar}
       />
       <WikiSectionInner>
-        <Name>{session?.user?.name}</Name>
+        <Name>{name}</Name>
         <WikiLink onClick={handleCopyLink}>https://wikied-api.vercel.app/{code}</WikiLink>
 
         {step === 'init' && <WikiStepInit onStart={handleStart} />}
@@ -317,13 +321,14 @@ export default function WikiPage() {
             onChange={handleEditorChange}
             onSave={handleSave}
             onCancel={handleCancel}
+            showSaveCancelButtons={true}
           />
         )}
         {step === 'done' && <WikiStepDone content={content} onStart={handleStart} />}
       </WikiSectionInner>
       <Sidebar>
         <ImageWrap
-          step={step as 'editor'}
+          step={isEditableUser ? (step as 'editor') : 'done'}
           onClick={step === 'editor' ? handleImageClick : undefined}
         >
           <Image src={encodeURI(draftImageUrl)} width={200} height={200} alt="infoProfile" />
@@ -336,7 +341,7 @@ export default function WikiPage() {
                 title={field.title}
                 name={field.name}
                 value={draftProfileData[field.name]}
-                step={step}
+                step={isEditableUser ? step : 'done'}
                 onChange={handleInputChange}
               />
             ))}

@@ -55,7 +55,7 @@ export const Sidebar = styled.div`
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 `;
-export const ImageWrap = styled.div<{ step: 'editor' }>`
+export const ImageWrap = styled.div<{ step: 'editor' | 'done' }>`
   position: relative;
   width: 200px;
   height: 200px;
@@ -80,8 +80,7 @@ export const ImageWrap = styled.div<{ step: 'editor' }>`
     transition: all 0.2s;
   }
   &:hover::before {
-    background-color: ${({ step }) =>
-      step === 'editor' ? 'rgba(0,0,0,0.6)' : ''};
+    background-color: ${({ step }) => (step === 'editor' ? 'rgba(0,0,0,0.6)' : '')};
   }
 `;
 export const UserInfoWrap = styled.div`
@@ -145,7 +144,7 @@ export const QuillWrap = styled.div`
     white-space: pre-wrap;
   }
   .ql-toolbar .ql-formats .ql-active {
-    background-color: ${color('gray200')}; 
+    background-color: ${color('gray200')};
     color: white;
     border-radius: 5px;
   }
