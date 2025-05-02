@@ -8,6 +8,7 @@ const MenuContainer = styled.ul<{ isOpen: boolean }>`
   right: 0;
   display: flex;
   flex-direction: column;
+  z-index: 9999;
 
   width: 110px;
   border-radius: 10px;
