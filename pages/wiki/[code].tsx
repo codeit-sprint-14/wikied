@@ -75,6 +75,7 @@ export default function WikiPage() {
   const isEditableUser = session?.user?.profile?.code === code;
   const [isEditing, setIsEditing] = useState(false);
 
+  // 수정 여부 판단 get
   useEffect(() => {
     const checkEditingStatus = async () => {
       try {
@@ -288,6 +289,7 @@ export default function WikiPage() {
     }
   };
 
+  // 수정 갱신
   useEffect(() => {
     const intervalId = setInterval(async () => {
       try {
@@ -303,9 +305,8 @@ export default function WikiPage() {
       } catch (err) {
         console.error(err);
       }
-    }, 270000); // 4분 30초마다 반복 (270,000ms)
+    }, 270000); // 4분 30초마다 반복
 
-    // 컴포넌트 언마운트 시 인터벌 정리
     return () => clearInterval(intervalId);
   }, [code, inputAnswer, session?.accessToken]);
 
