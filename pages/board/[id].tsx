@@ -16,6 +16,7 @@ import NoCommentImage from '@/public/images/img-nocomment.png';
 import SnackBar from '../wiki/components/SnackBar';
 import * as S from './style';
 import useScreenType from '@/hooks/useScreenType';
+import HeartIconFilled from '@/public/icons/ico-heartfilled.svg';
 
 export async function getStaticPaths() {
   const response = await fetch(`https://wikied-api.vercel.app/14-6/articles`);
@@ -227,7 +228,9 @@ export default function Board({
         `https://wikied-api.vercel.app/14-6/articles/${post.id}/comments?limit=100`
       );
       const data = await response.json();
+
       setComments(data.list);
+      showSnackBar('댓글이 삭제되었습니다.', 'success');
 
       setOpenedDropdownId(null); //드롭다운 닫기
     } catch (error) {
@@ -334,12 +337,13 @@ export default function Board({
               ? [
                   {
                     element: (
-                      <div style={{ position: 'relative' }}>
+                      <div>
                         <Image src={SelectIcon} alt="드롭다운" width={18} height={18} />
 
                         <MenuContainer
                           isOpen={openedDropdownId === post.id}
                           onMouseLeave={() => setOpenedDropdownId(null)}
+                          style={{ top: '27px' }}
                         >
                           <MenuItem onClick={handlePostEditClick}>수정하기</MenuItem>
                           <MenuItem onClick={handlePostDeleteClick}>삭제하기</MenuItem>
@@ -354,16 +358,16 @@ export default function Board({
           onEdit={isAuthor ? handlePostEditClick : undefined}
           onDelete={isAuthor ? handlePostDeleteClick : undefined}
           likeButton={
-            <HeartWrapper onClick={handleLikeClick}>
+            <S.HeartWrapper onClick={handleLikeClick}>
               <Image
-                src={HeartIcon}
+                src={isLiked ? HeartIconFilled : HeartIcon}
                 alt="좋아요"
                 width={18}
                 height={18}
                 className={isLiked ? 'liked' : ''}
               />
               <span>{isLikeCount}</span>
-            </HeartWrapper>
+            </S.HeartWrapper>
           }
         />
         <S.UnderBar>
@@ -417,6 +421,7 @@ export default function Board({
                   <MenuContainer
                     isOpen={openedDropdownId === comment.id}
                     onMouseLeave={() => setOpenedDropdownId(null)}
+                    style={{ top: '42px', left: '677px' }}
                   >
                     <MenuItem onClick={() => handleEditClick(comment.id)}>수정하기</MenuItem>
                     <MenuItem onClick={() => handleDeleteClick(comment.id)}>삭제하기</MenuItem>
@@ -437,10 +442,3 @@ export default function Board({
     </S.Wrapper>
   );
 }
-
-const HeartWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-`;
