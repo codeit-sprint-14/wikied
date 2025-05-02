@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -73,6 +73,41 @@ export default function WikiPage() {
   ] as const;
 
   const isEditableUser = session?.user?.profile?.code === code;
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    const checkEditingStatus = async () => {
+      try {
+        const res = await axios.get(`https://wikied-api.vercel.app/14-6/profiles/${code}/ping`, {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        });
+
+        const { registeredAt } = res.data;
+
+        const now = new Date();
+        const pingTime = new Date(registeredAt);
+        const diffMs = now.getTime() - pingTime.getTime();
+
+        if (diffMs < 5 * 60 * 1000) {
+          setIsEditing(true);
+          setIsSnackBarVisible(true);
+          setSnackBarMessage('다른 사람이 편집 중입니다.');
+          setSnackBarType('error');
+        } else {
+          setIsEditing(false);
+        }
+      } catch (err) {
+        setIsEditing(false);
+      }
+    };
+
+    if (code && session?.accessToken) {
+      checkEditingStatus();
+    }
+  }, [code, session]);
+
   // GET
   useEffect(() => {
     if (!code || !session?.accessToken) return;
@@ -245,13 +280,34 @@ export default function WikiPage() {
       setStep('editor');
       setDraftContent(content);
       setQuestionModal(false);
-      setInputAnswer('');
+      // setInputAnswer('');
       setIsError(false);
     } catch (err) {
       console.error(err);
       setIsError(true);
     }
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      try {
+        await axios.post(
+          `https://wikied-api.vercel.app/14-6/profiles/${code}/ping`,
+          { securityAnswer: inputAnswer },
+          {
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+          }
+        );
+      } catch (err) {
+        console.error(err);
+      }
+    }, 270000); // 4분 30초마다 반복 (270,000ms)
+
+    // 컴포넌트 언마운트 시 인터벌 정리
+    return () => clearInterval(intervalId);
+  }, [code, inputAnswer, session?.accessToken]);
 
   // 에디터 수정
   const handleEditorChange = (value: string) => {
@@ -324,7 +380,9 @@ export default function WikiPage() {
             showSaveCancelButtons={true}
           />
         )}
-        {step === 'done' && <WikiStepDone content={content} onStart={handleStart} />}
+        {step === 'done' && (
+          <WikiStepDone isEditing={isEditing} content={content} onStart={handleStart} />
+        )}
       </WikiSectionInner>
       <Sidebar>
         <ImageWrap
