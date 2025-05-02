@@ -71,3 +71,15 @@ export const EditorArea = styled.div`
 export const BottomCenterButton = styled.div`
   text-align: center;
 `;
+
+export const ThumbnailButton = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+`;
+export const ThumbnailPreview = styled.img`
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+`;

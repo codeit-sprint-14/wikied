@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import WikiStepEditor from '@/pages/wiki/components/WikiStepEditor';
 import Button from '@/components/common/Button';
@@ -13,6 +13,8 @@ import {
   EditorArea,
   TopRightButton,
   BottomCenterButton,
+  ThumbnailButton,
+  ThumbnailPreview,
 } from './style';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
@@ -21,16 +23,44 @@ export default function AddBoard() {
   const { data: session } = useSession();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  console.log(session);
+  const today = new Date();
+  const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
 
-  // post
   const handleSave = async () => {
     try {
+      let imageUrl = null;
+
+      if (thumbnailFile) {
+        const formData = new FormData();
+        formData.append('image', thumbnailFile);
+
+        const uploadResponse = await axios.post(
+          'https://wikied-api.vercel.app/14-6/images/upload',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+          }
+        );
+
+        imageUrl = uploadResponse.data?.url;
+        console.log('업로드된 이미지 URL:', imageUrl);
+      }
+
       const response = await axios.post(
         'https://wikied-api.vercel.app/14-6/articles',
-        { title, content },
+        {
+          title,
+          content,
+          ...(imageUrl ? { image: encodeURI(imageUrl) } : {}),
+        },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -40,11 +70,21 @@ export default function AddBoard() {
       );
 
       const result = response.data;
-      if (result?.id) {
-        router.push(`/boards/${result.id}`);
-      }
+      console.log(result);
+      router.push(`/board/${result.id}`);
     } catch (error) {
-      console.error('에러:', error);
+      console.error('업로드 또는 저장 중 오류:', error);
+    }
+  };
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnailFile(file);
+      setThumbnailPreview(URL.createObjectURL(file));
+    } else {
+      setThumbnailFile(null);
+      setThumbnailPreview(null);
     }
   };
 
@@ -57,7 +97,7 @@ export default function AddBoard() {
     .replace(/<[^>]*>/g, '')
     .replace(/&nbsp;/g, ' ')
     .trim();
-  const isDisabled = title.trim() === '' && plainText === '';
+  const isDisabled = title.trim() === '' || plainText === '';
 
   return (
     <Container>
@@ -65,7 +105,7 @@ export default function AddBoard() {
         <Header>
           <div>
             <h2>게시물 등록하기</h2>
-            <p>등록일 2024.02.24.</p>
+            <p>등록일 {formattedDate}</p>
           </div>
           <TopRightButton>
             <Button onClick={handleSave} disabled={isDisabled}>
@@ -93,6 +133,19 @@ export default function AddBoard() {
             공백포함 : 총 {plainText.length}자 | 공백제외 : 총 {plainText.replace(/\s/g, '').length}
             자
           </p>
+          <ThumbnailButton>
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleThumbnailChange}
+            />
+            <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
+              썸네일 이미지 등록
+            </Button>
+            {thumbnailPreview && <ThumbnailPreview src={thumbnailPreview} alt="썸네일 미리보기" />}
+          </ThumbnailButton>
           <WikiStepEditor
             content={content}
             onChange={setContent}
