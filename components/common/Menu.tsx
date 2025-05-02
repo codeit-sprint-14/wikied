@@ -30,6 +30,7 @@ const MenuItemContainer = styled.li`
   align-items: center;
   justify-content: center;
   gap: 10px;
+  cursor: pointer;
   transition: all 0.1s ease-out;
   border-bottom: 1px solid ${color('gray100')};
 
