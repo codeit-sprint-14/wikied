@@ -43,6 +43,10 @@ const MenuItemContainer = styled.li`
   &:hover {
     background: ${color('gray100')};
   }
+
+  &.danger {
+    color: ${color('red200')};
+  }
 `;
 
 function MenuItem({

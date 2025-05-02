@@ -68,9 +68,8 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
       <SignInput
         inputState={oldPw}
         name={'oldPassword'}
-        placeholder={'기존 비밀번호'}
         type={'password'}
-        title={'비밀번호'}
+        title={'현재 비밀번호'}
         autoComplete={'new-password'}
         id={'password'}
         pw={oldPw.value}
@@ -81,9 +80,8 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
       <SignInput
         inputState={pw}
         name={'newPassword'}
-        placeholder={'새 비밀번호'}
         type={'password'}
-        title={'비밀번호'}
+        title={'새 비밀번호'}
         autoComplete={'new-password'}
         id={'password'}
         pw={pw.value}
@@ -94,9 +92,8 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
       <SignInput
         inputState={confirmPw}
         name={'newPasswordConfirmation'}
-        placeholder={'새 비밀번호 확인'}
         type={'password'}
-        title={'비밀번호 확인'}
+        title={'새 비밀번호 확인'}
         autoComplete={'new-password'}
         id={'passwordConfirmation'}
         pw={pw.value}
