@@ -2,19 +2,29 @@ import styled from 'styled-components';
 import color from '@/utils/color';
 import typo from '@/utils/typo';
 
+export const Header = styled.div``;
 export const WikiSection = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
   gap: 80px;
   width: 100%;
-  padding-top: 160px;
-  padding-bottom: 50px;
+  padding: 160px 20px 50px 20px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 40px;
+    padding-top: 120px;
+  }
 `;
 export const WikiSectionInner = styled.div`
   position: relative;
   flex-basis: 900px;
   height: 100%;
+  @media (max-width: 1024px) {
+    position: static;
+    order: 3;
+  }
 `;
 export const Name = styled.h2`
   color: ${color('gray500')};
@@ -46,14 +56,39 @@ export const WikiContent = styled.div`
   border-radius: 10px;
   row-gap: 20px;
   background-color: ${color('gray100')};
+  @media (max-width: 1024px) {
+    margin-top: 30px;
+  }
 `;
-export const Sidebar = styled.div`
-  width: 350px;
+export const Sidebar = styled.div<{ isOpen: boolean }>`
+  position: relative;
+  max-width: 350px;
+  width: 100%;
   height: fit-content;
   padding: 60px 30px 36px 30px;
   background-color: ${color('gray50')};
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+
+  @media (max-width: 1024px) {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: unset;
+    height: ${({ isOpen }) => (isOpen ? '330px' : '240px')};
+    transition: height 0.3s ease;
+    gap: 50px;
+    padding: 30px;
+    order: 2;
+  }
+`;
+export const SlideButton = styled.div<{ visible: boolean }>`
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
+  cursor: pointer;
 `;
 export const ImageWrap = styled.div<{ step: 'editor' | 'done' }>`
   position: relative;
@@ -82,13 +117,36 @@ export const ImageWrap = styled.div<{ step: 'editor' | 'done' }>`
   &:hover::before {
     background-color: ${({ step }) => (step === 'editor' ? 'rgba(0,0,0,0.6)' : '')};
   }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 1024px) {
+    margin: unset;
+    width: 150px;
+    height: 150px;
+    flex-basis: 150px;
+    flex-shrink: 0;
+  }
 `;
 export const UserInfoWrap = styled.div`
   margin-top: 60px;
+  flex-basis: 100%;
+
+  @media (max-width: 1024px) {
+    margin-top: 0px;
+  }
 `;
 
-export const UserInfo = styled.ul`
+export const UserInfo = styled.ul<{ isOpen: boolean }>`
   width: 100%;
+  @media (max-width: 1024px) {
+    height: ${({ isOpen }) => (isOpen ? '300px' : '172px')};
+    overflow: hidden;
+    transition: height 0.3s ease;
+  }
 `;
 export const InfoItem = styled.li`
   display: flex;
@@ -96,6 +154,12 @@ export const InfoItem = styled.li`
   column-gap: 20px;
   & + li {
     margin-top: 18px;
+  }
+
+  @media (max-width: 1024px) {
+    & + li {
+      margin-top: 10px;
+    }
   }
 `;
 export const InfoTitle = styled.span`
@@ -186,6 +250,10 @@ export const ViewerButton = styled.div`
   position: absolute;
   top: 16px;
   right: 0;
+  @media (max-width: 1024px) {
+    top: 135px;
+    right: 20px;
+  }
 `;
 export const Viewer = styled.div`
   line-height: 1.6;
