@@ -81,6 +81,8 @@ export default function Boards() {
           `https://wikied-api.vercel.app/14-6/articles?page=1&pageSize=4&orderBy=like`
         );
         setBestArticles(res.data.list);
+
+        console.log(res.data.list);
       } catch (err) {
         console.error(err);
       } finally {

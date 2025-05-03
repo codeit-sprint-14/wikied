@@ -1,23 +1,16 @@
+import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import SnackBar from '../wiki/components/SnackBar';
+import Button from '@/components/common/Button';
 
-const QuillNoSSRWrapper = dynamic(() => import('react-quill-new'), {
-  ssr: false,
-});
-
-const formats = ['bold', 'italic', 'underline', 'list', 'image', 'align', 'color'];
-
-export default function AddBoard() {
-  const quillRef = useRef(null);
+export default function Edit() {
+  const quillRef = useRef<any>(null);
   const { data: session } = useSession();
   const router = useRouter();
-  //const { id } = router.query;
-  const { id: queryId } = router.query;
-  const id = queryId ?? '1568';
+  const { id } = router.query;
 
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
@@ -25,53 +18,77 @@ export default function AddBoard() {
   const [loading, setLoading] = useState(true);
   const [showSnackBar, setShowSnackBar] = useState(false);
 
-  const getContentLength = (htmlString: string) => {
-    if (typeof window === 'undefined') {
-      return { countWithSpace: 0, countWithoutSpace: 0 };
-    }
+  const date = new Date().toLocaleDateString('ko-KR').replaceAll('.', '.').replace('.', '.');
 
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = htmlString;
+  const imageHandler = async () => {
+    const editor = quillRef.current?.getEditor();
+    if (!editor) return;
 
-    const imgCount = tempElement.querySelectorAll('img').length;
-    const liCount = tempElement.querySelectorAll('li').length;
-    const pureText = tempElement.textContent || tempElement.innerText || '';
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
 
-    const pureTextLengthWithSpace = pureText.length;
-    const pureTextLengthWithoutSpace = pureText.replace(/\s/g, '').length;
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
 
-    const countWithoutSpace = pureTextLengthWithSpace + imgCount + liCount;
-    const countWithSpace = pureTextLengthWithoutSpace + imgCount + liCount;
-    return { countWithSpace, countWithoutSpace };
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await axios.post(
+          `https://wikied-api.vercel.app/14-6/images/upload`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+          }
+        );
+
+        const imageUrl = response.data.url;
+        const range = editor.getSelection(true);
+        editor.insertEmbed(range.index, 'image', encodeURI(imageUrl));
+
+        editor.setSelection(range.index + 1);
+
+        const parsedDoc = new DOMParser().parseFromString(editor.root.innerHTML, 'text/html');
+        const validImg = [...parsedDoc.querySelectorAll('img')].find(img => {
+          const src = img.getAttribute('src') || '';
+          return !src.startsWith('data:image');
+        });
+        //if (validImg) setImage(validImg.getAttribute('src') || '');
+
+        //setEditorContent(editor.root.innerHTML);
+      } catch (error) {
+        console.error(error);
+      }
+    };
   };
 
-  const date = new Date().toLocaleDateString('ko-KR').replaceAll('.', '.').replace('.', '.');
-  const { countWithSpace, countWithoutSpace } = getContentLength(editorContent);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   const modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline'],
-      [{ align: '' }],
-      [{ align: 'center' }],
-      [{ align: 'right' }],
-      [{ list: 'bullet' }],
-      [{ list: 'ordered' }],
-      [{ color: [] }],
-      ['image'],
-    ],
-    handlers: {
-      image: () => {
-        fileInputRef.current?.click();
+    toolbar: {
+      container: [
+        ['bold', 'italic', 'underline'],
+        [{ align: '' }],
+        [{ align: 'center' }],
+        [{ align: 'right' }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+
+        [{ color: [] }],
+        ['image'],
+      ],
+      handlers: {
+        image: imageHandler,
       },
     },
   };
 
+  const formats = ['bold', 'italic', 'underline', 'list', 'align', 'image', 'color'];
+
   useEffect(() => {
-    // if (!session) {
-    //   router.push('/login');
-    //   return;
-    // }
     if (!id) return;
 
     const fetchPost = async () => {
@@ -79,96 +96,89 @@ export default function AddBoard() {
         const res = await fetch(`https://wikied-api.vercel.app/14-6/articles/${id}`);
         const data = await res.json();
         setTitle(data.title || '');
-        setImage(data.image || '');
-        setEditorContent(
-          (data.image
-            ? `<p>
-              <img src="${data.image}" alt="썸네일" />
-            </p>`
-            : '') + (data.content || '')
-        );
+        //setImage(data.image || '');
+        setEditorContent(data.content || '');
       } catch (error) {
         console.error('게시물 불러오기 실패:', error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchPost();
   }, [id]);
 
   const handleSave = async () => {
-    if (!quillRef.current) return;
-
-    const updatedHtml = quillRef.current?.editor?.root.innerHTML;
-
-    try {
-      const res = await fetch(`https://wikied-api.vercel.app/14-6/articles/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        body: JSON.stringify({ title, image, content: updatedHtml }),
-      });
-
-      if (!res.ok) {
-        throw new Error('게시물 수정 실패');
-      }
-
-      setShowSnackBar(true);
-    } catch (error) {
-      console.error('게시물 수정 실패', error);
-      alert('수정에 실패했습니다. 다시 시도해주세요.');
+    if (!title.trim() || !editorContent.trim()) {
+      alert('제목과 내용을 모두 입력해주세요.');
+      return;
     }
-  };
 
-  const handleEditorImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const temp = document.createElement('div');
+    temp.innerHTML = editorContent;
+    const firstImg = temp.querySelector('img');
+    const thumbnail = firstImg?.getAttribute('src') || '';
 
-    const formData = new FormData();
-    formData.append('file', file);
+    const payload: any = {
+      title: title.trim(),
+      content: editorContent,
+    };
 
-    try {
-      const res = await fetch(`https://wikied-api.vercel.app/14-6/images`, {
-        method: 'POST',
-        body: formData,
-      });
+    const DEFAULT_THUMBNAIL_URL =
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000/images/img-thumbnail.png'
+        : 'https://wikied.vercel.app/images/img-thumbnail.png'; // 배포용
 
-      if (!res.ok) {
-        throw new Error('이미지 업로드 실패');
-      }
-
-      const data = await res.json();
-      const editor = quillRef.current;
-      if (editor) {
-        const quillEditor = editor.getEditor();
-        const range = quillEditor.getSelection(true);
-        quillEditor.insertEmbed(range.index, 'image', data.url);
-        quillEditor.setSelection(range.index + 1);
-
-        //첫번째 이미지 자동으로 썸네일로 지정
-        const editorHtml = quillEditor.root.innerHTML;
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(editorHtml, 'text/html');
-        const firstImg = doc.querySelector('img');
-        if (firstImg) {
-          setImage(firstImg.getAttribute('src') || '');
-        }
-
-        setEditorContent(editorHtml);
-      }
-    } catch (error) {
-      console.error('이미지 업로드 에러: ', error);
-      alert('이미지 업로드에 실패했습니다.');
+    if (thumbnail !== '') {
+      payload.image = thumbnail;
+    } else {
+      payload.image = DEFAULT_THUMBNAIL_URL;
     }
+
+    // if (image && image.trim() !== '') {
+    //   payload.image = image;
+    // }
+
+    const res = await fetch(`https://wikied-api.vercel.app/14-6/articles/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await res.text();
+    console.log('응답 상태:', res.status);
+    console.log('응답 본문:', result);
+
+    if (!res.ok) {
+      alert('수정 실패');
+      return;
+    }
+
+    setShowSnackBar(true);
   };
 
   const handleSnackBarClose = () => {
     setShowSnackBar(false);
-    router.push('/boards');
+    router.push(`/board/${id}`);
   };
+
+  const getContentLength = (html: string) => {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = html;
+
+    const imgCount = tempElement.querySelectorAll('img').length;
+    const liCount = tempElement.querySelectorAll('li').length;
+    const text = tempElement.textContent || '';
+
+    return {
+      countWithSpace: text.length + imgCount + liCount,
+      countWithoutSpace: text.replace(/\s/g, '').length + imgCount + liCount,
+    };
+  };
+
+  const { countWithSpace, countWithoutSpace } = getContentLength(editorContent);
 
   if (loading) return <div>로딩 중...</div>;
 
@@ -189,17 +199,8 @@ export default function AddBoard() {
         공백포함: 총 {countWithSpace}자 | 공백제외: 총 {countWithoutSpace}자
       </div>
 
-      {/*숨겨진 파일 input*/}
-      <input
-        type="file"
-        accept="image/*"
-        style={{ display: 'none' }}
-        onChange={handleEditorImageUpload}
-        ref={fileInputRef}
-      />
-
       <div>
-        <QuillNoSSRWrapper
+        <ReactQuill
           theme="snow"
           value={editorContent}
           onChange={setEditorContent}
@@ -209,7 +210,7 @@ export default function AddBoard() {
         />
       </div>
 
-      <button onClick={handleSave}>수정하기</button>
+      <Button onClick={handleSave}>수정하기</Button>
 
       {showSnackBar && (
         <SnackBar
