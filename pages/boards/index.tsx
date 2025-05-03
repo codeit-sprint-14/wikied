@@ -56,6 +56,8 @@ export default function Boards() {
         );
         console.log(res.data);
         setBestArticles(res.data.list);
+
+        console.log(res.data.list);
       } catch (err) {
         console.error(err);
       } finally {
