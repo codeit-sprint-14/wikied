@@ -5,7 +5,7 @@ import Image from 'next/image';
 import * as S from '@/styles/boards.style';
 
 import TempForm from './components/TempForm';
-import Pagination from './components/Pagenation';
+import Pagination from '@/components/feature/Pagination';
 import getDate from '@/utils/getDate';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
