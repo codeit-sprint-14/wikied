@@ -8,10 +8,9 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 32px;
 
   form {
-    width: 400px;
+    width: 480px;
     display: flex;
     flex-direction: column;
     gap: 8px;

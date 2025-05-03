@@ -8,7 +8,7 @@ import router from 'next/router';
 
 import HeroTitle from '@/public/images/img-hero-title.svg';
 import Qna from '@/public/images/img-qna.svg';
-import CtaBackground from '@/public/images/img-background-cta.png';
+import CtaBackground from '@/public/images/img-background-cta.svg';
 import Image from 'next/image';
 import LottieWiki from '@/public/lotties/lottie-wiki.json';
 import LottieShare from '@/public/lotties/lottie-share.json';
@@ -111,6 +111,18 @@ const Container = styled.div`
     }
     &#graphic-06 {
       bottom: 0;
+      left: 0;
+      width: 100%;
+
+      img {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0.9;
+      }
     }
     .reviews {
       display: flex;
@@ -413,7 +425,7 @@ export default function Home() {
               <CTA onClick={() => router.push('/login')}>지금 시작하기</CTA>
             </div>
             <Graphic className="graphic" id="graphic-06">
-              <Image src={CtaBackground} width={1920} />
+              <Image src={CtaBackground} />
             </Graphic>
           </div>
         </section>
