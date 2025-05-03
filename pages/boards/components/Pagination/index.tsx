@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import * as S from './style';
+import * as S from '@/styles/pagination.style';
 import PageArrow from '@/public/icons/ico-expand.svg';
 import { useRouter } from 'next/router';
 
@@ -27,7 +27,7 @@ function Pagination({ totalCount }) {
         <Image src={PageArrow} alt="prev page" width={24} height={24} style={{ rotate: '90deg' }} />
       </button>
 
-      {Array(endPage - startPage + 1)
+      {Array(Math.max(endPage - startPage + 1, 0))
         .fill('')
         .map((_, i) => {
           const pageNum = startPage + i;

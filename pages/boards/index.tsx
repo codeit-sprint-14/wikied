@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import router, { useRouter } from 'next/router';
 import Image from 'next/image';
-import * as S from './style';
+import * as S from '@/styles/boards.style';
 
 import TempForm from './components/TempForm';
 import Pagination from './components/Pagenation';

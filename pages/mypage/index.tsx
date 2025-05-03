@@ -4,7 +4,7 @@ import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import * as S from './style';
+import * as S from '@/styles/mypage.style';
 import ChangePassword from './components/ChangePassword';
 import CreateWiki from './components/CreateWiki';
 
