@@ -63,7 +63,7 @@ const ErrorImageWrapper = styled.div`
   @media (max-width: 768px) {
     width: 133px;
     height: 140px;
-    bottom: calc(100% + 56px);
+    bottom: calc(100% + 16px);
   }
 
   img {
