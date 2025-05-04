@@ -188,14 +188,18 @@ export const InfoInput = styled.input`
 export const QuillWrap = styled.div`
   margin-top: 40px;
   .ql-toolbar.ql-snow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
+    display: block;
+    text-align: center;
+    height: auto;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
     background: ${color('gray100')};
     border-radius: 10px;
     padding: 10px;
     border: none;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
 
   .ql-container.ql-snow {
