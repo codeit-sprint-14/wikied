@@ -8,12 +8,15 @@ export const Container = styled.div`
   gap: 80px;
   max-width: 1080px;
   margin: 160px auto;
+  padding: 0 60px;
+  box-sizing: content-box;
 `;
 
 export const BestListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+
   h1 {
     ${typo('24sb')};
     color: ${color('gray500')};
@@ -27,6 +30,11 @@ export const BestListContainer = styled.div`
     display: flex;
     gap: 16px;
     width: 100%;
+    @media (max-width: 1024px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
   }
   .top-container {
     display: flex;
@@ -95,7 +103,8 @@ export const ListContainer = styled.div`
   gap: 24px;
   .article-container {
     li {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 4fr 1.4fr 1fr;
       gap: 10px;
       justify-content: space-between;
       align-items: center;
@@ -106,6 +115,10 @@ export const ListContainer = styled.div`
       background: ${color('gray50')};
       transition: all 0.1s ease-out;
 
+      @media (max-width: 1024px) {
+        grid-template-columns: 1fr 2fr 1.4fr 1fr;
+      }
+
       &:hover {
         filter: brightness(0.98);
       }
@@ -114,22 +127,9 @@ export const ListContainer = styled.div`
         display: flex;
         align-items: center;
         gap: 4px;
-      }
-
-      .like-count {
-        flex-basis: 11%;
-      }
-
-      .title {
-        flex-basis: 65%;
-      }
-
-      .writer {
-        flex-basis: 12%;
-      }
-
-      .date {
-        flex-basis: 12%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }

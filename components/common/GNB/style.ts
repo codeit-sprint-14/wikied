@@ -78,3 +78,63 @@ export const ProfileContainer = styled.div`
   position: relative;
   cursor: pointer;
 `;
+
+export const NotificationContainer = styled.div`
+  position: relative;
+`;
+
+export const NotificationMenu = styled.div`
+  position: absolute;
+  top: 38px;
+  right: 0;
+  width: 368px;
+  background: ${color('gray50')};
+
+  transition: all 0.1s ease-out;
+  transform: ${props =>
+    props.isOpen ? 'scaleY(1) translateY(0)' : 'scaleY(0.95) translateY(-6px)'};
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  pointer-events: ${props => (props.isOpen ? 'auto' : 'none')};
+
+  border-radius: 10px;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+
+  li {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    min-height: 64px;
+    padding: 0 20px;
+    border-bottom: 1px solid ${color('gray200')};
+    transition: all 0.1s ease-out;
+
+    .content {
+      ${typo('16m')};
+      color: ${color('gray500')};
+    }
+    .date {
+      ${typo('12r')};
+      color: ${color('gray400')};
+    }
+
+    &:last-child {
+      border: none;
+    }
+
+    button {
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+      border-radius: 8px;
+
+      &:hover {
+        background: ${color('gray100')};
+      }
+    }
+  }
+`;

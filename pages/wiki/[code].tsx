@@ -14,7 +14,7 @@ import {
   UserInfoWrap,
   UserInfo,
   SlideButton,
-} from './style';
+} from '@/styles/wiki.style';
 
 import WikiStepInit from './components/WikiStepInit';
 import WikiStepQuestion from './components/WikiStepQuestion';
