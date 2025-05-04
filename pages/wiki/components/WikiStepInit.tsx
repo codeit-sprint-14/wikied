@@ -1,5 +1,5 @@
 import Button from '@/components/common/Button';
-import { WikiContent, WikiMessage } from '../style';
+import { WikiContent, WikiMessage } from '../../../styles/wiki.style';
 
 interface Props {
   onStart: () => void;

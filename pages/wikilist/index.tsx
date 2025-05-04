@@ -12,8 +12,10 @@ import Search from '@/public/icons/ico-search.svg';
 import NotFound from '@/public/images/img-not-found.svg';
 
 const Container = styled.div`
-  width: 860px;
+  max-width: 860px;
   margin: 164px auto 480px;
+  padding: 0 60px;
+  box-sizing: content-box;
 
   .search-container {
     position: relative;
@@ -85,6 +87,9 @@ const ListContainer = styled.ul`
       flex-direction: column;
       gap: 10px;
       color: ${color('gray400')};
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .contents-top {
@@ -92,17 +97,25 @@ const ListContainer = styled.ul`
       align-items: center;
       gap: 8px;
       color: ${color('gray400')};
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       h2 {
         ${typo('24sb')}
         color: ${color('gray500')};
+
+        @media (max-width: 768px) {
+          ${typo('20sb')};
+        }
       }
     }
 
     .image-container {
+      min-width: 94px;
       width: 94px;
-      height: 94px;
-      border-radius: 50%;
+      aspect-ratio: 1/1;
+      border-radius: 100px;
       overflow: hidden;
 
       img {
@@ -117,10 +130,6 @@ const ListContainer = styled.ul`
 function WikiList() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState('');
-  const [orderBy, setOrderBy] = useState('recent');
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(100);
   const [totalCount, setTotalCount] = useState(0);
   const router = useRouter();
 
@@ -128,7 +137,7 @@ function WikiList() {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `https://wikied-api.vercel.app/14-6/profiles?page=${page}&pageSize=${pageSize}&name=${search}`
+          `https://wikied-api.vercel.app/14-6/profiles?page=${1}&pageSize=${100}&name=${router.query.search || ''}`
         );
         const userList = await Promise.all(
           res.data.list.map(async (v: any) => {
@@ -153,7 +162,7 @@ function WikiList() {
     };
 
     fetchData();
-  }, [search, orderBy, page, pageSize]);
+  }, [router.query.search]);
 
   return (
     <Container>
@@ -161,16 +170,16 @@ function WikiList() {
         <Image className="search-icon" src={Search} alt="search" />
         <Input
           placeholder="닉네임 검색"
-          onKeyPress={e => {
+          onKeyDown={e => {
             if (e.key === 'Enter') {
-              setSearch(e.target.value);
+              router.push(`/wikilist?search=${e.currentTarget.value}`);
             }
           }}
         />
       </div>
       {totalCount > 0 && (
         <span className="total-count">
-          {search ? (
+          {router.query.search ? (
             <>
               <b>{totalCount}</b>명의 프로필을 찾았어요
             </>
@@ -206,7 +215,7 @@ function WikiList() {
           <div className="no-result">
             <Image src={NotFound} alt="not found" />
             <span>
-              <b>{search}</b>님을 찾지 못했어요 :(
+              <b>{router.query.search}</b>님을 찾지 못했어요 :(
             </span>
           </div>
         )}

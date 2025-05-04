@@ -1,5 +1,5 @@
 import Button from '@/components/common/Button';
-import { Viewer, ViewerButton, ViewerContainer } from '../style';
+import { Viewer, ViewerButton, ViewerContainer } from '../../../styles/wiki.style';
 
 interface Props {
   content: string;

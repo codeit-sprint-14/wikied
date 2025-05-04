@@ -4,7 +4,7 @@ import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import * as S from './style';
+import * as S from '@/styles/mypage.style';
 import ChangePassword from './components/ChangePassword';
 import CreateWiki from './components/CreateWiki';
 
@@ -33,10 +33,10 @@ export default function Mypage() {
 
   return (
     <S.Container>
-      <h1>안녕하세요, {session?.user?.name}님</h1>
-      <span>{`세션 데이터 : ${JSON.stringify(session?.user)}`}</span>
-      <span>{`유저 데이터 : ${JSON.stringify(userData)}`}</span>
-      <span>{`유저 알림 : ${JSON.stringify(notification)}`}</span>
+      <h1>계정 설정</h1>
+      {/* <span>{`세션 데이터 : ${JSON.stringify(session?.user)}`}</span>
+      <span>{`유저 데이터 : ${JSON.stringify(userData)}`}</span> */}
+      {/* <span>{`유저 알림 : ${JSON.stringify(notification)}`}</span> */}
       <ChangePassword isLoading={isLoading} setIsLoading={setIsLoading} />
       <hr />
       <CreateWiki isLoading={isLoading} setIsLoading={setIsLoading} />

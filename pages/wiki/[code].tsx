@@ -12,7 +12,7 @@ import {
   ImageWrap,
   UserInfoWrap,
   UserInfo,
-} from './style';
+} from '@/styles/wiki.style';
 
 import WikiStepInit from './components/WikiStepInit';
 import WikiStepQuestion from './components/WikiStepQuestion';

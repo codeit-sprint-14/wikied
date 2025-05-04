@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Button from '@/components/common/Button';
-import { ButtonWrap, QuillBox, QuillWrap } from '../style';
-import { quillIcons } from '../icon';
+import { ButtonWrap, QuillBox, QuillWrap } from '../../../styles/wiki.style';
+import { quillIcons } from '@/public/icons/iconQuill';
 
 let ReactQuill: any;
 

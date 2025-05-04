@@ -31,6 +31,8 @@ export default function PostBox({
   likeCount,
   isListView = false,
 }: PostBoxProps) {
+  if (!post) return null;
+
   const { title, writer, createdAt, image, content } = post;
   const screenType = useScreenType();
 
