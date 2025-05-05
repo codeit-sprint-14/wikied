@@ -21,7 +21,7 @@ const AuthorInfo = styled.div`
 
 const CardContainer = styled.div`
   position: absolute;
-  top: 712px; // 812px에서 조정
+  top: 812px; // 812px에서 조정
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -35,7 +35,7 @@ const CardContainer = styled.div`
     overflow-x: auto;
     padding: 0 20px;
     gap: 12px;
-    top: 580px; // 모바일에서 더 위로 조정
+    top: 680px; // 모바일에서 더 위로 조정
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -127,7 +127,7 @@ const Title = styled.div`
   width: 209px;
   height: 42px;
   position: absolute;
-  top: 646px; // 746px에서 조정
+  top: 746px;
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Pretendard', sans-serif;
@@ -140,7 +140,7 @@ const Title = styled.div`
   @media (max-width: 768px) {
     font-size: 20px;
     width: 100%;
-    top: 520px; // 모바일에서 더 위로 조정
+    top: 620px;
   }
 `;
 
