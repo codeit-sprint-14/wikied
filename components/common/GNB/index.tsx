@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import { jwtDecode } from 'jwt-decode';
 
 import { useNotificationStore } from '@/stores/notificationStore';
 import { useUserStore } from '@/stores/userStore';
@@ -102,12 +103,31 @@ export default function GNB() {
   }, [router.asPath]);
 
   useEffect(() => {
-    if (session?.accessToken) {
-      fetchUserData(session.accessToken);
-      fetchNotification(session.accessToken);
-      userData?.image && setProfile(userData.image);
-      typeof userData?.profile === 'string' && setProfile(userData.profile);
-    }
+    const checkTokenAndFetch = async () => {
+      try {
+        if (!session?.accessToken) return;
+
+        const decoded = jwtDecode(session.accessToken);
+        const now = Date.now() / 1000; // 초 단위
+
+        if (decoded.exp && decoded.exp < now) {
+          console.warn('accessToken expired. Logging out!');
+          await signOut({ callbackUrl: '/login' }); // 로그인 페이지로 이동
+          return;
+        }
+
+        await fetchUserData(session.accessToken);
+        await fetchNotification(session.accessToken);
+
+        if (userData?.image) setProfile(userData.image);
+        if (typeof userData?.profile === 'string') setProfile(userData.profile);
+      } catch (error) {
+        console.error('Token check or fetch failed:', error);
+        await signOut({ callbackUrl: '/login' }); // 에러 발생 시도 안전하게 로그아웃
+      }
+    };
+
+    checkTokenAndFetch();
   }, [session, fetchUserData, fetchNotification]);
 
   const handleNotificationClose = () => {

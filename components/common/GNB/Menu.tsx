@@ -29,7 +29,11 @@ export default function Menu({
           <MenuItem>
             <Link href="/boards">자유게시판</Link>
           </MenuItem>
-          <MenuItem onClick={handleNotification}>알림</MenuItem>
+          {userData?.profile?.code ? (
+            <MenuItem onClick={handleNotification}>알림</MenuItem>
+          ) : (
+            <Link href="/mypage">내 위키 만들기</Link>
+          )}
         </>
       )}
       <MenuItem>
