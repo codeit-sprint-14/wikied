@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import typo from '@/utils/typo';
 import Link from 'next/link';
 import Image from 'next/image';
 import ErrorIcon from '@/public/icons/Layer_1.svg';
@@ -25,9 +26,9 @@ const ErrorContainer = styled.div`
 
 const ErrorMessage = styled.div`
   font-family: 'Pretendard', sans-serif;
-  font-size: 18px;
+  ${typo('18sb')};
   position: relative;
-  margin-top: 184.49px;
+  margin-top: 184px;
   text-align: center;
   color: ${color('gray400')};
 
