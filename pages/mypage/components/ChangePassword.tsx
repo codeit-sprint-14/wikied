@@ -2,66 +2,10 @@ import Button from '@/components/common/Button';
 
 import SignInput from '@/components/feature/SignInput';
 import useInputConfirm from '@/hooks/useInputConfirm';
-import color from '@/utils/color';
-import typo from '@/utils/typo';
 import axios from 'axios';
 import { signOut, useSession } from 'next-auth/react';
 import router from 'next/router';
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
-
-import Lock from '@/public/icons/ico-lock.svg';
-import Check from '@/public/icons/ico-check.svg';
-import Image from 'next/image';
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  overflow: hidden;
-  transition: all 0.2s cubic-bezier(0, 0.5, 0.5, 1);
-  height: ${({ isOpen }) => (isOpen ? '480px' : '128px')};
-  cursor: ${({ isOpen }) => (isOpen ? 'default' : 'pointer')};
-  background: ${color('gray100')};
-  border-radius: 20px;
-  padding: 20px 40px;
-
-  label {
-    ${typo('24sb')}
-    color: ${color('gray500')};
-    margin-bottom: 48px;
-    margin-top: ${({ isOpen }) => (isOpen ? '0' : '12px')};
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-
-    img {
-      transition: all 0.1s cubic-bezier(0, 0.5, 0.5, 1);
-      width: 68px;
-      height: 68px;
-      pointer-events: none;
-      opacity: ${({ isOpen }) => (isOpen ? '0' : '1')};
-    }
-  }
-  &:hover {
-    filter: ${({ isOpen }) => (isOpen ? 'none' : 'brightness(0.97)')};
-  }
-
-  .bottom-container {
-    display: flex;
-    justify-content: flex-end;
-    gap: 16px;
-
-    .cancel-button {
-      ${typo('14m')};
-      color: ${color('gray400')};
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-  }
-`;
 
 export default function ChangePassword({ isLoading, setIsLoading }) {
   const { data: session, status } = useSession();
@@ -69,7 +13,6 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
   const oldPw = useInputConfirm();
   const pw = useInputConfirm();
   const confirmPw = useInputConfirm(pw.value);
-  const [isOpen, setIsOpen] = useState(false);
 
   const handlePasswordSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -104,10 +47,6 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
       pw.value = '';
       confirmPw.value = '';
       setError('비밀번호가 변경되었어요');
-      setIsOpen(false);
-      oldPw.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-      pw.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-      confirmPw.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
     } catch (err) {
       console.error(err);
       console.log(err.response.data.message);
@@ -124,29 +63,14 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
   };
 
   return (
-    <Form onSubmit={handlePasswordSubmit} isOpen={isOpen}>
-      <label
-        onClick={() => {
-          setIsOpen(prev => !prev);
-        }}
-      >
-        {error === '비밀번호가 변경되었어요' && !isOpen ? (
-          <>
-            <span>비밀번호가 변경되었어요</span>
-            <Image src={Check} />
-          </>
-        ) : (
-          <>
-            <span>비밀번호 변경</span>
-            <Image src={Lock} />
-          </>
-        )}
-      </label>
+    <form onSubmit={handlePasswordSubmit}>
+      비밀번호 변경
       <SignInput
         inputState={oldPw}
         name={'oldPassword'}
+        placeholder={'기존 비밀번호'}
         type={'password'}
-        title={'현재 비밀번호'}
+        title={'비밀번호'}
         autoComplete={'new-password'}
         id={'password'}
         pw={oldPw.value}
@@ -157,8 +81,9 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
       <SignInput
         inputState={pw}
         name={'newPassword'}
+        placeholder={'새 비밀번호'}
         type={'password'}
-        title={'새 비밀번호'}
+        title={'비밀번호'}
         autoComplete={'new-password'}
         id={'password'}
         pw={pw.value}
@@ -169,22 +94,18 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
       <SignInput
         inputState={confirmPw}
         name={'newPasswordConfirmation'}
+        placeholder={'새 비밀번호 확인'}
         type={'password'}
-        title={'새 비밀번호 확인'}
+        title={'비밀번호 확인'}
         autoComplete={'new-password'}
         id={'passwordConfirmation'}
         pw={pw.value}
         required
       />
-      <div className="bottom-container">
-        <button className="cancel-button" onClick={() => setIsOpen(false)} type="button">
-          취소
-        </button>
-        <Button type="submit" width="90px">
-          변경하기
-        </Button>
-      </div>
+      <Button type="submit" width="100%">
+        변경하기
+      </Button>
       <span>{error}</span>
-    </Form>
+    </form>
   );
 }

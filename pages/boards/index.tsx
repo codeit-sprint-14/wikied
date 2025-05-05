@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import router, { useRouter } from 'next/router';
 import Image from 'next/image';
-import * as S from '@/styles/boards.style';
+import * as S from './style';
 
 import TempForm from './components/TempForm';
-import Pagination from '@/components/feature/Pagination';
+import Pagination from './components/Pagenation';
 import getDate from '@/utils/getDate';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
@@ -16,54 +16,28 @@ import Clock from '@/public/icons/ico-clock.svg';
 import Arrow from '@/public/icons/ico-arrow.svg';
 import Thumbnail from '@/public/images/img-thumbnail.png';
 import { MenuContainer, MenuItem } from '@/components/common/Menu';
-import { getApi } from '@/utils/getApi';
 
 export default function Boards() {
   const [articles, setArticles] = useState([]);
   const [bestArticles, setBestArticles] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [search, setSearch] = useState('');
+  const [orderBy, setOrderBy] = useState('recent');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
-  const [winSize, setWinSize] = useState('desktop');
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth > 1024) {
-        setWinSize('desktop');
-      } else if (window.innerWidth > 768) {
-        setWinSize('tablet');
-      } else {
-        setWinSize('mobile');
-      }
-    }
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { page = 1, pageSize = 20, orderBy = 'recent', search } = router.query;
-        const params = {
-          page,
-          pageSize,
-          orderBy,
-          search,
-        };
-        const queryString = new URLSearchParams(params).toString();
-
-        const res = await axios.get(`${getApi()}/articles?${queryString}`);
+        const res = await axios.get(
+          `https://wikied-api.vercel.app/14-6/articles?page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&keyword=${search}`
+        );
+        console.log(res.data);
         setArticles(res.data.list);
         setTotalCount(res.data.totalCount);
-        console.log(`res.data:${JSON.stringify(res.data)}`);
       } catch (err) {
         console.error(err);
       } finally {
@@ -72,7 +46,7 @@ export default function Boards() {
     };
 
     fetchData();
-  }, [router.query]);
+  }, [search, orderBy, page, pageSize]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,9 +54,8 @@ export default function Boards() {
         const res = await axios.get(
           `https://wikied-api.vercel.app/14-6/articles?page=1&pageSize=4&orderBy=like`
         );
+        console.log(res.data);
         setBestArticles(res.data.list);
-
-        console.log(res.data.list);
       } catch (err) {
         console.error(err);
       } finally {
@@ -103,9 +76,9 @@ export default function Boards() {
           {bestArticles.map((list: any) => (
             <li key={list.id} onClick={() => router.push(`/board/${list.id}`)}>
               {list.image ? (
-                <img className="thumbnail" src={encodeURI(list.image)} alt={list.title} />
+                <img className="thumbnail" src={list.image} alt={list.title} />
               ) : (
-                <Image className="thumbnail" src={Thumbnail} alt={list.title} unoptimized />
+                <Image className="thumbnail" src={Thumbnail} alt={list.title} />
               )}
               <div className="text-container">
                 <h2>{list.title}</h2>
@@ -130,40 +103,19 @@ export default function Boards() {
             <Image className="search-icon" src={Search} alt="search" />
             <Input
               placeholder="검색어를 입력해주세요"
-              onKeyDown={e => {
+              onKeyPress={e => {
                 if (e.key === 'Enter') {
-                  router.push({
-                    pathname: router.pathname,
-                    query: { ...router.query, search: e.currentTarget.value },
-                  });
+                  setSearch(e.target.value);
                 }
               }}
             />
           </div>
           <div className="order-container" onClick={() => setIsOpen(prev => !prev)}>
-            {router.query.orderBy === 'recent' ? '최신순' : '좋아요순'}
+            {orderBy === 'recent' ? '최신순' : '좋아요순'}
             <Image src={Arrow} alt="arrow" width={22} height={22} />
             <MenuContainer isOpen={isOpen}>
-              <MenuItem
-                onClick={() =>
-                  router.push({
-                    pathname: router.pathname,
-                    query: { ...router.query, orderBy: 'recent' },
-                  })
-                }
-              >
-                최신순
-              </MenuItem>
-              <MenuItem
-                onClick={() =>
-                  router.push({
-                    pathname: router.pathname,
-                    query: { ...router.query, orderBy: 'like' },
-                  })
-                }
-              >
-                좋아요순
-              </MenuItem>
+              <MenuItem onClick={() => setOrderBy('recent')}>최신순</MenuItem>
+              <MenuItem onClick={() => setOrderBy('like')}>좋아요순</MenuItem>
             </MenuContainer>
           </div>
         </div>
@@ -187,7 +139,12 @@ export default function Boards() {
           ))}
         </ul>
       </S.ListContainer>
-      <Pagination totalCount={totalCount} />
+      <Pagination
+        pages={[page, setPage]}
+        count={totalCount}
+        quantity={pageSize}
+        pageSection={page}
+      />
       <TempForm />
     </S.Container>
   );
