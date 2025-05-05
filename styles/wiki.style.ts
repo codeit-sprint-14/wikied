@@ -75,11 +75,20 @@ export const Sidebar = styled.div<{ isOpen: boolean }>`
     justify-content: center;
     align-items: flex-start;
     max-width: unset;
-    height: ${({ isOpen }) => (isOpen ? '330px' : '240px')};
+    height: ${({ isOpen }) => (isOpen ? '380px' : '230px')};
     transition: height 0.3s ease;
     gap: 50px;
     padding: 30px;
     order: 2;
+  }
+  @media (max-width: 768px) {
+    gap: 30px;
+    padding: 20px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 30px;
+    height: ${({ isOpen }) => (isOpen ? '360px' : '210px')};
   }
 `;
 export const SlideButton = styled.div<{ visible: boolean }>`
@@ -130,6 +139,18 @@ export const ImageWrap = styled.div<{ step: 'editor' | 'done' }>`
     flex-basis: 150px;
     flex-shrink: 0;
   }
+
+  @media (max-width: 768px) {
+    width: 130px;
+    height: 130px;
+    flex-basis: 130px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100px;
+    height: 100px;
+    flex-basis: 100px;
+  }
 `;
 export const UserInfoWrap = styled.div`
   margin-top: 60px;
@@ -143,7 +164,7 @@ export const UserInfoWrap = styled.div`
 export const UserInfo = styled.ul<{ isOpen: boolean }>`
   width: 100%;
   @media (max-width: 1024px) {
-    height: ${({ isOpen }) => (isOpen ? '300px' : '172px')};
+    height: ${({ isOpen }) => (isOpen ? '300px' : '150px')};
     overflow: hidden;
     transition: height 0.3s ease;
   }
@@ -170,6 +191,8 @@ export const InfoTitle = styled.span`
 `;
 export const InfoData = styled.div`
   flex-basis: 100%;
+  height: 40px;
+  line-height: 40px;
 `;
 export const InfoInput = styled.input`
   width: 100%;
@@ -187,12 +210,14 @@ export const InfoInput = styled.input`
 
 export const QuillWrap = styled.div`
   margin-top: 40px;
+
   .ql-toolbar.ql-snow {
     display: block;
-    text-align: center;
+    // text-align: center;
     height: auto;
     max-width: 100%;
     overflow-x: auto;
+    overflow-y: visible;
     white-space: nowrap;
     background: ${color('gray100')};
     border-radius: 10px;
@@ -216,16 +241,29 @@ export const QuillWrap = styled.div`
     color: white;
     border-radius: 5px;
   }
+  .ql-picker {
+    overflow: visible;
+    position: static;
+    z-index: 10;
+  }
+  .ql-picker-options {
+    background-color: #fff;
+    border: 1px solid ${color('gray400')};
+    position: absolute;
+    top: 35px !important;
+    left: 10px;
+    margin-top: 4px;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    width: 170px;
+    min-width: auto;
+  }
   .ql-picker.ql-header {
     .ql-picker-label,
     .ql-picker-item {
       color: ${color('gray400')};
       font-weight: 500;
-    }
-
-    .ql-picker-options {
-      background-color: #fff;
-      border: 1px solid ${color('gray400')};
     }
 
     .ql-picker-item:hover {
@@ -235,6 +273,7 @@ export const QuillWrap = styled.div`
 `;
 export const QuillBox = styled.div`
   height: 500px;
+  position: relative;
 
   .quill {
     height: calc(100% - 43px);

@@ -59,7 +59,7 @@ export default function AddBoard() {
         {
           title,
           content,
-          ...(imageUrl ? { image: encodeURI(imageUrl) } : {}),
+          ...(imageUrl ? { image: imageUrl } : {}),
         },
         {
           headers: {
