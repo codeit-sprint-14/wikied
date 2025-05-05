@@ -10,10 +10,12 @@ export default function Menu({
   isOpen,
   session,
   isMobile = false,
+  handleNotification,
 }: {
   isOpen: boolean;
   session: any;
   isMobile?: boolean;
+  handleNotification?: () => void;
 }) {
   const { userData } = useUserStore();
 
@@ -27,6 +29,7 @@ export default function Menu({
           <MenuItem>
             <Link href="/boards">자유게시판</Link>
           </MenuItem>
+          <MenuItem onClick={handleNotification}>알림</MenuItem>
         </>
       )}
       <MenuItem>
