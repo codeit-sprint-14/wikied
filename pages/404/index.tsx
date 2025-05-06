@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ErrorIcon from '@/public/icons/Layer_1.svg';
 import color from '@/utils/color';
-import PopCard from './popcard'; // PopCard 컴포넌트 import 추가
+import PopCard from './components/popcard'; // PopCard 컴포넌트 import 추가
 
 const ErrorContainer = styled.div`
   width: 100%;
