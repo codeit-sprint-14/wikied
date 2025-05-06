@@ -177,6 +177,12 @@ export default function Edit() {
     }, 3000);
   };
 
+  const handleSaveClick = () => {
+    const editor = quillRef.current?.getEditor?.();
+    if (editor) editor.blur();
+    handleSave();
+  };
+
   const handleSnackBarClose = () => {
     setShowSnackBar(false);
     router.push(`/board/${id}`);
@@ -213,7 +219,19 @@ export default function Edit() {
             <p>등록일 {date}</p>
           </div>
           <TopRightButton>
-            <Button onClick={handleSave}>수정하기</Button>
+            <div
+              onTouchStart={e => {
+                e.stopPropagation();
+                handleSaveClick();
+              }}
+              onClick={e => {
+                e.preventDefault();
+                handleSaveClick();
+              }}
+              style={{ padding: 10, cursor: 'pointer' }}
+            >
+              <Button>수정하기</Button>
+            </div>
           </TopRightButton>
         </Header>
         <TitleArea>
@@ -400,14 +418,7 @@ const Header = styled.div`
   }
 `;
 
-const TopRightButton = styled.div`
-  button {
-    @media (max-width: 480px) {
-      width: 72px !important;
-      height: 40px !important;
-    }
-  }
-`;
+const TopRightButton = styled.div``;
 
 const TitleArea = styled.div``;
 

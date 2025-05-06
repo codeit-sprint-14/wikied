@@ -65,22 +65,26 @@ export default function PostBox({
           )}
           {screenType === 'mobile' && onEdit && onDelete && (
             <>
-              <Image
-                src={EditIcon}
-                alt="수정"
-                width={18}
-                height={18}
-                onClick={onEdit}
-                style={{ cursor: 'pointer' }}
-              />
-              <Image
-                src={DeleteIcon}
-                alt="삭제"
-                width={18}
-                height={18}
-                onClick={onDelete}
-                style={{ cursor: 'pointer' }}
-              />
+              <div onClick={onEdit} style={{ padding: 2, cursor: 'pointer' }}>
+                <Image
+                  src={EditIcon}
+                  alt="수정"
+                  width={18}
+                  height={18}
+                  onClick={onEdit}
+                  style={{ cursor: 'pointer' }}
+                />
+              </div>
+              <div onClick={onDelete} style={{ padding: 2, cursor: 'pointer' }}>
+                <Image
+                  src={DeleteIcon}
+                  alt="삭제"
+                  width={18}
+                  height={18}
+                  onClick={onDelete}
+                  style={{ cursor: 'pointer' }}
+                />
+              </div>
             </>
           )}
         </IconWrapper>
