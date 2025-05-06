@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill-new';
-import SnackBar from '../wiki/components/SnackBar';
+import SnackBar from '@/components/common/SnackBar';
 import Button from '@/components/common/Button';
 import { quillIcons } from '@/public/icons/iconQuill';
 import Quill from 'quill';
