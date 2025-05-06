@@ -3,7 +3,7 @@ import * as S from '@/styles/pagination.style';
 import PageArrow from '@/public/icons/ico-expand.svg';
 import { useRouter } from 'next/router';
 
-function Pagination({ totalCount }) {
+function Pagination({ totalCount }: { totalCount: number }) {
   const router = useRouter();
   const page = Number(router.query.page) || 1;
   const pageSize = Number(router.query.pageSize) || 20;
@@ -14,7 +14,7 @@ function Pagination({ totalCount }) {
   const startPage = currentGroup * groupSize + 1;
   const endPage = Math.min(startPage + groupSize - 1, totalPage);
 
-  const moveToPage = targetPage => {
+  const moveToPage = (targetPage: number) => {
     router.push({
       pathname: router.pathname,
       query: { ...router.query, page: targetPage },

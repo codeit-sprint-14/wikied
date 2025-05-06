@@ -10,6 +10,7 @@ const Sign = styled.div`
   background-position: center;
   position: relative;
   overflow: hidden;
+
   .form-container {
     position: absolute;
     bottom: 40px;
@@ -34,6 +35,17 @@ const Sign = styled.div`
         transform: translateY(0);
       }
     }
+
+    @media (max-width: 768px) {
+      width: 100vw;
+      height: 80vh;
+      padding: 48px 40px;
+      border-radius: 20px 20px 0 0;
+      min-height: 650px;
+
+      bottom: 0px;
+      left: 0px;
+    }
   }
 
   .sign-container {
@@ -45,18 +57,27 @@ const Sign = styled.div`
     justify-content: space-between;
     gap: 8px;
 
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+
     .logo {
       margin-bottom: auto;
+      @media (max-width: 480px) {
+        display: none;
+      }
     }
 
     .signup-link {
       margin-top: auto;
 
-      &::before {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 100px;
+      @media (min-width: 768px) {
+        &::before {
+          content: '';
+          display: block;
+          width: 100%;
+          height: 70px;
+        }
       }
     }
 

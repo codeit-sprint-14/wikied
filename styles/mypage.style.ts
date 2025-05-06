@@ -10,7 +10,8 @@ export const Container = styled.div`
   align-items: center;
 
   form {
-    width: 480px;
+    max-width: 480px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -18,5 +19,6 @@ export const Container = styled.div`
 
   h1 {
     ${typo('48sb')};
+    margin-bottom: 48px;
   }
 `;

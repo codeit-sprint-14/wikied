@@ -10,6 +10,14 @@ export const Container = styled.div`
   margin: 160px auto;
   padding: 0 60px;
   box-sizing: content-box;
+
+  @media (max-width: 1024px) {
+    padding: 0 40px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 24px;
+  }
 `;
 
 export const BestListContainer = styled.div`
@@ -30,10 +38,19 @@ export const BestListContainer = styled.div`
     display: flex;
     gap: 16px;
     width: 100%;
-    @media (max-width: 1024px) {
+
+    @media (max-width: 768px) {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
+    }
+    @media (max-width: 480px) {
+      display: flex;
+      gap: 16px;
+      overflow-x: scroll;
+      width: 100vw;
+      margin: 0 -40px;
+      height: 248px;
     }
   }
   .top-container {
@@ -79,6 +96,17 @@ export const BestListContainer = styled.div`
     background: ${color('gray50')};
     transition: all 0.1s ease-out;
 
+    @media (max-width: 480px) {
+      min-width: 248px;
+      /* height: 180px; */
+      &:first-child {
+        margin-left: 40px;
+      }
+      &:last-child {
+        margin-right: 40px;
+      }
+    }
+
     .thumbnail {
       width: 100%;
       height: 132px;
@@ -101,6 +129,7 @@ export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+
   .article-container {
     li {
       display: grid;
@@ -115,8 +144,33 @@ export const ListContainer = styled.div`
       background: ${color('gray50')};
       transition: all 0.1s ease-out;
 
-      @media (max-width: 1024px) {
+      @media (max-width: 768px) {
+        padding: 0 20px;
         grid-template-columns: 1fr 2fr 1.4fr 1fr;
+      }
+      @media (max-width: 480px) {
+        gap: 4px;
+        height: 80px;
+        padding: 0 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .upper-container {
+        display: flex;
+        width: 100%;
+      }
+      .lower-container {
+        display: flex;
+        width: 100%;
+        gap: 12px;
+        color: ${color('gray400')};
+
+        .like-count {
+          margin-left: auto;
+        }
       }
 
       &:hover {
@@ -137,6 +191,10 @@ export const ListContainer = styled.div`
   .top-container {
     display: flex;
     gap: 10px;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+    }
   }
 
   .search-container {
@@ -172,6 +230,43 @@ export const ListContainer = styled.div`
 
     &:hover {
       filter: brightness(0.97);
+    }
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+  }
+
+  .order-radio-container {
+    display: flex;
+    width: 100%;
+    height: 46px;
+    border-radius: 10px;
+
+    label {
+      flex-grow: 1;
+      height: 100%;
+      text-align: center;
+      line-height: 46px;
+      cursor: pointer;
+      transition: all 0.1s ease-out;
+      border-radius: 10px 0 0 10px;
+      background: ${color('gray100')};
+
+      &:last-child {
+        border-radius: 0 10px 10px 0;
+      }
+
+      &:hover {
+        filter: brightness(0.97);
+      }
+    }
+
+    input {
+      display: none;
+    }
+    input:checked + label {
+      background: ${color('gray200')};
     }
   }
 `;
