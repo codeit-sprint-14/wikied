@@ -86,8 +86,9 @@ export default function Edit() {
 
   const toolbar = {
     container: [
-      ['bold', 'italic', 'underline'],
       [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+
       [{ list: 'ordered' }, { list: 'bullet' }],
       [{ align: '' }, { align: 'center' }, { align: 'right' }],
 
@@ -363,6 +364,11 @@ const Container = styled.div`
   padding-top: 80px;
   height: 100vh;
   overflow: visible;
+
+  @media (max-width: 1024px) {
+    padding: 40px 24px;
+    margin-top: 40px !important;
+  }
 
   @media (max-width: 768px) {
     padding: 60px 16px;
