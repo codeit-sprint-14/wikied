@@ -6,7 +6,15 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 160px 30px;
+  padding: 150px 30px;
+
+  @media (max-width: 768px) {
+    padding: 120px 30px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 110px 30px;
+  }
 `;
 
 export const ContentBox = styled.div`
@@ -53,8 +61,11 @@ export const NoCommentText = styled.div`
 `;
 
 export const HeartWrapper = styled.div`
+  width: 17px;
+  height: 17px;
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  margin-left: -30px;
 `;

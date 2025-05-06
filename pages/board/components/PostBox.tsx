@@ -33,6 +33,8 @@ export default function PostBox({
 }: PostBoxProps) {
   const { title, writer, createdAt, image, content } = post;
   const screenType = useScreenType();
+  const today = new Date();
+  const createdAtFormatted = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
 
   return (
     <Container>
@@ -85,7 +87,7 @@ export default function PostBox({
       <Meta>
         <AuthorInfo>
           <span>{writer?.name}</span>
-          <span>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
+          <span>{createdAtFormatted}</span>
         </AuthorInfo>
         {likeButton && <LikeWrapper>{likeButton}</LikeWrapper>}
         {likeCount !== undefined && <LikeWrapper>{likeCount}</LikeWrapper>}
@@ -146,7 +148,7 @@ export const Meta = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   border-bottom: 1px solid ${({ theme }) => theme.color['gray200']};
   padding-bottom: 8px;
   width: 100%;
@@ -220,6 +222,32 @@ export const Content = styled.div`
 
   li {
     margin-bottom: 0.5em;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: bold;
+    line-height: 1.4;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1rem 0;
   }
 `;
 

@@ -71,6 +71,8 @@ const SnackBarWrapper = styled.div<{ type: 'success' | 'error' }>`
   top: 100px;
   z-index: 200;
   gap: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 
   background-color: ${({ theme, type }) => theme.color[typeColors[type].bg]};
   color: ${({ theme, type }) => theme.color[typeColors[type].color]};

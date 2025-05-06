@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import CommentInput from './components/CommentInput';
 import Button from '@/components/common/Button';
 import { MenuContainer, MenuItem } from '@/components/common/Menu';
-import styled from 'styled-components';
 import SelectIcon from '@/public/icons/ico-select.svg';
 import Image from 'next/image';
 import { useUserStore } from '@/stores/userStore';
@@ -43,19 +42,45 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   };
 };
 
+export type Post = {
+  id: number;
+  title: string;
+  content: string;
+  image: string;
+  createdAt: string;
+  isLiked: boolean;
+  likeCount: number;
+  writer: {
+    id: number;
+    name: string;
+  };
+};
+
+export type Comment = {
+  id: number;
+  content: string;
+  createdAt: string;
+  writer: {
+    id: number;
+    name: string;
+    profileImage: string;
+  };
+};
+
 export default function Board({
   post: initialPost,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { data: session } = useSession();
   const { fetchUserData } = useUserStore();
   const userId = session?.user?.id;
+
   const router = useRouter();
   const screenType = useScreenType();
   const { id, edited } = router.query; //최신글 반영
 
-  const [post, setPost] = useState(initialPost); //최신글 반영영
+  const [post, setPost] = useState<Post>(initialPost); //최신글 반영영
 
-  const [comments, setComments] = useState([]); //댓글 리스트 저장
+  const [comments, setComments] = useState<Comment[]>([]); //댓글 리스트 저장
   const [inputComment, setInputComment] = useState(''); //댓글 저장
 
   const [openedDropdownId, setOpenedDropdownId] = useState<number | null>(null); //드롭다운
@@ -362,8 +387,8 @@ export default function Board({
               <Image
                 src={isLiked ? HeartIconFilled : HeartIcon}
                 alt="좋아요"
-                width={18}
-                height={18}
+                width={10}
+                height={10}
                 className={isLiked ? 'liked' : ''}
               />
               <span>{isLikeCount}</span>
