@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function useInputConfirm(compareToValue = null) {
+function useInputConfirm(compareToValue?: string) {
   const [msg, setMsg] = useState('');
   const [value, setValue] = useState('');
   const [isActive, setIsActive] = useState(false);

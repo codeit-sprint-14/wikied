@@ -14,7 +14,7 @@ import Lock from '@/public/icons/ico-lock.svg';
 import Check from '@/public/icons/ico-check.svg';
 import Image from 'next/image';
 
-const Form = styled.form`
+const Form = styled.form<{ isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -63,7 +63,13 @@ const Form = styled.form`
   }
 `;
 
-export default function ChangePassword({ isLoading, setIsLoading }) {
+export default function ChangePassword({
+  isLoading,
+  setIsLoading,
+}: {
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
+}) {
   const { data: session, status } = useSession();
   const [error, setError] = useState<string | null>(null);
   const oldPw = useInputConfirm();
@@ -108,7 +114,7 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
       oldPw.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
       pw.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
       confirmPw.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       console.log(err.response.data.message);
 
@@ -133,12 +139,12 @@ export default function ChangePassword({ isLoading, setIsLoading }) {
         {error === '비밀번호가 변경되었어요' && !isOpen ? (
           <>
             <span>비밀번호가 변경되었어요</span>
-            <Image src={Check} />
+            <Image src={Check} alt="check" />
           </>
         ) : (
           <>
             <span>비밀번호 변경</span>
-            <Image src={Lock} />
+            <Image src={Lock} alt="lock" />
           </>
         )}
       </label>
