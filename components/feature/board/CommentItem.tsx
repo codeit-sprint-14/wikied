@@ -23,7 +23,8 @@ export default function CommentItem({ comment, icons }: CommentItemProps) {
   const content = comment.content;
   const createdAt = comment.createdAt;
   const writer = comment.writer;
-  const date = new Date(createdAt).toLocaleDateString('ko-KR');
+  const today = new Date();
+  const date = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
 
   return (
     <CommentItemWrapper>
