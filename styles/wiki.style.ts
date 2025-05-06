@@ -75,7 +75,7 @@ export const Sidebar = styled.div<{ isOpen: boolean }>`
     justify-content: center;
     align-items: flex-start;
     max-width: unset;
-    height: ${({ isOpen }) => (isOpen ? '380px' : '230px')};
+    height: ${({ isOpen }) => (isOpen ? '480px' : '230px')};
     transition: height 0.3s ease;
     gap: 50px;
     padding: 30px;
@@ -88,7 +88,7 @@ export const Sidebar = styled.div<{ isOpen: boolean }>`
 
   @media (max-width: 480px) {
     gap: 30px;
-    height: ${({ isOpen }) => (isOpen ? '360px' : '210px')};
+    height: ${({ isOpen }) => (isOpen ? '460px' : '210px')};
   }
 `;
 export const SlideButton = styled.div<{ visible: boolean }>`
@@ -164,7 +164,7 @@ export const UserInfoWrap = styled.div`
 export const UserInfo = styled.ul<{ isOpen: boolean }>`
   width: 100%;
   @media (max-width: 1024px) {
-    height: ${({ isOpen }) => (isOpen ? '300px' : '150px')};
+    height: ${({ isOpen }) => (isOpen ? '400px' : '150px')};
     overflow: hidden;
     transition: height 0.3s ease;
   }
@@ -269,6 +269,10 @@ export const QuillWrap = styled.div`
     .ql-picker-item:hover {
       color: ${color('gray500')};
     }
+  }
+  .ql-snow.ql-toolbar button,
+  .ql-snow .ql-toolbar button {
+    padding: 2px;
   }
 `;
 export const QuillBox = styled.div`
