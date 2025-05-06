@@ -348,7 +348,11 @@ export default function Board({
     setIsSnackBarVisible(true);
   };
 
-  const isAuthor = session?.user?.id === post?.writer?.id;
+  const isAuthor =
+    typeof session?.user?.name === 'string' &&
+    typeof post?.writer?.name === 'string' &&
+    session.user.name === post.writer.name;
+
   if (!post) return '문제가 발생했습니다. 다시 시도하세요.';
 
   return (
@@ -446,7 +450,7 @@ export default function Board({
                   <MenuContainer
                     isOpen={openedDropdownId === comment.id}
                     onMouseLeave={() => setOpenedDropdownId(null)}
-                    style={{ top: '42px', left: '677px' }}
+                    style={{ position: 'absolute', top: 43, right: 17, zIndex: 10 }}
                   >
                     <MenuItem onClick={() => handleEditClick(comment.id)}>수정하기</MenuItem>
                     <MenuItem onClick={() => handleDeleteClick(comment.id)}>삭제하기</MenuItem>
