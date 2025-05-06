@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import closeIcon from '@/public/icons/ico-close.svg';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
 import color from '@/utils/color';
 
 interface ModalProps {
@@ -33,28 +32,10 @@ const SlideUp = keyframes`
     opacity: 0;
     transform: translateY(20px);
   }
-  
-  100%{
-  opacity: 1;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  `;
-
-//콘텐츠 영역 스타일
-export const Content = styled.div`
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-
-  margin-top: 30px;
-  width: 100%;
-  gap: 12px;
-`;
-
-const ContentWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Overlay = styled.div<{ $visible: boolean }>`
@@ -64,7 +45,6 @@ const Overlay = styled.div<{ $visible: boolean }>`
   z-index: 1000;
 
   display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
-
   justify-content: center;
   align-items: center;
 `;
@@ -74,8 +54,7 @@ const ModalWrapper = styled.div<{ $size: 'large' | 'medium' }>`
   position: relative;
   display: flex;
   flex-direction: column;
-
-  background-color: ${({ theme }) => theme.color['gray50']};
+  background: ${color('gray50')};
   border-radius: 10px;
   width: 100%;
   max-width: 395px;

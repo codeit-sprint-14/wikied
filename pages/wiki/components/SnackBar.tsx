@@ -68,20 +68,15 @@ const SnackBarWrapper = styled.div<{ type: 'success' | 'error' }>`
   position: fixed;
   display: flex;
   align-items: center;
-<<<<<<< HEAD
-
-  z-index: 200;
-=======
   top: 120px;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
->>>>>>> 73cbf910e4cbee1a3c3771f70a4b2498df441905
   gap: 10px;
 
   background-color: ${({ theme, type }) => theme.color[typeColors[type].bg]};
   color: ${({ theme, type }) => theme.color[typeColors[type].color]};
-  border: ${({ theme, type }) => theme.color[typeColors[type].border]};
+  border: 1px solid ${({ theme, type }) => theme.color[typeColors[type].border]};
 
   ${typo('14sb')};
   border-radius: 10px;

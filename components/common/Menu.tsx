@@ -8,6 +8,7 @@ const MenuContainer = styled.ul<{ isOpen: boolean }>`
   right: 0;
   display: flex;
   flex-direction: column;
+  z-index: 9999;
 
   width: 110px;
   border-radius: 10px;
@@ -29,6 +30,7 @@ const MenuItemContainer = styled.li`
   align-items: center;
   justify-content: center;
   gap: 10px;
+  cursor: pointer;
   transition: all 0.1s ease-out;
   border-bottom: 1px solid ${color('gray100')};
 
@@ -41,6 +43,10 @@ const MenuItemContainer = styled.li`
 
   &:hover {
     background: ${color('gray100')};
+  }
+
+  &.danger {
+    color: ${color('red200')};
   }
 `;
 
