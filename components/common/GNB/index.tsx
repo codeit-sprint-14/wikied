@@ -1,25 +1,42 @@
-import { useSession, signIn, signOut } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
+import axios from 'axios';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { jwtDecode } from 'jwt-decode';
+
+import { useNotificationStore } from '@/stores/notificationStore';
+import { useUserStore } from '@/stores/userStore';
+import useScreenType from '@/hooks/useScreenType';
+import getDate from '@/utils/getDate';
+import * as S from './style';
+import Input from '../Input';
+import Menu from './Menu';
 import Logo from '@/public/icons/ico-logo.svg';
 import Profile from '@/public/icons/ico-profile.svg';
 import Alarm from '@/public/icons/ico-alarm.svg';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import Menu from './Menu';
-import { useUserStore } from '@/stores/userStore';
-import { useNotificationStore } from '@/stores/notificationStore';
-import * as S from './style';
-import Input from '../Input';
-import { useRouter } from 'next/router';
 import Search from '@/public/icons/ico-search.svg';
 import Delete from '@/public/icons/ico-close.svg';
 import Hamburger from '@/public/icons/ico-menu.svg';
-import axios from 'axios';
-import getDate from '@/utils/getDate';
 
-function NotificationMenu({ isOpen }: { isOpen: boolean }) {
+function NotificationMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { notification, fetchNotification } = useNotificationStore();
   const { data: session, status } = useSession();
+  const sheetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sheetRef.current && !sheetRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   async function deleteNotification(id: number) {
     try {
@@ -35,7 +52,7 @@ function NotificationMenu({ isOpen }: { isOpen: boolean }) {
     }
   }
   return (
-    <S.NotificationMenu isOpen={isOpen}>
+    <S.NotificationMenu isOpen={isOpen} ref={sheetRef}>
       <h2>알림 {notification.totalCount}개</h2>
       <ul>
         {notification.totalCount > 0 ? (
@@ -66,26 +83,7 @@ export default function GNB() {
   const { notification, fetchNotification } = useNotificationStore();
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
-  const [winSize, setWinSize] = useState('desktop');
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth > 1024) {
-        setWinSize('desktop');
-      } else if (window.innerWidth > 768) {
-        setWinSize('tablet');
-      } else {
-        setWinSize('mobile');
-      }
-    }
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  const screenType = useScreenType();
 
   useEffect(() => {
     function handleScroll() {
@@ -105,79 +103,131 @@ export default function GNB() {
   }, [router.asPath]);
 
   useEffect(() => {
-    if (session?.accessToken) {
-      fetchUserData(session.accessToken);
-      fetchNotification(session.accessToken);
-      userData?.image && setProfile(userData.image);
-      typeof userData?.profile === 'string' && setProfile(userData.profile);
-    }
+    const checkTokenAndFetch = async () => {
+      try {
+        if (!session?.accessToken) return;
+
+        const decoded = jwtDecode(session.accessToken);
+        const now = Date.now() / 1000; // 초 단위
+
+        if (decoded.exp && decoded.exp < now) {
+          console.warn('accessToken expired. Logging out!');
+          await signOut({ callbackUrl: '/login' }); // 로그인 페이지로 이동
+          return;
+        }
+
+        await fetchUserData(session.accessToken);
+        await fetchNotification(session.accessToken);
+
+        if (userData?.image) setProfile(userData.image);
+        if (typeof userData?.profile === 'string') setProfile(userData.profile);
+      } catch (error) {
+        console.error('Token check or fetch failed:', error);
+        await signOut({ callbackUrl: '/login' }); // 에러 발생 시도 안전하게 로그아웃
+      }
+    };
+
+    checkTokenAndFetch();
   }, [session, fetchUserData, fetchNotification]);
 
-  const handleProfileClick = () => {
-    setIsProfileMenuOpen(prev => !prev);
-  };
-
-  const handleNotificationClick = () => {
-    setIsNotificationMenuOpen(prev => !prev);
-  };
-
-  const handleMobileMenuClick = () => {
-    setIsMobileMenuOpen(prev => !prev);
+  const handleNotificationClose = () => {
+    setIsNotificationMenuOpen(false);
   };
 
   return (
-    <S.GNBContainer>
-      <Link href="/">
-        <Image src={Logo} width={107} alt="logo" />
-      </Link>
-
-      {winSize !== 'mobile' && (
-        <>
-          <Link href="/wikilist">위키목록</Link>
-          <Link href="/boards">자유게시판</Link>
-        </>
-      )}
-      <div className="search-container">
-        <div className={`search-bar ${showSearch ? 'show' : 'hide'}`}>
-          <Image className="search-icon" src={Search} alt="search" />
-          <Input
-            placeholder="닉네임 검색"
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                router.push(`/wikilist?search=${e.currentTarget.value}`);
-              }
-            }}
-          />
+    <S.GNBContainer className={showSearch ? 'show' : 'hide'}>
+      <div className="upper-container">
+        <Link href="/">
+          <Image src={Logo} width={107} alt="logo" />
+        </Link>
+        {screenType !== 'mobile' && (
+          <>
+            <Link href="/wikilist" className="list-link">
+              위키목록
+            </Link>
+            <Link href="/boards" className="list-link">
+              자유게시판
+            </Link>
+          </>
+        )}
+        {screenType === 'desktop' ? (
+          <div className="search-container">
+            <div className={`search-bar ${showSearch ? 'show' : 'hide'}`}>
+              <Image className="search-icon" src={Search} alt="search" />
+              <Input
+                placeholder="닉네임 검색"
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    router.push(`/wikilist?search=${e.currentTarget.value}`);
+                  }
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="divider" />
+        )}
+        <div className="right-container">
+          {screenType !== 'mobile' ? (
+            session ? (
+              <>
+                <S.NotificationContainer onClick={() => setIsNotificationMenuOpen(prev => !prev)}>
+                  <Image className="alarm" src={Alarm} width={32} alt="alarm" />
+                  <NotificationMenu
+                    isOpen={isNotificationMenuOpen}
+                    onClose={handleNotificationClose}
+                  />
+                </S.NotificationContainer>
+                <S.ProfileContainer onClick={() => setIsProfileMenuOpen(prev => !prev)}>
+                  {profile ? (
+                    <img
+                      src={profile}
+                      className="profile"
+                      width="32px"
+                      height="32px"
+                      alt="profile"
+                    />
+                  ) : (
+                    <Image src={Profile} className="profile" width={32} height={32} alt="profile" />
+                  )}
+                  <Menu isOpen={isProfileMenuOpen} session={session} />
+                </S.ProfileContainer>
+              </>
+            ) : (
+              <span className="login-button" onClick={() => signIn()}>
+                로그인
+              </span>
+            )
+          ) : (
+            <div className="mobile-container">
+              <NotificationMenu isOpen={isNotificationMenuOpen} onClose={handleNotificationClose} />
+              <S.ProfileContainer onClick={() => setIsMobileMenuOpen(prev => !prev)}>
+                <Image className="hamburger" src={Hamburger} width={32} alt="hamburger" />
+                <Menu
+                  isOpen={isMobileMenuOpen}
+                  isMobile={true}
+                  session={session}
+                  handleNotification={() => setIsNotificationMenuOpen(prev => !prev)}
+                />
+              </S.ProfileContainer>
+            </div>
+          )}
         </div>
       </div>
-      <div className="right-container">
-        {winSize !== 'mobile' ? (
-          session ? (
-            <>
-              <S.NotificationContainer onClick={handleNotificationClick}>
-                <Image className="alarm" src={Alarm} width={32} alt="alarm" />
-                <NotificationMenu isOpen={isNotificationMenuOpen} />
-              </S.NotificationContainer>
-              <S.ProfileContainer onClick={handleProfileClick}>
-                {profile ? (
-                  <img src={profile} className="profile" width="32px" height="32px" alt="profile" />
-                ) : (
-                  <Image src={Profile} className="profile" width={32} height={32} alt="profile" />
-                )}
-                <Menu isOpen={isProfileMenuOpen} session={session} />
-              </S.ProfileContainer>
-            </>
-          ) : (
-            <span className="login-button" onClick={() => signIn()}>
-              로그인
-            </span>
-          )
-        ) : (
-          <div className="mobile-container">
-            <S.ProfileContainer onClick={handleMobileMenuClick}>
-              <Image className="hamburger" src={Hamburger} width={32} alt="hamburger" />
-              <Menu isOpen={isMobileMenuOpen} isMobile={true} session={session} />
-            </S.ProfileContainer>
+      <div className="lower-container">
+        {screenType !== 'desktop' && (
+          <div className="search-container">
+            <div className={`search-bar ${showSearch ? 'show' : 'hide'}`}>
+              <Image className="search-icon" src={Search} alt="search" />
+              <Input
+                placeholder="닉네임 검색"
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    router.push(`/wikilist?search=${e.currentTarget.value}`);
+                  }
+                }}
+              />
+            </div>
           </div>
         )}
       </div>
