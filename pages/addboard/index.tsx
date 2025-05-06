@@ -15,7 +15,7 @@ import {
   BottomCenterButton,
   ThumbnailButton,
   ThumbnailPreview,
-} from './style';
+} from '@/styles/addboard.style';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 

@@ -9,7 +9,7 @@ const Sign = styled.div`
   background-size: cover;
   background-position: center;
   position: relative;
-
+  overflow: hidden;
   .form-container {
     position: absolute;
     bottom: 40px;
@@ -25,6 +25,15 @@ const Sign = styled.div`
     backdrop-filter: blur(100px);
     border-radius: 20px;
     padding: 48px 260px;
+    animation: slideUp 0.3s cubic-bezier(0, 0.5, 0.5, 1);
+    @keyframes slideUp {
+      from {
+        transform: translateY(128px);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
   }
 
   .sign-container {

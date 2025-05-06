@@ -1,4 +1,4 @@
-import { InfoItem, InfoTitle, InfoData, InfoInput } from '../style'; // styled-components 재사용
+import { InfoItem, InfoTitle, InfoData, InfoInput } from '../../../styles/wiki.style'; // styled-components 재사용
 
 interface InfoInputItemProps {
   title?: string;

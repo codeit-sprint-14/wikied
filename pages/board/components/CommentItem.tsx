@@ -6,9 +6,9 @@ import React from 'react';
 export interface CommentItemProps {
   comment: {
     id: number;
-    content: string;
+    content?: string;
     createdAt: string;
-    writer: {
+    writer?: {
       id: number;
       name: string;
       profileImage: string;
@@ -18,26 +18,28 @@ export interface CommentItemProps {
 }
 
 export default function CommentItem({ comment, icons }: CommentItemProps) {
-  const { writer, content, createdAt } = comment;
+  if (!comment) return null;
+
+  const content = comment.content;
+  const createdAt = comment.createdAt;
+  const writer = comment.writer;
   const date = new Date(createdAt).toLocaleDateString('ko-KR');
 
   return (
     <CommentItemWrapper>
       <TopRow>
         <ProfileImg
-          src={writer.profileImage || defaultProfile}
-          alt={`${writer.name}의 프로필`}
+          src={writer?.profileImage || defaultProfile}
+          alt={`${writer?.name}의 프로필`}
           width={50}
           height={50}
         />
         <RightSection>
           <TopContentRow>
             <NickNameAndContent>
-              <Nickname>{writer.name}</Nickname>
+              <Nickname>{writer?.name}</Nickname>
               <Content>
-                {content.split('\\n').map((line, index) => (
-                  <span key={index}>{line}</span>
-                ))}
+                {content?.split('\\n').map((line, index) => <span key={index}>{line}</span>)}
               </Content>
             </NickNameAndContent>
 

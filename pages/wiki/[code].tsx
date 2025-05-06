@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import {
+  Header,
   WikiSection,
   WikiSectionInner,
   Name,
@@ -12,7 +13,8 @@ import {
   ImageWrap,
   UserInfoWrap,
   UserInfo,
-} from './style';
+  SlideButton,
+} from '@/styles/wiki.style';
 
 import WikiStepInit from './components/WikiStepInit';
 import WikiStepQuestion from './components/WikiStepQuestion';
@@ -20,6 +22,7 @@ import WikiStepEditor from './components/WikiStepEditor';
 import WikiStepDone from './components/WikiStepDone';
 import InfoInputItem from './components/InfoInputItem';
 import SnackBar from './components/SnackBar';
+import useScreenType from '@/hooks/useScreenType';
 
 const DEFAULT_PROFILE_IMAGE = '/icons/ico-profile.svg';
 
@@ -75,6 +78,11 @@ export default function WikiPage() {
   const isEditableUser = session?.user?.profile?.code === code;
   const [isEditing, setIsEditing] = useState(false);
 
+  const screenType = useScreenType();
+  const screenTyes =
+    screenType === 'smallDesktop' || screenType === 'tablet' || screenType === 'mobile';
+  const [isOpen, setIsOpen] = useState(false);
+
   // 수정 여부 판단 get
   useEffect(() => {
     const checkEditingStatus = async () => {
@@ -104,22 +112,18 @@ export default function WikiPage() {
       }
     };
 
-    if (code && session?.accessToken) {
+    if (code) {
       checkEditingStatus();
     }
   }, [code, session]);
 
   // GET
   useEffect(() => {
-    if (!code || !session?.accessToken) return;
+    if (!code) return;
 
     const fetchWikiData = async () => {
       try {
-        const response = await axios.get(`https://wikied-api.vercel.app/14-6/profiles/${code}`, {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        });
+        const response = await axios.get(`https://wikied-api.vercel.app/14-6/profiles/${code}`);
         const data = response.data;
 
         let profile = {
@@ -266,6 +270,13 @@ export default function WikiPage() {
   // 정답 제출
   const handleVerifyAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!session?.accessToken) {
+      setSnackBarMessage('로그인이 필요합니다');
+      setSnackBarType('error');
+      setIsSnackBarVisible(true);
+      return;
+    }
     try {
       await axios.post(
         `https://wikied-api.vercel.app/14-6/profiles/${code}/ping`,
@@ -356,9 +367,19 @@ export default function WikiPage() {
         type={snackBarType}
         onClose={handleCloseSnackBar}
       />
+      {(screenType === 'mobile' || screenType === 'tablet' || screenType === 'smallDesktop') && (
+        <Header>
+          <Name>{name}</Name>
+          <WikiLink onClick={handleCopyLink}>https://wikied-api.vercel.app/{code}</WikiLink>
+        </Header>
+      )}
       <WikiSectionInner>
-        <Name>{name}</Name>
-        <WikiLink onClick={handleCopyLink}>https://wikied-api.vercel.app/{code}</WikiLink>
+        {screenType === 'desktop' && (
+          <Header>
+            <Name>{name}</Name>
+            <WikiLink onClick={handleCopyLink}>https://wikied-api.vercel.app/{code}</WikiLink>
+          </Header>
+        )}
 
         {step === 'init' && <WikiStepInit onStart={handleStart} />}
         <WikiStepQuestion
@@ -385,7 +406,7 @@ export default function WikiPage() {
           <WikiStepDone isEditing={isEditing} content={content} onStart={handleStart} />
         )}
       </WikiSectionInner>
-      <Sidebar>
+      <Sidebar isOpen={isOpen}>
         <ImageWrap
           step={isEditableUser ? (step as 'editor') : 'done'}
           onClick={step === 'editor' ? handleImageClick : undefined}
@@ -393,7 +414,7 @@ export default function WikiPage() {
           <Image src={encodeURI(draftImageUrl)} width={200} height={200} alt="infoProfile" />
         </ImageWrap>
         <UserInfoWrap>
-          <UserInfo>
+          <UserInfo isOpen={isOpen}>
             {fields.map(field => (
               <InfoInputItem
                 key={field.name}
@@ -406,6 +427,9 @@ export default function WikiPage() {
             ))}
           </UserInfo>
         </UserInfoWrap>
+        <SlideButton visible={screenTyes} onClick={() => setIsOpen(prev => !prev)}>
+          {isOpen ? '▲' : '▼'}
+        </SlideButton>
       </Sidebar>
     </WikiSection>
   );

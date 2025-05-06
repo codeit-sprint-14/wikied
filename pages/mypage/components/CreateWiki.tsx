@@ -5,6 +5,60 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import Input from '@/components/common/Input';
+import styled from 'styled-components';
+import color from '@/utils/color';
+import typo from '@/utils/typo';
+import Image from 'next/image';
+
+import Magic from '@/public/icons/ico-magic.svg';
+
+const GoToWiki = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 480px;
+  height: 128px;
+  padding: 20px 40px;
+  border: none;
+  border-radius: 20px;
+
+  transition: all 0.1s cubic-bezier(0, 0.5, 0.5, 1);
+
+  background: ${color('gray100')};
+
+  overflow: hidden;
+  cursor: pointer;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  h2 {
+    ${typo('24sb')}
+    color: ${color('gray500')};
+  }
+
+  span {
+    ${typo('14m')}
+    color: ${color('gray400')};
+  }
+
+  img {
+    transition: all 0.1s cubic-bezier(0, 0.5, 0.5, 1);
+    width: 68px;
+    height: 68px;
+    pointer-events: none;
+  }
+
+  &:hover {
+    filter: brightness(0.97);
+  }
+`;
+
 export default function CreateWiki({ isLoading, setIsLoading }) {
   const router = useRouter();
   const { userData, fetchUserData } = useUserStore();
@@ -45,9 +99,13 @@ export default function CreateWiki({ isLoading, setIsLoading }) {
   return (
     <>
       {userData?.profile?.code ? (
-        <Button onClick={() => router.push(`/wiki/${userData?.profile?.code}`)}>
-          내 위키 보러가기
-        </Button>
+        <GoToWiki onClick={() => router.push(`/wiki/${userData?.profile?.code}`)}>
+          <div>
+            <h2>내 위키 보러가기</h2>
+            <span>{session?.user?.name}님의 위키 페이지로 이동해요</span>
+          </div>
+          <Image src={Magic} alt="magic" />
+        </GoToWiki>
       ) : (
         <form onSubmit={handleWikiSubmit}>
           <Input name="question" placeholder="질문을 입력해주세요" required />

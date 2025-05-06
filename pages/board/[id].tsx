@@ -13,7 +13,7 @@ import CommentItem from './components/CommentItem';
 import HeartIcon from '@/public/icons/ico-heart.svg';
 import NoCommentImage from '@/public/images/img-nocomment.png';
 import SnackBar from '../wiki/components/SnackBar';
-import * as S from './style';
+import * as S from '@/styles/board.style';
 import useScreenType from '@/hooks/useScreenType';
 import HeartIconFilled from '@/public/icons/ico-heartfilled.svg';
 
