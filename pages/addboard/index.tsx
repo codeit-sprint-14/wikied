@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import WikiStepEditor from '@/pages/wiki/components/WikiStepEditor';
+import WikiStepEditor from '@/components/feature/wiki/WikiStepEditor';
 import Button from '@/components/common/Button';
 import {
   Container,
