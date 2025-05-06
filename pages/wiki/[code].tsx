@@ -16,12 +16,12 @@ import {
   SlideButton,
 } from '@/styles/wiki.style';
 
-import WikiStepInit from './components/WikiStepInit';
-import WikiStepQuestion from './components/WikiStepQuestion';
-import WikiStepEditor from './components/WikiStepEditor';
-import WikiStepDone from './components/WikiStepDone';
-import InfoInputItem from './components/InfoInputItem';
-import SnackBar from './components/SnackBar';
+import WikiStepInit from '@/components/feature/wiki/WikiStepInit';
+import WikiStepQuestion from '@/components/feature/wiki/WikiStepQuestion';
+import WikiStepEditor from '@/components/feature/wiki/WikiStepEditor';
+import WikiStepDone from '@/components/feature/wiki/WikiStepDone';
+import InfoInputItem from '@/components/feature/wiki/InfoInputItem';
+import SnackBar from '@/components/common/SnackBar';
 import useScreenType from '@/hooks/useScreenType';
 
 const DEFAULT_PROFILE_IMAGE = '/icons/ico-profile.svg';
