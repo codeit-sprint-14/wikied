@@ -11,7 +11,7 @@ export const Container = styled.div`
 export const Inner = styled.div`
   width: 100%;
   margin: 0 auto;
-  padding: 50px 0;
+  padding: 50px 20px;
 `;
 export const Header = styled.div`
   display: flex;
