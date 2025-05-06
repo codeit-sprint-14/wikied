@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import SnackBar from '../wiki/components/SnackBar';
 import Button from '@/components/common/Button';
-import { quillIcons } from '../wiki/icon';
+import { quillIcons } from '@/public/icons/iconQuill';
 import Quill from 'quill';
 import styled from 'styled-components';
 import color from '@/utils/color';
