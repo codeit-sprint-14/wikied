@@ -33,12 +33,12 @@ export default function List({
     const fetchData = async () => {
       try {
         handleLoading(true);
-        const { page = 1, pageSize = 20, orderBy = 'recent', search } = router.query;
+        const { page = 1, pageSize = 20, orderBy = 'recent', keyword = '' } = router.query;
         const params = {
           page: Number(page),
           pageSize: Number(pageSize),
           orderBy: orderBy as string,
-          search: search as string,
+          keyword: keyword as string,
         };
         const queryString = new URLSearchParams(params).toString();
 
@@ -66,7 +66,7 @@ export default function List({
               if (e.key === 'Enter') {
                 router.push({
                   pathname: router.pathname,
-                  query: { ...router.query, search: e.currentTarget.value },
+                  query: { ...router.query, keyword: e.currentTarget.value },
                 });
               }
             }}
