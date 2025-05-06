@@ -64,11 +64,11 @@ const Container = styled.button<ContainerProps>`
     props.$variant == 'outline' &&
     css`
       background: none;
-      color: ${props => color(props.$color)};
-      border: 1px solid ${props => color(props.$color)};
+      color: ${color(props.$color)};
+      border: 1px solid ${color(props.$color)};
 
       &:hover {
-        background: ${props => color(props.$color)};
+        background: ${color(props.$color)};
         color: ${color('gray50')};
       }
     `};
