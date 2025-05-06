@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ErrorIcon from '@/public/icons/Layer_1.svg';
 import color from '@/utils/color';
-import PopCard from '../../components/feature/404/popcard';
+import PopCard from '@/components/feature/404/popcard';
 
 const ErrorContainer = styled.div`
   width: 100%;
