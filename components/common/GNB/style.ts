@@ -3,19 +3,53 @@ import typo from '@/utils/typo';
 import styled from 'styled-components';
 
 export const GNBContainer = styled.nav`
-  position: fixed;
-  display: flex;
-  top: 0;
   width: 100vw;
-  height: 80px;
-  padding: 20px 80px;
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  position: fixed;
+  z-index: 100;
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
   background: hsla(0, 0%, 100%, 0.9);
   backdrop-filter: blur(10px);
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  z-index: 100;
+
+  height: 80px;
+  transition: all 0.2s cubic-bezier(0, 0.5, 0.5, 1);
+
+  .list-link {
+    white-space: nowrap;
+    &:hover {
+      background: ${color('gray100')};
+    }
+  }
+
+  .divider {
+    flex-grow: 1;
+  }
+
+  @media (max-width: 768px) {
+    &.show {
+      height: 140px;
+    }
+  }
+
+  .upper-container {
+    width: 100%;
+    min-height: 80px;
+    display: flex;
+    padding: 20px 80px;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+
+    @media (max-width: 768px) {
+      padding: 20px 40px;
+    }
+  }
+
+  .lower-container {
+    padding: 0 20px;
+  }
 
   .search-container {
     flex-grow: 1;
@@ -24,7 +58,12 @@ export const GNBContainer = styled.nav`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4px;
+    padding: 2px 4px;
+
+    @media (max-width: 768px) {
+      align-items: flex-start;
+      height: 60px;
+    }
   }
 
   .search-bar {
@@ -83,21 +122,44 @@ export const NotificationContainer = styled.div`
   position: relative;
 `;
 
-export const NotificationMenu = styled.div`
+export const NotificationMenu = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: 38px;
   right: 0;
   width: 368px;
   background: ${color('gray50')};
+  padding: 20px 28px;
 
-  transition: all 0.1s ease-out;
+  transition: all 0.1s cubic-bezier(0, 0.5, 0.5, 1);
+  transform-origin: top;
   transform: ${props =>
     props.isOpen ? 'scaleY(1) translateY(0)' : 'scaleY(0.95) translateY(-6px)'};
   opacity: ${props => (props.isOpen ? '1' : '0')};
   pointer-events: ${props => (props.isOpen ? 'auto' : 'none')};
+  backdrop-filter: blur(40px);
 
   border-radius: 10px;
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+
+  z-index: 10;
+
+  @media (max-width: 480px) {
+    position: fixed;
+    width: 100vw;
+    height: 70vh;
+    left: 0;
+    top: 30vh;
+
+    transition: all 0.2s cubic-bezier(0, 0.5, 0.5, 1);
+    opacity: 1;
+    transform: ${props => (props.isOpen ? ' translateY(0)' : 'translateY(70vh)')};
+  }
+
+  h2 {
+    ${typo('18sb')};
+    color: ${color('gray500')};
+    margin-bottom: 12px;
+  }
 
   li {
     display: flex;
