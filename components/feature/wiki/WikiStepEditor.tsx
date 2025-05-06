@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Button from '@/components/common/Button';
@@ -26,6 +26,44 @@ export default function WikiStepEditor({
   const { data: session } = useSession();
   const [isMounted, setIsMounted] = useState(false);
 
+  const imageHandler = async () => {
+    if (!quillRef.current) return;
+
+    const quillInstance: any = quillRef.current?.getEditor();
+
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await axios.post(
+          `https://wikied-api.vercel.app/14-6/images/upload`,
+          formData,
+          {
+            headers: {
+              // 'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+          }
+        );
+        const imageUrl = response.data.url;
+        const range = quillInstance.getSelection(true);
+        quillInstance.insertEmbed(range.index, 'image', encodeURI(imageUrl));
+        quillInstance.setSelection(range.index + 1);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  };
+
   // ReactQuill 불러오기
   useEffect(() => {
     import('react-quill-new').then(module => {
@@ -50,58 +88,48 @@ export default function WikiStepEditor({
     });
   }, []);
 
-  const imageHandler = async () => {
-    if (!quillRef.current) return;
+  const editor = quillRef.current?.getEditor();
+  if (editor) {
+    const toolbar = editor.getModule('toolbar');
+    toolbar.addHandler('image', imageHandler);
+  }
 
-    const quillInstance: any = quillRef.current?.getEditor();
+  const toolbar = {
+    container: [
+      [{ header: [1, 2, 3, 4, 5, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ align: '' }, { align: 'center' }, { align: 'right' }],
+      ['image', 'video', 'link'],
+    ],
+  };
 
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
+  useEffect(() => {
+    const toolbar = document.querySelector('.ql-toolbar.ql-snow');
 
-    input.onchange = async () => {
-      const file = input.files?.[0];
-      if (!file) return;
+    if (!toolbar) return;
 
-      try {
-        const formData = new FormData();
-        formData.append('image', file);
+    let lastScrollLeft = toolbar.scrollLeft;
 
-        const response = await axios.post(
-          `https://wikied-api.vercel.app/14-6/images/upload`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${session?.accessToken}`,
-            },
-          }
-        );
-        const imageUrl = response.data.url;
-        const range = quillInstance.getSelection(true);
-        quillInstance.insertEmbed(range.index, 'image', encodeURI(imageUrl));
-        quillInstance.setSelection(range.index + 1);
-      } catch (error) {
-        console.log(error);
+    const handleScroll = () => {
+      const currentScrollLeft = toolbar.scrollLeft;
+
+      if (Math.abs(currentScrollLeft - lastScrollLeft) >= 1) {
+        const expandedPickers = toolbar.querySelectorAll('.ql-picker.ql-expanded');
+        expandedPickers.forEach(picker => {
+          picker.classList.remove('ql-expanded');
+        });
       }
-    };
-  };
 
-  const modules = {
-    toolbar: {
-      container: [
-        ['bold', 'italic', 'underline'],
-        [{ header: [1, 2, 3, 4, 5, false] }],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ align: '' }, { align: 'center' }, { align: 'right' }],
-        ['image', 'video', 'link'],
-      ],
-      handlers: {
-        image: imageHandler,
-      },
-    },
-  };
+      lastScrollLeft = currentScrollLeft;
+    };
+
+    toolbar.addEventListener('scroll', handleScroll);
+
+    return () => {
+      toolbar.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // ReactQuill이 준비될 때까지 렌더링x
   if (!isMounted || !ReactQuill) return <div>로딩 중...</div>;
@@ -113,7 +141,12 @@ export default function WikiStepEditor({
           ref={quillRef}
           value={content}
           onChange={onChange}
-          modules={modules}
+          modules={{
+            toolbar,
+            keyboard: {
+              bindings: {},
+            },
+          }}
           theme="snow"
         />
       </QuillBox>
