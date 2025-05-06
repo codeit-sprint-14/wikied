@@ -59,7 +59,13 @@ const GoToWiki = styled.button`
   }
 `;
 
-export default function CreateWiki({ isLoading, setIsLoading }) {
+export default function CreateWiki({
+  isLoading,
+  setIsLoading,
+}: {
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
+}) {
   const router = useRouter();
   const { userData, fetchUserData } = useUserStore();
   const { data: session, status } = useSession();
@@ -86,7 +92,7 @@ export default function CreateWiki({ isLoading, setIsLoading }) {
         }
       );
       console.log('위키 생성 성공:', response.data);
-      fetchUserData(session?.accessToken);
+      fetchUserData(session?.accessToken || '');
       const code = response.data.code;
       router.push(`/wiki/${code}`);
     } catch (err) {

@@ -1,23 +1,23 @@
 import axios from 'axios';
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions, SessionStrategy } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import NaverProvider from 'next-auth/providers/naver';
 import KakaoProvider from 'next-auth/providers/kakao';
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     NaverProvider({
-      clientId: process.env.NAVER_ID,
-      clientSecret: process.env.NAVER_SECRET,
+      clientId: process.env.NAVER_ID || '',
+      clientSecret: process.env.NAVER_SECRET || '',
     }),
     KakaoProvider({
-      clientId: process.env.KAKAO_ID,
-      clientSecret: process.env.KAKAO_SECRET,
+      clientId: process.env.KAKAO_ID || '',
+      clientSecret: process.env.KAKAO_SECRET || '',
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
+      clientId: process.env.GOOGLE_ID || '',
+      clientSecret: process.env.GOOGLE_SECRET || '',
     }),
     CredentialsProvider({
       name: 'Credentials',
@@ -76,11 +76,11 @@ export const authOptions = {
   ],
 
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as SessionStrategy,
     maxAge: 30 * 24 * 60 * 60, // 30일
   },
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user }: { token: any; user: any }) => {
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -93,7 +93,7 @@ export const authOptions = {
       return token;
     },
 
-    session: async ({ session, token }) => {
+    session: async ({ session, token }: { session: any; token: any }) => {
       if (token) {
         session.user.id = token.id as string;
         session.user.name = token.name;

@@ -15,7 +15,8 @@ type ColorKeys =
   | 'red100'
   | 'red200'
   | 'purple100'
-  | 'yellow100';
+  | 'yellow100'
+  | string;
 
 const color = (variant: ColorKeys) => (props: { theme: DefaultTheme }) => {
   const colorStyle = props.theme.color[variant];
