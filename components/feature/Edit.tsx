@@ -10,6 +10,7 @@ import Quill from 'quill';
 import styled from 'styled-components';
 import color from '@/utils/color';
 import typo from '@/utils/typo';
+
 const icons = Quill.import('ui/icons') as Record<string, any>;
 icons.bold = quillIcons.bold;
 icons.italic = quillIcons.italic;
@@ -85,8 +86,9 @@ export default function Edit() {
 
   const toolbar = {
     container: [
-      ['bold', 'italic', 'underline'],
       [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+
       [{ list: 'ordered' }, { list: 'bullet' }],
       [{ align: '' }, { align: 'center' }, { align: 'right' }],
 
@@ -176,6 +178,12 @@ export default function Edit() {
     }, 3000);
   };
 
+  const handleSaveClick = () => {
+    const editor = quillRef.current?.getEditor?.();
+    if (editor) editor.blur();
+    handleSave();
+  };
+
   const handleSnackBarClose = () => {
     setShowSnackBar(false);
     router.push(`/board/${id}`);
@@ -212,7 +220,19 @@ export default function Edit() {
             <p>등록일 {date}</p>
           </div>
           <TopRightButton>
-            <Button onClick={handleSave}>수정하기</Button>
+            <div
+              onTouchStart={e => {
+                e.stopPropagation();
+                handleSaveClick();
+              }}
+              onClick={e => {
+                e.preventDefault();
+                handleSaveClick();
+              }}
+              style={{ padding: 10, cursor: 'pointer' }}
+            >
+              <Button>수정하기</Button>
+            </div>
           </TopRightButton>
         </Header>
         <TitleArea>
@@ -345,6 +365,11 @@ const Container = styled.div`
   height: 100vh;
   overflow: visible;
 
+  @media (max-width: 1024px) {
+    padding: 40px 24px;
+    margin-top: 40px !important;
+  }
+
   @media (max-width: 768px) {
     padding: 60px 16px;
     margin-top: 50px !important;
@@ -399,14 +424,7 @@ const Header = styled.div`
   }
 `;
 
-const TopRightButton = styled.div`
-  button {
-    @media (max-width: 480px) {
-      width: 72px !important;
-      height: 40px !important;
-    }
-  }
-`;
+const TopRightButton = styled.div``;
 
 const TitleArea = styled.div``;
 
