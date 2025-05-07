@@ -2,7 +2,7 @@ import Button from '@/components/common/Button';
 import useScreenType from '@/hooks/useScreenType';
 import * as S from '@/styles/boards.style';
 import axios from 'axios';
-import { getDate } from 'date-fns';
+import getDate from '@/utils/getDate';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
