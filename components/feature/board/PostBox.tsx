@@ -65,6 +65,7 @@ export default function PostBox({
           )}
           {screenType === 'mobile' && onEdit && onDelete && (
             <>
+<<<<<<< HEAD
               <div onClick={onEdit}>
                 <Image
                   src={EditIcon}
@@ -85,6 +86,24 @@ export default function PostBox({
                   style={{ cursor: 'pointer' }}
                 />
               </div>
+=======
+              <Image
+                src={EditIcon}
+                alt="수정"
+                width={18}
+                height={18}
+                onClick={onEdit}
+                style={{ cursor: 'pointer' }}
+              />
+              <Image
+                src={DeleteIcon}
+                alt="삭제"
+                width={18}
+                height={18}
+                onClick={onDelete}
+                style={{ cursor: 'pointer' }}
+              />
+>>>>>>> 883218f (Revert "Merge pull request #35 from codeit-sprint-14/feature/조지현-board-Page")
             </>
           )}
         </IconWrapper>
