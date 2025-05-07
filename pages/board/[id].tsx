@@ -423,7 +423,13 @@ export default function Board({
 
         {comments.length === 0 ? (
           <S.NoCommentWrapper>
-            <Image src={NoCommentImage} alt="댓글 없음" width={226} height={146} />
+            <Image
+              src={NoCommentImage}
+              alt="댓글 없음"
+              width={215}
+              height={140}
+              style={{ marginTop: '66px' }}
+            />
             <S.NoCommentText>첫 번째로 댓글을 달아보세요!</S.NoCommentText>
           </S.NoCommentWrapper>
         ) : (

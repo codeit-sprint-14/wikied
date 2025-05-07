@@ -65,7 +65,7 @@ export default function PostBox({
           )}
           {screenType === 'mobile' && onEdit && onDelete && (
             <>
-              <div onClick={onEdit} style={{ padding: 2, cursor: 'pointer' }}>
+              <div onClick={onEdit}>
                 <Image
                   src={EditIcon}
                   alt="수정"
@@ -75,7 +75,7 @@ export default function PostBox({
                   style={{ cursor: 'pointer' }}
                 />
               </div>
-              <div onClick={onDelete} style={{ padding: 2, cursor: 'pointer' }}>
+              <div onClick={onDelete} style={{ cursor: 'pointer', marginRight: '-2px' }}>
                 <Image
                   src={DeleteIcon}
                   alt="삭제"
@@ -148,6 +148,12 @@ export const IconWrapper = styled.div`
   flex-shrink: 0;
   cursor: pointer;
   margin-top: 16px;
+  justify-content: flex-end;
+  margin-left: auto;
+
+  @media (max-width: 480px) {
+    gap: 12px;
+  }
 `;
 
 export const Meta = styled.div`
@@ -184,6 +190,10 @@ export const Content = styled.div`
   word-wrap: word;
   color: ${({ theme }) => theme.color['gray500']};
   ${({ theme }) => theme.typo['16r']};
+
+  @media (max-width: 480px) {
+    margin: 0 auto;
+  }
 
   .ql-align-center {
     text-align: center;
