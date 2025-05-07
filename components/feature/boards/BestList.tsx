@@ -10,16 +10,19 @@ import Image from 'next/image';
 import Thumbnail from '@/public/images/img-thumbnail.png';
 import Like from '@/public/icons/ico-heart.svg';
 import { useSession } from 'next-auth/react';
+import Skeleton from '@/components/common/Skeleton';
 
 export default function BestList({ handleLoading }: { handleLoading: (loading: boolean) => void }) {
   const router = useRouter();
   const screenType = useScreenType();
   const [bestArticles, setBestArticles] = useState([]);
   const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(
           `https://wikied-api.vercel.app/14-6/articles?page=1&pageSize=4&orderBy=like`
         );
@@ -28,6 +31,7 @@ export default function BestList({ handleLoading }: { handleLoading: (loading: b
       } catch (err) {
         console.error(err);
       } finally {
+        setLoading(false);
         handleLoading(false);
       }
     };
@@ -43,6 +47,39 @@ export default function BestList({ handleLoading }: { handleLoading: (loading: b
     }
   }
 
+  if (true) {
+    return (
+      <S.BestListContainer>
+        <div className="top-container">
+          <h1>
+            <Skeleton width="8em" height="1em" />
+          </h1>
+        </div>
+        <ul>
+          {Array.from({ length: 4 }).map((_, index) => (
+            <li key={index}>
+              <Skeleton className="thumbnail" />
+              <div className="text-container">
+                <h2>
+                  <Skeleton width="10em" height="1em" />
+                </h2>
+                <div className="bottom-container">
+                  <div className="left-container">
+                    <p>
+                      <Skeleton width="7em" height="1em" />
+                    </p>
+                    <p>
+                      <Skeleton width="5em" height="1em" />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </S.BestListContainer>
+    );
+  }
   return (
     <S.BestListContainer>
       <div className="top-container">

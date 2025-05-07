@@ -17,8 +17,8 @@ export default function Signup() {
 
   const email = useInputConfirm();
   const pw = useInputConfirm();
-  const confirmPw = useInputConfirm(pw.value);
-  const userName = useInputConfirm();
+  const confirmPw = useInputConfirm('', pw.value);
+  const userName = useInputConfirm(error, '');
 
   function passInputs() {
     if (email.msg || pw.msg || confirmPw.msg || userName.msg) {
@@ -56,8 +56,9 @@ export default function Signup() {
 
       router.push('/login');
     } catch (err) {
+      setError('이미 존재하는 닉네임입니다.');
+      console.log(error, '라고 말해야함');
       console.error(err);
-      setError('이미 존재하는 이메일입니다.');
     } finally {
       setIsLoading(false);
     }
@@ -77,6 +78,7 @@ export default function Signup() {
             title={'닉네임'}
             autoComplete={'username'}
             id={'name'}
+            msg={error}
             required
           />
           <SignInput

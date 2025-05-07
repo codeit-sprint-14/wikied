@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function useInputConfirm(compareToValue?: string) {
+function useInputConfirm(nameError?: string, compareToValue?: string) {
   const [msg, setMsg] = useState('');
   const [value, setValue] = useState('');
   const [isActive, setIsActive] = useState(false);
@@ -41,6 +41,8 @@ function useInputConfirm(compareToValue?: string) {
         setMsg('닉네임을 입력해주세요');
       } else if (e.target.value.length > 10) {
         setMsg('닉네임을 10자 이하로 입력해주세요');
+      } else if (nameError) {
+        setMsg(nameError);
       }
     }
 

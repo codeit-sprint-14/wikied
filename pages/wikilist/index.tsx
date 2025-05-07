@@ -9,6 +9,7 @@ import Search from '@/public/icons/ico-search.svg';
 import NotFound from '@/public/images/img-not-found.svg';
 import * as S from '@/styles/wikilist.style';
 import Pagination from '@/components/feature/Pagination';
+import Skeleton from '@/components/common/Skeleton';
 
 function WikiList() {
   const [articles, setArticles] = useState([]);
@@ -19,6 +20,7 @@ function WikiList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(
           `https://wikied-api.vercel.app/14-6/profiles?page=${router.query.page || 1}&pageSize=${20}&name=${router.query.search || ''}`
         );
@@ -47,6 +49,25 @@ function WikiList() {
     fetchData();
   }, [router.query]);
 
+  if (loading) {
+    return (
+      <S.Container>
+        <Skeleton className="search-container" height="46px" />
+        <Skeleton className="total-count" width="18em" height="1em" />
+        <S.ListContainer>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <li key={index}>
+              <Skeleton className="image-container" isCircle />
+              <div className="contents">
+                <Skeleton className="contents-top" width="20em" height="2em" />
+                <Skeleton className="content-bottom" width="10em" height="1em" />
+              </div>
+            </li>
+          ))}
+        </S.ListContainer>
+      </S.Container>
+    );
+  }
   return (
     <S.Container>
       <div className="search-container">

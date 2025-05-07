@@ -13,6 +13,7 @@ import * as S from '@/styles/landing.style';
 
 import dynamic from 'next/dynamic';
 import useScreenType from '@/hooks/useScreenType';
+import { useSession } from 'next-auth/react';
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 function SectionContainer({ lines, sleep = 1, ...rest }: { lines: string[]; sleep?: number }) {
@@ -106,6 +107,8 @@ function Reviews({ isGoUp }: { isGoUp: boolean }) {
 
 export default function Home() {
   const screenType = useScreenType();
+  const { data: session } = useSession();
+
   const contents =
     screenType === 'mobile'
       ? [
@@ -157,7 +160,17 @@ export default function Home() {
             <div className="contents" id="section-01">
               <h4>우리만의 인물 백과사전</h4>
               <Image src={HeroTitle} alt="hero" />
-              <S.CTA onClick={() => router.push('/login')}>지금 시작하기</S.CTA>
+              <S.CTA
+                onClick={() => {
+                  if (session?.accessToken) {
+                    router.push('/boards');
+                  } else {
+                    router.push('/login');
+                  }
+                }}
+              >
+                지금 시작하기
+              </S.CTA>
             </div>
             <Section_01 screenType={screenType} />
           </div>
@@ -188,9 +201,9 @@ export default function Home() {
         <section>
           <div className="section-container">
             <div className="contents" id="section-03">
-              <SectionContainer lines={contents[1]} />
+              <SectionContainer lines={contents[1]} sleep={1} />
             </div>
-            <Graphic className="graphic" id="graphic-03">
+            <Graphic className="graphic" id="graphic-03" sleep={0}>
               <Image src={Qna} alt="qna" />
             </Graphic>
           </div>
@@ -227,10 +240,20 @@ export default function Home() {
         <section>
           <div className="section-container">
             <div className="contents" id="section-06">
-              <SectionContainer lines={contents[4]} />
-              <S.CTA onClick={() => router.push('/login')}>지금 시작하기</S.CTA>
+              <SectionContainer lines={contents[4]} sleep={1} />
+              <S.CTA
+                onClick={() => {
+                  if (session?.accessToken) {
+                    router.push('/boards');
+                  } else {
+                    router.push('/login');
+                  }
+                }}
+              >
+                지금 시작하기
+              </S.CTA>
             </div>
-            <Graphic className="graphic" id="graphic-06">
+            <Graphic className="graphic" id="graphic-06" sleep={0}>
               <Image src={CtaBackground} alt="cta-background" />
             </Graphic>
           </div>

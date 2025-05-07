@@ -127,8 +127,9 @@ export const ListContainer = styled.ul`
 
     .image-container {
       min-width: 94px;
+      min-height: 94px;
       width: 94px;
-      aspect-ratio: 1/1;
+      height: 94px;
       border-radius: 100px;
       overflow: hidden;
 
