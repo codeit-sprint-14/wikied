@@ -35,8 +35,8 @@ export default function List({
         handleLoading(true);
         const { page = 1, pageSize = 20, orderBy = 'recent', keyword = '' } = router.query;
         const params = {
-          page: page as string,
-          pageSize: pageSize as string,
+          page: Number(page),
+          pageSize: Number(pageSize),
           orderBy: orderBy as string,
           keyword: keyword as string,
         };

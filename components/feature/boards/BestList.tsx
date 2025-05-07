@@ -9,13 +9,11 @@ import Image from 'next/image';
 
 import Thumbnail from '@/public/images/img-thumbnail.png';
 import Like from '@/public/icons/ico-heart.svg';
-import { useSession } from 'next-auth/react';
 
 export default function BestList({ handleLoading }: { handleLoading: (loading: boolean) => void }) {
   const router = useRouter();
   const screenType = useScreenType();
   const [bestArticles, setBestArticles] = useState([]);
-  const { data: session, status } = useSession();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,19 +33,11 @@ export default function BestList({ handleLoading }: { handleLoading: (loading: b
     fetchData();
   }, []);
 
-  function handleWriteClick() {
-    if (status === 'unauthenticated') {
-      router.push('/login');
-    } else {
-      router.push('/addboard');
-    }
-  }
-
   return (
     <S.BestListContainer>
       <div className="top-container">
         <h1>베스트 게시글</h1>
-        <Button onClick={handleWriteClick}>글쓰기</Button>
+        <Button onClick={() => router.push('/addboard')}>글쓰기</Button>
       </div>
       <ul>
         {bestArticles.map((list: any) => (

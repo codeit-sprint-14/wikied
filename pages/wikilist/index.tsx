@@ -75,7 +75,7 @@ function WikiList() {
       )}
       <S.ListContainer>
         {articles.length > 0 ? (
-          articles.map((article: any) => (
+          articles.map(article => (
             <li key={article.id} onClick={() => router.push(`/wiki/${article.code}`)}>
               <div className="image-container">
                 {article.image ? (

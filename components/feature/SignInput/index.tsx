@@ -11,9 +11,7 @@ function SignInput({
   inputState,
   pw,
   value,
-  ref,
   onChange,
-  required,
   ...rest
 }: {
   type: string;
@@ -21,17 +19,13 @@ function SignInput({
   title: string;
   autoComplete: string;
   id: string;
-  ref?: React.RefObject<HTMLInputElement> | null;
   inputState: {
     msg: string;
     value: string;
     isActive: boolean;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
-  pw?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
+  pw: string;
 }) {
   const sibling = useRef(null);
 
@@ -49,7 +43,7 @@ function SignInput({
         name={name}
         id={id}
         pw={pw}
-        ref={sibling.current}
+        ref={sibling}
         variant={inputState.msg ? 'error' : 'default'}
       />
       {inputState.msg && (

@@ -45,7 +45,7 @@ function NotificationMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
           Authorization: `Bearer ${session?.accessToken}`,
         },
       });
-      fetchNotification(session?.accessToken || '');
+      fetchNotification(session?.accessToken);
       notification.list = notification.list.filter(item => item.id !== id);
     } catch (err) {
       console.log(err);
@@ -108,11 +108,11 @@ export default function GNB() {
         if (!session?.accessToken) return;
 
         const decoded = jwtDecode(session.accessToken);
-        const now = Date.now() / 1000;
+        const now = Date.now() / 1000; // 초 단위
 
         if (decoded.exp && decoded.exp < now) {
           console.warn('accessToken expired. Logging out!');
-          await signOut({ callbackUrl: '/login' });
+          await signOut({ callbackUrl: '/login' }); // 로그인 페이지로 이동
           return;
         }
 
@@ -123,7 +123,7 @@ export default function GNB() {
         if (typeof userData?.profile === 'string') setProfile(userData.profile);
       } catch (error) {
         console.error('Token check or fetch failed:', error);
-        await signOut({ callbackUrl: '/login' });
+        await signOut({ callbackUrl: '/login' }); // 에러 발생 시도 안전하게 로그아웃
       }
     };
 

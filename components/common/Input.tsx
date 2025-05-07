@@ -6,8 +6,6 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   width?: string;
   height?: string;
   variant?: 'default' | 'error';
-  pw?: string;
-  ref?: React.RefObject<HTMLInputElement> | null;
 }
 
 interface ContainerProps {

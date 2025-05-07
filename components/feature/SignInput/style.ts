@@ -2,9 +2,7 @@ import color from '@/utils/color';
 import typo from '@/utils/typo';
 import styled, { css } from 'styled-components';
 
-export const Container = styled.div<{
-  inputState: { msg: string; value: string; isActive: boolean };
-}>`
+export const Container = styled.div`
   position: relative;
   width: 100%;
   height: 80px;
