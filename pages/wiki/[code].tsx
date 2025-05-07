@@ -289,7 +289,9 @@ export default function WikiPage() {
       );
 
       // 답 맞으면 리액트퀼 염
-      setStep('editor');
+      setTimeout(() => {
+        setStep('editor');
+      }, 0);
       setDraftContent(content);
       setQuestionModal(false);
       // setInputAnswer('');
