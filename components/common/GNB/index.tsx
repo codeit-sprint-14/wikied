@@ -86,6 +86,7 @@ export default function GNB() {
   const screenType = useScreenType();
 
   useEffect(() => {
+    console.log('userdata : ', JSON.stringify(userData));
     function handleScroll() {
       if (router.asPath.includes('/wikilist')) {
         setShowSearch(window.scrollY > 140);
@@ -103,6 +104,7 @@ export default function GNB() {
   }, [router.asPath]);
 
   useEffect(() => {
+    console.log(JSON.stringify(userData));
     const checkTokenAndFetch = async () => {
       try {
         if (!session?.accessToken) return;
