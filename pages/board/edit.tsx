@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 
-const edit = dynamic(() => import('@/components/feature/board/EditLegacy'), {
+const edit = dynamic(() => import('@/components/feature/Edit'), {
   ssr: false,
 });
 

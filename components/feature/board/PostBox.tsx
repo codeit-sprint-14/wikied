@@ -117,6 +117,7 @@ export const Container = styled.div`
 
   @media (max-width: 480px) {
     width: 90%;
+    margin: 0 auto;
   }
 `;
 
@@ -188,12 +189,9 @@ export const Content = styled.div`
   line-height: 1.5;
   word-break: break-all;
   word-wrap: word;
+  text-align: left;
   color: ${({ theme }) => theme.color['gray500']};
   ${({ theme }) => theme.typo['16r']};
-
-  @media (max-width: 480px) {
-    margin: 0 auto;
-  }
 
   .ql-align-center {
     text-align: center;
