@@ -194,6 +194,7 @@ export default function Board({
       return;
     }
     setEditingCommentId(commentId);
+
     const comment = comments.find(c => c.id === commentId);
     setEditedContent(comment?.content || '');
     setOpenedDropdownId(null); //드롭다운 닫기
@@ -224,6 +225,8 @@ export default function Board({
     const data = await response.json();
     setComments(data.list);
     setEditingCommentId(null);
+
+    showSnackBar('댓글이 수정되었습니다.', 'success');
   };
 
   //댓글 삭제
@@ -420,7 +423,13 @@ export default function Board({
 
         {comments.length === 0 ? (
           <S.NoCommentWrapper>
-            <Image src={NoCommentImage} alt="댓글 없음" width={226} height={146} />
+            <Image
+              src={NoCommentImage}
+              alt="댓글 없음"
+              width={215}
+              height={140}
+              style={{ marginTop: '66px' }}
+            />
             <S.NoCommentText>첫 번째로 댓글을 달아보세요!</S.NoCommentText>
           </S.NoCommentWrapper>
         ) : (
@@ -439,12 +448,18 @@ export default function Board({
                 <>
                   <CommentItem
                     comment={comment}
-                    icons={[
-                      {
-                        element: <Image src={SelectIcon} alt="드롭다운" width={18} height={18} />,
-                        onClick: id => handleIconClick(id),
-                      },
-                    ]}
+                    icons={
+                      comment.writer.id === Number(userId)
+                        ? [
+                            {
+                              element: (
+                                <Image src={SelectIcon} alt="드롭다운" width={18} height={18} />
+                              ),
+                              onClick: id => handleIconClick(id),
+                            },
+                          ]
+                        : undefined
+                    }
                   />
 
                   <MenuContainer

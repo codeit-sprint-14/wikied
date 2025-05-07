@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   }
 
   @media (max-width: 480px) {
-    padding: 110px 30px;
+    padding: 110px 20px;
   }
 `;
 
@@ -34,9 +34,13 @@ export const UnderBar = styled.div`
 `;
 
 export const CommentCount = styled.div`
-  margin-left: 5px;
+  margin-left: 6px;
   ${typo('18sb')};
   color: ${color('gray500')};
+
+  @media (max-width: 480px) {
+    margin-left: 23px;
+  }
 `;
 
 export const CommentLength = styled.span`

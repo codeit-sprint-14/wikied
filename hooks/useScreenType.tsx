@@ -10,7 +10,6 @@ export default function useScreenType(): ScreenType {
       const width = window.innerWidth;
       if (width <= 480) setScreenType('mobile');
       else if (width <= 768) setScreenType('tablet');
-      else if (width <= 1024) setScreenType('smallDesktop');
       else setScreenType('desktop');
     };
 
