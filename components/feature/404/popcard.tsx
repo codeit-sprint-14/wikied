@@ -34,8 +34,8 @@ const AuthorInfo = styled.div`
 `;
 
 const CardContainer = styled.div`
-  position: absolute;
-  top: 812px;
+  position: fixed;
+  top: 70%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -132,8 +132,8 @@ const CardLikeCount = styled.span`
 const Title = styled.div`
   width: 209px;
   height: 42px;
-  position: absolute;
-  top: 746px;
+  position: fixed;
+  top: 65%;
   left: 50%;
   transform: translateX(-50%);
   ${typo('24sb')};
