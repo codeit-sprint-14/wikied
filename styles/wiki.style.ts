@@ -10,10 +10,6 @@ export const WikiSection = styled.div`
   gap: 80px;
   width: 100%;
   padding: 160px 0px 50px 100px;
-<<<<<<< Updated upstream
-  padding: 160px 20px 120px 20px;
-=======
->>>>>>> Stashed changes
 
   @media (max-width: 1024px) {
     flex-direction: column;
@@ -67,13 +63,9 @@ export const WikiContent = styled.div`
   }
 `;
 export const Sidebar = styled.div<{ isOpen: boolean }>`
-<<<<<<< Updated upstream
-  max-width: 300px;
-=======
   position: sticky;
   top: 140px;
   max-width: 350px;
->>>>>>> Stashed changes
   width: 100%;
   height: fit-content;
   padding: 48px;
@@ -81,11 +73,6 @@ export const Sidebar = styled.div<{ isOpen: boolean }>`
   /* box-shadow: 4px 4px 24px rgba(0, 0, 0, 0.05); */
   border: 1px solid ${color('gray200')};
   border-radius: 18px;
-<<<<<<< Updated upstream
-  top: 140px;
-  position: sticky;
-=======
->>>>>>> Stashed changes
 
   @media (max-width: 1024px) {
     display: flex;
@@ -325,10 +312,6 @@ export const ViewerButton = styled.div`
 export const Viewer = styled.div`
   line-height: 1.8;
   font-size: 1rem;
-<<<<<<< Updated upstream
-  font-weight: 400;
-=======
->>>>>>> Stashed changes
 
   p,
   span,
@@ -365,10 +348,6 @@ export const Viewer = styled.div`
     margin: 1rem 0 1.5rem 1.5rem;
     padding-left: 1rem;
     list-style-type: disc;
-<<<<<<< Updated upstream
-    list-style: unset;
-=======
->>>>>>> Stashed changes
   }
 
   li {
