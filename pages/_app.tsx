@@ -14,7 +14,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         <title>위키드: 너의 TMI, 내가 정리해줌</title>
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://wikied-steel.vercel.app" />
-        <meta property="og:title" content="위키드 - 우리만의 인물 백과사전" />
+        <meta property="og:title" content="위키드: 너의 TMI, 내가 정리해줌" />
         <meta property="og:description" content="친구들과 함께 만드는 우리만의 인물 백과사전" />
         <meta property="og:image" content="https://wikied-steel.vercel.app/images/img-meta.png" />
         <meta property="og:image:width" content="1200" />
