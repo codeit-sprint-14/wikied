@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import Thumbnail from '@/public/images/img-thumbnail.png';
+import Thumbnail from '@/public/icons/ico-profile.svg';
 import Input from '@/components/common/Input';
 import Search from '@/public/icons/ico-search.svg';
 import NotFound from '@/public/images/img-not-found.svg';

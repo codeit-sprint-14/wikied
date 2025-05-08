@@ -7,8 +7,8 @@ export const Container = styled.div<{
 }>`
   position: relative;
   width: 100%;
-  height: 80px;
-  min-height: 80px;
+  /* height: 80px; */
+  min-height: 60px;
 
   .sign-form__label {
     ${typo('16m')};
@@ -34,15 +34,16 @@ export const Container = styled.div<{
   .sign-form__input__msg {
     ${typo('14m')};
     color: ${color('red200')};
-    position: absolute;
+    /* position: absolute;
     bottom: 2px;
-    left: 16px;
+    left: 16px; */
   }
 
   .sign-form__input {
-    position: absolute;
+    /* position: absolute; */
     padding-top: 38px;
     padding-bottom: 16px;
+    height: 48px;
     background: ${color('gray50')};
     border: ${props => (props.inputState.msg ? css`1px solid ${color('red200')}` : 'none')};
   }

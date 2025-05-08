@@ -84,7 +84,13 @@ export default function Signup() {
             onChange={pw.onChange}
             required
           />
-          <Button className="login-btn" type="submit" width="100%" disabled={!passInputs()}>
+          <Button
+            className="login-btn"
+            type="submit"
+            width="100%"
+            height="48px"
+            disabled={!passInputs()}
+          >
             로그인
           </Button>
           <span className="error-msg">{error && '아이디/비밀번호가 틀렸어요'}</span>

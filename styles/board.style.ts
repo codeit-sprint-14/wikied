@@ -23,6 +23,12 @@ export const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 280px;
+
+  .thumbnail {
+    object-fit: cover;
+    border-radius: 24px;
+  }
 `;
 
 export const UnderBar = styled.div`

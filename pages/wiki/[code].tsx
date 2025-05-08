@@ -343,6 +343,7 @@ export default function WikiPage() {
   const handleCloseSnackBar = () => {
     setIsSnackBarVisible(false);
   };
+
   const handleCopyLink = () => {
     const link = `https://wikied-api.vercel.app/${code}`;
 
@@ -430,7 +431,7 @@ export default function WikiPage() {
           </UserInfo>
         </UserInfoWrap>
         <SlideButton visible={screenTyes} onClick={() => setIsOpen(prev => !prev)}>
-          {isOpen ? '▲' : '▼'}
+          {isOpen ? '덜보기' : '더보기'}
         </SlideButton>
       </Sidebar>
     </WikiSection>

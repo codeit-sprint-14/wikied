@@ -90,6 +90,7 @@ export default function Signup() {
             id={'email'}
             required
           />
+          <br />
           <SignInput
             inputState={pw}
             name={'password'}
@@ -112,7 +113,8 @@ export default function Signup() {
             pw={pw.value}
             required
           />
-          <Button disabled={!passInputs()} type="submit" width="100%">
+          <br />
+          <Button disabled={!passInputs()} type="submit" width="100%" height="48px">
             가입하기
           </Button>
           <span className="signup-link">
