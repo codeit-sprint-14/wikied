@@ -146,7 +146,7 @@ export default function Edit() {
     const DEFAULT_THUMBNAIL_URL =
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000/images/img-thumbnail.png'
-        : 'https://wikied.vercel.app/images/img-thumbnail.png'; // 배포용
+        : 'https://wikied-steel.vercel.app/images/img-thumbnail.png'; // 배포용
 
     if (thumbnail !== '') {
       payload.image = thumbnail;

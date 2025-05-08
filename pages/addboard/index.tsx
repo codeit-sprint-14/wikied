@@ -55,6 +55,11 @@ export default function AddBoard() {
 
         imageUrl = uploadResponse.data?.url;
         console.log('업로드된 이미지 URL:', imageUrl);
+      } else {
+        const temp = document.createElement('div');
+        temp.innerHTML = content;
+        const firstImg = temp.querySelector('img');
+        imageUrl = firstImg?.getAttribute('src') || null;
       }
 
       const response = await axios.post(
@@ -136,7 +141,7 @@ export default function AddBoard() {
             공백포함 : 총 {plainText.length}자 | 공백제외 : 총 {plainText.replace(/\s/g, '').length}
             자
           </p> */}
-          <ThumbnailButton>
+          {/* <ThumbnailButton>
             <input
               type="file"
               ref={fileInputRef}
@@ -164,7 +169,7 @@ export default function AddBoard() {
                 미리보기 이미지...
               </Button>
             )}
-          </ThumbnailButton>
+          </ThumbnailButton> */}
           <WikiStepEditor
             content={content}
             onChange={setContent}
