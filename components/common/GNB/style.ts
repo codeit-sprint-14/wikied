@@ -46,8 +46,9 @@ export const GNBContainer = styled.nav`
   }
 
   @media (max-width: 768px) {
+    height: 60px;
     &.show {
-      height: 140px;
+      height: 120px;
     }
   }
 
@@ -61,7 +62,12 @@ export const GNBContainer = styled.nav`
     gap: 40px;
 
     @media (max-width: 768px) {
-      padding: 20px 40px;
+      min-height: 60px;
+      padding: 10px 40px;
+
+      .logo {
+        width: 80px;
+      }
     }
   }
 

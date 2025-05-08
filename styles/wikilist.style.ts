@@ -136,11 +136,15 @@ export const ListContainer = styled.ul`
       @media (max-width: 768px) {
         min-width: 84px;
         width: 84px;
+        min-height: 84px;
+        height: 84px;
       }
 
       @media (max-width: 480px) {
         min-width: 60px;
         width: 60px;
+        min-height: 60px;
+        height: 60px;
       }
 
       img {

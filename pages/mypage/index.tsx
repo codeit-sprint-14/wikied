@@ -37,9 +37,9 @@ export default function Mypage() {
       {/* <span>{`세션 데이터 : ${JSON.stringify(session?.user)}`}</span>
       <span>{`유저 데이터 : ${JSON.stringify(userData)}`}</span> */}
       {/* <span>{`유저 알림 : ${JSON.stringify(notification)}`}</span> */}
-      <ChangePassword isLoading={isLoading} setIsLoading={setIsLoading} />
+      <ChangePassword className="btn" isLoading={isLoading} setIsLoading={setIsLoading} />
       <hr />
-      <CreateWiki isLoading={isLoading} setIsLoading={setIsLoading} />
+      <CreateWiki className="btn" isLoading={isLoading} setIsLoading={setIsLoading} />
     </S.Container>
   );
 }

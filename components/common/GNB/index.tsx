@@ -86,6 +86,7 @@ export default function GNB() {
   const screenType = useScreenType();
 
   useEffect(() => {
+    if (!window) return;
     function handleScroll() {
       if (router.asPath.includes('/wikilist')) {
         setShowSearch(window.scrollY > 140);
@@ -138,7 +139,7 @@ export default function GNB() {
     <S.GNBContainer className={showSearch ? 'show' : 'hide'}>
       <div className="upper-container">
         <Link href="/">
-          <Image src={Logo} width={107} alt="logo" />
+          <Image className="logo" src={Logo} width={107} alt="logo" />
         </Link>
         {screenType !== 'mobile' && (
           <>
@@ -204,7 +205,7 @@ export default function GNB() {
           ) : (
             <div className="mobile-container">
               <S.NotificationContainer>
-                {notification.totalCount > 0 && (
+                {notification.totalCount > 0 && session && (
                   <div className="alarm-count">{notification.totalCount}</div>
                 )}
                 <NotificationMenu

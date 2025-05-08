@@ -23,7 +23,7 @@ function SignInput({
   autoComplete: string;
   id: string;
   ref?: React.RefObject<HTMLInputElement> | null;
-  msg?: string;
+  msg?: any;
   inputState: {
     msg: string;
     value: string;
