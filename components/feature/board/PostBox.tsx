@@ -257,11 +257,20 @@ export const Content = styled.div`
     font-size: 1.25rem;
   }
 
-  img {
+  img,
+  video {
+    width: 100%;
     max-width: 100%;
     height: auto;
     display: block;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
+  }
+
+  iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+    margin: 1.5rem 0;
   }
 `;
 
