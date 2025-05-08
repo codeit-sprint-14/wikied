@@ -33,9 +33,7 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>
-          <title>위키드: 너의 TMI, 내가 정리해줌</title>
-        </Head>
+        <Head></Head>
         <body>
           <Main />
           <NextScript />

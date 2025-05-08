@@ -26,6 +26,9 @@ const Form = styled.form<{ isOpen: boolean }>`
   border-radius: 20px;
   padding: 20px 40px;
 
+  @media (max-width: 480px) {
+    height: ${({ isOpen }) => (isOpen ? '480px' : '96px')};
+  }
   label {
     ${typo('24sb')}
     color: ${color('gray500')};
@@ -42,6 +45,11 @@ const Form = styled.form<{ isOpen: boolean }>`
       height: 68px;
       pointer-events: none;
       opacity: ${({ isOpen }) => (isOpen ? '0' : '1')};
+
+      @media (max-width: 480px) {
+        width: 32px;
+        height: 32px;
+      }
     }
   }
   &:hover {
@@ -66,9 +74,11 @@ const Form = styled.form<{ isOpen: boolean }>`
 export default function ChangePassword({
   isLoading,
   setIsLoading,
+  className,
 }: {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  className: string;
 }) {
   const { data: session, status } = useSession();
   const [error, setError] = useState<string | null>(null);
@@ -130,7 +140,7 @@ export default function ChangePassword({
   };
 
   return (
-    <Form onSubmit={handlePasswordSubmit} isOpen={isOpen}>
+    <Form onSubmit={handlePasswordSubmit} isOpen={isOpen} className={className}>
       <label
         onClick={() => {
           setIsOpen(prev => !prev);
@@ -138,12 +148,12 @@ export default function ChangePassword({
       >
         {error === '비밀번호가 변경되었어요' && !isOpen ? (
           <>
-            <span>비밀번호가 변경되었어요</span>
+            <h2>비밀번호가 변경되었어요</h2>
             <Image src={Check} alt="check" />
           </>
         ) : (
           <>
-            <span>비밀번호 변경</span>
+            <h2>비밀번호 변경</h2>
             <Image src={Lock} alt="lock" />
           </>
         )}

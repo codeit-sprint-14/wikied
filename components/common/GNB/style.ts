@@ -18,8 +18,26 @@ export const GNBContainer = styled.nav`
 
   .list-link {
     white-space: nowrap;
-    &:hover {
-      background: ${color('gray100')};
+    position: relative;
+    display: inline-block;
+
+    &::before {
+      transition: all 0.1s cubic-bezier(0, 0.5, 0.5, 1);
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% + 18px);
+      height: 120%;
+      background: ${color('gray500')};
+      z-index: -1;
+      border-radius: 8px;
+      opacity: 0;
+    }
+
+    &:hover::before {
+      opacity: 0.05;
     }
   }
 
@@ -28,8 +46,9 @@ export const GNBContainer = styled.nav`
   }
 
   @media (max-width: 768px) {
+    height: 60px;
     &.show {
-      height: 140px;
+      height: 120px;
     }
   }
 
@@ -43,7 +62,12 @@ export const GNBContainer = styled.nav`
     gap: 40px;
 
     @media (max-width: 768px) {
-      padding: 20px 40px;
+      min-height: 60px;
+      padding: 10px 40px;
+
+      .logo {
+        width: 80px;
+      }
     }
   }
 
@@ -120,6 +144,22 @@ export const ProfileContainer = styled.div`
 
 export const NotificationContainer = styled.div`
   position: relative;
+
+  .alarm-count {
+    position: absolute;
+    top: -6px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid ${color('gray50')};
+    border-radius: 100px;
+    background: ${color('red200')};
+    color: ${color('gray50')};
+    ${typo('12sb')};
+    text-align: center;
+    line-height: 16px;
+    z-index: 10;
+  }
 `;
 
 export const NotificationMenu = styled.div<{ isOpen: boolean }>`

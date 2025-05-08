@@ -13,6 +13,7 @@ function SignInput({
   value,
   ref,
   onChange,
+  msg,
   required,
   ...rest
 }: {
@@ -22,6 +23,7 @@ function SignInput({
   autoComplete: string;
   id: string;
   ref?: React.RefObject<HTMLInputElement> | null;
+  msg?: any;
   inputState: {
     msg: string;
     value: string;
@@ -50,11 +52,11 @@ function SignInput({
         id={id}
         pw={pw}
         ref={sibling.current}
-        variant={inputState.msg ? 'error' : 'default'}
+        variant={inputState.msg || msg ? 'error' : 'default'}
       />
-      {inputState.msg && (
+      {(inputState.msg || msg) && (
         <span className="sign-form__input__msg" id={`msg-${id}`}>
-          {inputState.msg}
+          {msg || inputState.msg}
         </span>
       )}
     </S.Container>

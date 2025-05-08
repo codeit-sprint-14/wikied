@@ -127,19 +127,24 @@ export const ListContainer = styled.ul`
 
     .image-container {
       min-width: 94px;
+      min-height: 94px;
       width: 94px;
-      aspect-ratio: 1/1;
+      height: 94px;
       border-radius: 100px;
       overflow: hidden;
 
       @media (max-width: 768px) {
         min-width: 84px;
         width: 84px;
+        min-height: 84px;
+        height: 84px;
       }
 
       @media (max-width: 480px) {
         min-width: 60px;
         width: 60px;
+        min-height: 60px;
+        height: 60px;
       }
 
       img {

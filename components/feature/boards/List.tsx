@@ -15,6 +15,7 @@ import Clock from '@/public/icons/ico-clock.svg';
 import Arrow from '@/public/icons/ico-arrow.svg';
 
 import { MenuContainer, MenuItem } from '@/components/common/Menu';
+import Skeleton from '@/components/common/Skeleton';
 
 export default function List({
   handleTotalCount,
@@ -26,12 +27,14 @@ export default function List({
   const router = useRouter();
   const screenType = useScreenType();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         handleLoading(true);
         const { page = 1, pageSize = 20, orderBy = 'recent', keyword = '' } = router.query;
         const params = {
@@ -48,12 +51,74 @@ export default function List({
       } catch (err) {
         console.error(err);
       } finally {
+        setIsLoading(false);
         handleLoading(false);
       }
     };
 
     fetchData();
   }, [router.query]);
+
+  if (isLoading) {
+    return (
+      <S.ListContainer>
+        <div className="top-container">
+          <div className="search-container">
+            <Skeleton width="100%" height="46px" />
+          </div>
+          {screenType !== 'mobile' ? (
+            <div className="order-container" style={{ padding: '0' }}>
+              <Skeleton />
+            </div>
+          ) : (
+            <>
+              <div className="order-radio-container">
+                <Skeleton />
+              </div>
+            </>
+          )}
+        </div>
+        <ul className="article-container">
+          {articles.map((article: any) => (
+            <li key={article.id} onClick={() => router.push(`/board/${article.id}`)}>
+              {screenType === 'mobile' ? (
+                <>
+                  <div className="upper-container">
+                    <span className="title">
+                      <Skeleton width="16em" height="1em" />
+                    </span>
+                  </div>
+                  <div className="lower-container">
+                    <span className="writer">
+                      <Skeleton width="6em" height="1em" />
+                    </span>
+                    <span className="date">
+                      <Skeleton width="4em" height="1em" />
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <span className="like-count">
+                    <Skeleton width="4em" height="1em" />
+                  </span>
+                  <span className="title">
+                    <Skeleton width="24em" height="1em" />
+                  </span>
+                  <span className="writer">
+                    <Skeleton width="8em" height="1em" />
+                  </span>
+                  <span className="date">
+                    <Skeleton width="6em" height="1em" />
+                  </span>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+      </S.ListContainer>
+    );
+  }
 
   return (
     <S.ListContainer>

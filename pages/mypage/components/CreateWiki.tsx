@@ -17,8 +17,9 @@ const GoToWiki = styled.button`
   justify-content: space-between;
   align-items: center;
 
-  width: 480px;
+  /* width: 480px; */
   height: 128px;
+
   padding: 20px 40px;
   border: none;
   border-radius: 20px;
@@ -53,6 +54,14 @@ const GoToWiki = styled.button`
     height: 68px;
     pointer-events: none;
   }
+  @media (max-width: 480px) {
+    height: 96px;
+
+    img {
+      width: 32px;
+      height: 32px;
+    }
+  }
 
   &:hover {
     filter: brightness(0.97);
@@ -62,9 +71,11 @@ const GoToWiki = styled.button`
 export default function CreateWiki({
   isLoading,
   setIsLoading,
+  className,
 }: {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  className: string;
 }) {
   const router = useRouter();
   const { userData, fetchUserData } = useUserStore();
@@ -105,7 +116,10 @@ export default function CreateWiki({
   return (
     <>
       {userData?.profile?.code ? (
-        <GoToWiki onClick={() => router.push(`/wiki/${userData?.profile?.code}`)}>
+        <GoToWiki
+          onClick={() => router.push(`/wiki/${userData?.profile?.code}`)}
+          className={className}
+        >
           <div>
             <h2>내 위키 보러가기</h2>
             <span>{session?.user?.name}님의 위키 페이지로 이동해요</span>
@@ -113,7 +127,7 @@ export default function CreateWiki({
           <Image src={Magic} alt="magic" />
         </GoToWiki>
       ) : (
-        <form onSubmit={handleWikiSubmit}>
+        <form onSubmit={handleWikiSubmit} className={className}>
           <Input name="question" placeholder="질문을 입력해주세요" required />
           <Input name="answer" placeholder="답변을 입력해주세요" required />
           <Button type="submit" width="100%">
