@@ -34,8 +34,8 @@ const AuthorInfo = styled.div`
 `;
 
 const CardContainer = styled.div`
-  position: absolute;
-  top: 812px;
+  position: fixed;
+  top: 70%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -66,9 +66,21 @@ const Card = styled.div`
   background-color: white;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  transition: all 0.2s ease-in-out; // 부드러운 애니메이션을 위한 트랜지션 추가
+
+  &:hover {
+    width: 240px; // 10px 감소
+    height: 210px; // 10px 감소
+    transform: translateY(2px); // 살짝 위로 움직이는 효과
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.03); // hover시 그림자 효과 변경
+  }
 
   @media (max-width: 768px) {
     min-width: 250px;
+
+    &:hover {
+      min-width: 240px;
+    }
   }
 `;
 
@@ -132,8 +144,8 @@ const CardLikeCount = styled.span`
 const Title = styled.div`
   width: 209px;
   height: 42px;
-  position: absolute;
-  top: 746px;
+  position: fixed;
+  top: 65%;
   left: 50%;
   transform: translateX(-50%);
   ${typo('24sb')};
