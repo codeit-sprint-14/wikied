@@ -32,6 +32,9 @@ export const BestListContainer = styled.div`
   h2 {
     ${typo('18sb')};
     color: ${color('gray500')};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   ul {
     list-style: none;

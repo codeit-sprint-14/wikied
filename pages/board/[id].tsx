@@ -361,6 +361,15 @@ export default function Board({
   return (
     <S.Wrapper>
       <S.ContentBox>
+        {post.image && (
+          <Image
+            className="thumbnail"
+            src={post.image}
+            alt="게시물 이미지"
+            width={1060}
+            height={300}
+          />
+        )}
         <PostBox
           post={post}
           isListView={false}

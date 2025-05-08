@@ -30,7 +30,7 @@ export default function Modal({ isOpen, onClose, size = 'large', children }: Mod
 const SlideUp = keyframes`
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(40px);
   }
   100% {
     opacity: 1;
@@ -50,7 +50,7 @@ const Overlay = styled.div<{ $visible: boolean }>`
 `;
 
 const ModalWrapper = styled.div<{ $size: 'large' | 'medium' }>`
-  animation: ${SlideUp} 0.3s ease-out;
+  animation: ${SlideUp} 0.2s cubic-bezier(0, 0.5, 0.5, 1);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -71,14 +71,21 @@ const ModalWrapper = styled.div<{ $size: 'large' | 'medium' }>`
 const CloseButton = styled.button`
   all: unset;
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 20px;
+  right: 20px;
   cursor: pointer;
+  background: ${color('gray50')};
+  transition: all 0.1s cubic-bezier(0, 0.5, 0.5, 1);
+  border-radius: 4px;
 
   img {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border: none;
+  }
+
+  &:hover {
+    background: ${color('gray200')};
   }
 `;
 

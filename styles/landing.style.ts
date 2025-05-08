@@ -335,8 +335,13 @@ export const Container = styled.div`
   section {
     scroll-snap-align: start;
     width: 100%;
-    height: 100%;
-    padding: 40px;
+    height: 92%;
+    padding: 40px 40px 0 40px;
+
+    &:last-child {
+      height: 100%;
+      padding: 40px;
+    }
 
     @media (max-width: 768px) {
       padding: 0;

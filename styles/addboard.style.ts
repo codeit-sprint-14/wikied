@@ -7,6 +7,12 @@ export const Container = styled.div`
   margin: 0 auto;
   padding-top: 80px;
   height: 100vh;
+
+  hr {
+    background: ${color('gray200')};
+    height: 1px;
+    border: 0;
+  }
 `;
 export const Inner = styled.div`
   width: 100%;
@@ -82,4 +88,24 @@ export const ThumbnailPreview = styled.img`
   max-height: 200px;
   object-fit: cover;
   border-radius: 8px;
+`;
+
+export const PreviewContainer = styled.div`
+  position: relative;
+  transition: all 0.1s ease-out;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+  .close-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: hsla(0, 0%, 100%, 0.8);
+    border-radius: 999px;
+    color: white;
+    width: 24px;
+    height: 24px;
+  }
 `;

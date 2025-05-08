@@ -21,6 +21,18 @@ interface Article {
   likeCount: number;
 }
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 48px;
+  }
+`;
+
 const AuthorWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -34,22 +46,14 @@ const AuthorInfo = styled.div`
 `;
 
 const CardContainer = styled.div`
-  position: fixed;
-  top: 70%;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   gap: 16px;
 
   @media (max-width: 768px) {
-    position: fixed;
-    left: 0;
-    transform: none;
     width: 100%;
     overflow-x: auto;
-    padding: 0 20px;
+    padding: 0 20px 20px 0;
     gap: 12px;
-    top: 680px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -66,21 +70,20 @@ const Card = styled.div`
   background-color: white;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: all 0.2s ease-in-out; // 부드러운 애니메이션을 위한 트랜지션 추가
+  transition: all 0.1s ease-out;
+  cursor: pointer;
 
   &:hover {
-    width: 240px; // 10px 감소
-    height: 210px; // 10px 감소
-    transform: translateY(2px); // 살짝 위로 움직이는 효과
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.03); // hover시 그림자 효과 변경
+    filter: brightness(0.98);
+
+    img {
+      transform: scale(1.05);
+    }
   }
 
-  @media (max-width: 768px) {
-    min-width: 250px;
-
-    &:hover {
-      min-width: 240px;
-    }
+  @media (max-width: 480px) {
+    width: 200px;
+    height: 160px;
   }
 `;
 
@@ -89,9 +92,15 @@ const CardImage = styled.div`
   height: 131px;
 
   img {
+    transition: all 0.2s ease-out;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (max-width: 480px) {
+    width: 200px;
+    height: 80px;
   }
 `;
 
@@ -99,6 +108,7 @@ const CardTitle = styled.h3`
   ${typo('18sb')};
   line-height: 26px;
   letter-spacing: 0%;
+  text-align: left;
   margin: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -144,19 +154,14 @@ const CardLikeCount = styled.span`
 const Title = styled.div`
   width: 209px;
   height: 42px;
-  position: fixed;
-  top: 65%;
-  left: 50%;
-  transform: translateX(-50%);
   ${typo('24sb')};
   text-align: center;
   line-height: 42px;
   color: ${color('gray500')};
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    ${typo('20sb')};
     width: 100%;
-    top: 620px;
   }
 `;
 
@@ -179,7 +184,7 @@ const PopCard: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <Container>
       <Title>요즘 인기있는 글</Title>
       <CardContainer>
         {bestArticles.map(article => (
@@ -211,7 +216,7 @@ const PopCard: React.FC = () => {
           </Card>
         ))}
       </CardContainer>
-    </>
+    </Container>
   );
 };
 

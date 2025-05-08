@@ -17,7 +17,7 @@ export default function SnackBar({
   isVisible,
   message,
   type = 'success',
-  duration = 5000,
+  duration = 3000,
   onClose,
 }: SnackBarProps) {
   useEffect(() => {
@@ -56,11 +56,23 @@ const typeColors = {
 
 const SlideUp = keyframes`
   0% {
-  opacity: 0;
+    transform: translate(-50%, -150%);
+    opacity: 0;
+  }
+  
+  10% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
   }
 
+  90% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  
   100%{
-  opacity: 1;
+    transform: translate(-50%, -150%);
+    opacity: 0;
   }
   `;
 
@@ -74,7 +86,6 @@ const SnackBarWrapper = styled.div<{ type: 'success' | 'error' }>`
   z-index: 99999;
   gap: 10px;
   left: 50%;
-  transform: translateX(-50%);
 
   background-color: ${({ theme, type }) => theme.color[typeColors[type].bg]};
   color: ${({ theme, type }) => theme.color[typeColors[type].color]};
@@ -84,7 +95,7 @@ const SnackBarWrapper = styled.div<{ type: 'success' | 'error' }>`
   border-radius: 10px;
   padding: 15px 20px;
 
-  animation: ${SlideUp} 0.8s ease-out;
+  animation: ${SlideUp} 3s cubic-bezier(0, 0.5, 0.5, 1);
 
   @media (max-width: 480px) {
     width: 90%;

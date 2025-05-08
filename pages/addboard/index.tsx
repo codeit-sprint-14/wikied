@@ -15,9 +15,12 @@ import {
   BottomCenterButton,
   ThumbnailButton,
   ThumbnailPreview,
+  PreviewContainer,
 } from '@/styles/addboard.style';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
+import Image from 'next/image';
+import Close from '@/public/icons/ico-close.svg';
 
 export default function AddBoard() {
   const { data: session } = useSession();
@@ -129,10 +132,10 @@ export default function AddBoard() {
         </TitleArea>
 
         <EditorArea>
-          <p>
+          {/* <p>
             공백포함 : 총 {plainText.length}자 | 공백제외 : 총 {plainText.replace(/\s/g, '').length}
             자
-          </p>
+          </p> */}
           <ThumbnailButton>
             <input
               type="file"
@@ -141,10 +144,26 @@ export default function AddBoard() {
               style={{ display: 'none' }}
               onChange={handleThumbnailChange}
             />
-            <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
-              썸네일 이미지 등록
-            </Button>
-            {thumbnailPreview && <ThumbnailPreview src={thumbnailPreview} alt="썸네일 미리보기" />}
+            {thumbnailPreview ? (
+              <PreviewContainer>
+                <Image className="close-icon" src={Close} alt="썸네일 삭제하기" />
+                <ThumbnailPreview
+                  src={thumbnailPreview}
+                  alt="썸네일 미리보기"
+                  onClick={() => {
+                    setThumbnailPreview(null);
+                    setThumbnailFile(null);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
+                    }
+                  }}
+                />
+              </PreviewContainer>
+            ) : (
+              <Button variant="outline" onClick={() => fileInputRef.current?.click()} width="140px">
+                미리보기 이미지...
+              </Button>
+            )}
           </ThumbnailButton>
           <WikiStepEditor
             content={content}
@@ -154,9 +173,11 @@ export default function AddBoard() {
             showSaveCancelButtons={false}
           />
         </EditorArea>
+        <hr />
+        <br />
         <BottomCenterButton>
-          <Button onClick={() => router.push('/boards')} variant="outline">
-            목록으로
+          <Button onClick={() => router.push('/boards')} variant="outline" color="red200">
+            돌아가기
           </Button>
         </BottomCenterButton>
       </Inner>

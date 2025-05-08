@@ -5,6 +5,8 @@ import Image from 'next/image';
 import EditIcon from '@/public/icons/ico-edit.svg';
 import DeleteIcon from '@/public/icons/ico-delete.svg';
 import Button from '@/components/common/Button';
+import color from '@/utils/color';
+import typo from '@/utils/typo';
 
 interface PostBoxProps {
   post: {
@@ -57,13 +59,13 @@ export default function PostBox({
             </>
           )}
 
-          {screenType === 'tablet' && onEdit && onDelete && (
+          {/* {screenType === 'tablet' && onEdit && onDelete && (
             <>
               <Button onClick={onEdit}>수정하기</Button>
               <Button onClick={onDelete}>삭제하기</Button>
             </>
-          )}
-          {screenType === 'mobile' && onEdit && onDelete && (
+          )} */}
+          {screenType !== 'desktop' && onEdit && onDelete && (
             <>
               <div onClick={onEdit}>
                 <Image
@@ -110,6 +112,7 @@ export const Container = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 1064px;
+  margin-top: 48px;
 
   @media (max-width: 768px) {
     max-width: 624px;
@@ -125,7 +128,7 @@ export const Header = styled.div`
   display: flex;
   margin-bottom: 20px;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 
   h1 {
     flex: 1;
@@ -136,6 +139,9 @@ export const Header = styled.div`
     font-size: 32px;
     word-break: break-all;
     word-wrap: word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     @media (max-width: 480px) {
       ${({ theme }) => theme.typo['24sb']};
@@ -148,7 +154,7 @@ export const IconWrapper = styled.div`
   gap: 8px;
   flex-shrink: 0;
   cursor: pointer;
-  margin-top: 16px;
+  /* margin-top: 16px; */
   justify-content: flex-end;
   margin-left: auto;
 
@@ -186,12 +192,23 @@ export const ImageStyled = styled.img`
 `;
 
 export const Content = styled.div`
-  line-height: 1.5;
+  line-height: 1.8;
   word-break: break-all;
   word-wrap: word;
   text-align: left;
-  color: ${({ theme }) => theme.color['gray500']};
-  ${({ theme }) => theme.typo['16r']};
+  color: ${color('gray500')};
+  ${typo('16r')};
+
+  p,
+  span,
+  b,
+  h1,
+  strong,
+  ul,
+  li,
+  ol {
+    color: ${color('gray500')} !important;
+  }
 
   .ql-align-center {
     text-align: center;
@@ -242,7 +259,7 @@ export const Content = styled.div`
   h2,
   h3 {
     font-weight: bold;
-    line-height: 1.4;
+    line-height: 2;
   }
 
   h1 {

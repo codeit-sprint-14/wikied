@@ -65,12 +65,8 @@ export default function BestList({ handleLoading }: { handleLoading: (loading: b
                 </h2>
                 <div className="bottom-container">
                   <div className="left-container">
-                    <p>
-                      <Skeleton width="7em" height="1em" />
-                    </p>
-                    <p>
-                      <Skeleton width="5em" height="1em" />
-                    </p>
+                    <Skeleton width="7em" height="1em" />
+                    <Skeleton width="5em" height="1em" />
                   </div>
                 </div>
               </div>

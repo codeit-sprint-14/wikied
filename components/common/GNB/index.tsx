@@ -88,7 +88,7 @@ export default function GNB() {
   useEffect(() => {
     if (!window) return;
     function handleScroll() {
-      if (router.asPath.includes('/wikilist')) {
+      if (router.asPath.includes('/wikilist') || router.asPath.includes('/boards')) {
         setShowSearch(window.scrollY > 140);
       } else {
         setShowSearch(false);
@@ -156,10 +156,16 @@ export default function GNB() {
             <div className={`search-bar ${showSearch ? 'show' : 'hide'}`}>
               <Image className="search-icon" src={Search} alt="search" />
               <Input
-                placeholder="닉네임 검색"
+                placeholder={
+                  router.asPath.includes('/wikilist') ? '닉네임 검색' : '검색어를 입력해주세요'
+                }
                 onKeyDown={e => {
-                  if (e.key === 'Enter') {
+                  if (e.key !== 'Enter') return;
+
+                  if (router.asPath.includes('/wikilist')) {
                     router.push(`/wikilist?search=${e.currentTarget.value}`);
+                  } else if (router.asPath.includes('/boards')) {
+                    router.push(`/boards?keyword=${e.currentTarget.value}`);
                   }
                 }}
               />
@@ -232,10 +238,16 @@ export default function GNB() {
             <div className={`search-bar ${showSearch ? 'show' : 'hide'}`}>
               <Image className="search-icon" src={Search} alt="search" />
               <Input
-                placeholder="닉네임 검색"
+                placeholder={
+                  router.asPath.includes('/wikilist') ? '닉네임 검색' : '검색어를 입력해주세요'
+                }
                 onKeyDown={e => {
-                  if (e.key === 'Enter') {
+                  if (e.key !== 'Enter') return;
+
+                  if (router.asPath.includes('/wikilist')) {
                     router.push(`/wikilist?search=${e.currentTarget.value}`);
+                  } else if (router.asPath.includes('/boards')) {
+                    router.push(`/boards?keyword=${e.currentTarget.value}`);
                   }
                 }}
               />

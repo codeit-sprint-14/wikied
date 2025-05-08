@@ -9,6 +9,7 @@ export const WikiSection = styled.div`
   justify-content: center;
   gap: 80px;
   width: 100%;
+  padding: 160px 0px 50px 100px;
   padding: 160px 20px 120px 20px;
 
   @media (max-width: 1024px) {
@@ -21,6 +22,7 @@ export const WikiSectionInner = styled.div`
   position: relative;
   flex-basis: 900px;
   height: 100%;
+  margin-bottom: 400px;
   @media (max-width: 1024px) {
     position: static;
     order: 3;
@@ -62,42 +64,48 @@ export const WikiContent = styled.div`
   }
 `;
 export const Sidebar = styled.div<{ isOpen: boolean }>`
-  position: relative;
-  max-width: 350px;
+  max-width: 300px;
   width: 100%;
   height: fit-content;
-  padding: 60px 30px 36px 30px;
+  padding: 48px;
   background-color: ${color('gray50')};
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  /* box-shadow: 4px 4px 24px rgba(0, 0, 0, 0.05); */
+  border: 1px solid ${color('gray200')};
+  border-radius: 18px;
+  top: 140px;
+  position: sticky;
 
   @media (max-width: 1024px) {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     max-width: unset;
-    height: ${({ isOpen }) => (isOpen ? '480px' : '230px')};
+    height: ${({ isOpen }) => (isOpen ? '320px' : '230px')};
     transition: height 0.3s ease;
     gap: 50px;
     padding: 30px;
     order: 2;
   }
   @media (max-width: 768px) {
+    position: relative;
+    top: 0;
     gap: 30px;
     padding: 20px;
   }
 
   @media (max-width: 480px) {
     gap: 30px;
-    height: ${({ isOpen }) => (isOpen ? '460px' : '210px')};
+    height: ${({ isOpen }) => (isOpen ? '320px' : '220px')};
   }
 `;
 export const SlideButton = styled.div<{ visible: boolean }>`
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -40%);
   display: ${({ visible }) => (visible ? 'block' : 'none')};
+  ${typo('12sb')};
+  color: ${color('green200')};
   cursor: pointer;
 `;
 export const ImageWrap = styled.div<{ step: 'editor' | 'done' }>`
@@ -158,7 +166,6 @@ export const ImageWrap = styled.div<{ step: 'editor' | 'done' }>`
 export const UserInfoWrap = styled.div`
   margin-top: 60px;
   flex-basis: 100%;
-
   @media (max-width: 1024px) {
     margin-top: 0px;
   }
@@ -167,23 +174,18 @@ export const UserInfoWrap = styled.div`
 export const UserInfo = styled.ul<{ isOpen: boolean }>`
   width: 100%;
   @media (max-width: 1024px) {
-    height: ${({ isOpen }) => (isOpen ? '400px' : '150px')};
+    height: ${({ isOpen }) => (isOpen ? '300px' : '150px')};
     overflow: hidden;
-    transition: height 0.3s ease;
+    transition: height 0.1s ease-out;
   }
 `;
 export const InfoItem = styled.li`
   display: flex;
   align-items: center;
-  column-gap: 20px;
-  & + li {
-    margin-top: 18px;
-  }
+  column-gap: 10px;
 
-  @media (max-width: 1024px) {
-    & + li {
-      margin-top: 10px;
-    }
+  & + li {
+    margin-top: 0px;
   }
 `;
 export const InfoTitle = styled.span`
@@ -194,8 +196,11 @@ export const InfoTitle = styled.span`
 `;
 export const InfoData = styled.div`
   flex-basis: 100%;
-  height: 40px;
   line-height: 40px;
+
+  @media (max-width: 768px) {
+    line-height: 32px;
+  }
 `;
 export const InfoInput = styled.input`
   width: 100%;
@@ -306,15 +311,26 @@ export const ViewerButton = styled.div`
   }
 `;
 export const Viewer = styled.div`
-  line-height: 1.6;
+  line-height: 1.8;
   font-size: 1rem;
-  color: #333;
+  font-weight: 400;
+
+  p,
+  span,
+  b,
+  h1,
+  strong,
+  ul,
+  li,
+  ol {
+    color: ${color('gray500')} !important;
+  }
 
   h1,
   h2,
   h3 {
     font-weight: bold;
-    line-height: 1.4;
+    line-height: 2;
   }
 
   h1 {
@@ -333,6 +349,7 @@ export const Viewer = styled.div`
   ol {
     margin: 1rem 0 1.5rem 1.5rem;
     padding-left: 1rem;
+    list-style-type: disc;
     list-style: unset;
   }
 
