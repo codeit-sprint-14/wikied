@@ -9,7 +9,7 @@ export const WikiSection = styled.div`
   justify-content: center;
   gap: 80px;
   width: 100%;
-  padding: 160px 20px 50px 20px;
+  padding: 160px 20px 120px 20px;
 
   @media (max-width: 1024px) {
     flex-direction: column;
@@ -24,6 +24,7 @@ export const WikiSectionInner = styled.div`
   @media (max-width: 1024px) {
     position: static;
     order: 3;
+    flex-basis: auto;
   }
 `;
 export const Name = styled.h2`
@@ -130,6 +131,8 @@ export const ImageWrap = styled.div<{ step: 'editor' | 'done' }>`
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
   }
 
   @media (max-width: 1024px) {
@@ -330,6 +333,7 @@ export const Viewer = styled.div`
   ol {
     margin: 1rem 0 1.5rem 1.5rem;
     padding-left: 1rem;
+    list-style: unset;
   }
 
   li {
