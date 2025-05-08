@@ -1,10 +1,36 @@
 # 📖 Wikied
-
 > 위키드, 남들이 만드는 나만의 위키
 
-</br></br></br>
+> 배포 URL:
+> <br>개발 기간: 2025. 04. 22 ~ 2025. 05. 12
 
-## 💪 Developers
+<br>
+
+<img width="1193" alt="image" src="https://github.com/user-attachments/assets/dbe58a05-ef86-42d8-9377-28aac66b9f19" />
+
+<br/>
+
+<p align="center">
+<img src="https://img.shields.io/badge/NEXT.JS-000000?style=for-the-badge&logo=next.js&logoColor=white" 
+/> <img src="https://img.shields.io/badge/TYPESCRIPT-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+<img src="https://img.shields.io/badge/STYLED_COMPONENTS-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" />
+<img src="https://img.shields.io/badge/REACT_QUILL_NEW-A42967?style=for-the-badge&logo=react-quill-new&logoColor=white" />
+<img src="https://img.shields.io/badge/LOTTIE-1ABC9C?style=for-the-badge&logo=lottie&logoColor=white" />
+</br>
+<img src="https://img.shields.io/badge/MATTER.JS-4B5562?style=for-the-badge&logo=matter.js&logoColor=white" />
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white" />
+<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white" />
+<img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" />
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white" />
+</p>
+</br>
+
+## 💭 Wikied 소개 
+- Wikied는 사람들의 이야기를 기록하고 공유할 수 있는 커뮤니티 플랫폼입니다. 
+- 사용자는 로그인 후 자신만의 위키 페이지를 자유롭게 작성하고 수정할 수 있으며, 다른 유저의 위키나 게시글을 검색하고 열람할 수 있습니다. 
+- 또한, 댓글과 좋아요 기능을 통해 사용자 간 소통이 가능하며, 직관적인 인터페이스와 반응형 UI로 누구나 어디서든 편리하게 사용할 수 있도록 만들어졌습니다.
+
+## <br>👩🏻‍💻팀원 소개 
 
 <table>
   <tr>
@@ -22,22 +48,9 @@
     <th><a href="https://www.naver.com">최혜윤</a></th>
   </tr>
 </table>
-</br></br></br>
+</br>
 
-## 🛠️ 기술 스택 (Tech Stack)
-
-| 역할       | 사용 기술                                                                                                                                                                                                |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Language   | ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white) ![JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) |
-| Build Tool | ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)                                                                                                            |
-| Router     | ![ReactRouter](https://img.shields.io/badge/React_Router-CA4245?style=flat-square&logo=react-router&logoColor=white)                                                                                     |
-| Styling    | ![StyledComponents](https://img.shields.io/badge/Styled_Components-DB7093?style=flat-square&logo=styled-components&logoColor=white)                                                                      |
-| API        | ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=flat-square)                                                                                                                                    |
-
-</br></br></br>
-
-## 📂 폴더 구조 (Folder Structure)
-
+## 📂 폴더 구조
 ```bash
 my-next-project/
 ├── components/          # 재사용 가능한 UI 컴포넌트 모음
@@ -73,151 +86,7 @@ my-next-project/
 ├── tsconfig.json        # TypeScript 설정
 └── README.md            # 프로젝트 설명
 ```
-
-</br></br></br>
-
-## 📂 폴더/파일명 네이밍 컨벤션
-
-| 대상                 | 규칙                      | 예시                               |
-| -------------------- | ------------------------- | ---------------------------------- |
-| 폴더명               | 케밥케이스 (kebab-case)   | components, user-profile           |
-| 컴포넌트 파일명      | 파스칼케이스 (PascalCase) | UserProfile.jsx                    |
-| 스타일 파일명        | 케밥케이스 + .styles.js   | user-profile.styles.js             |
-| 이미지/아이콘 파일명 | 케밥케이스                | logo-icon.png, profile-default.png |
-| 함수명/변수명        | 카멜케이스 (camelCase)    | fetchUserData, userList            |
-| 환경변수             | 대문자+스네이크케이스     | REACT_APP_API_URL                  |
-
-</br></br></br>
-
-## 🌿 브랜치 네이밍 컨벤션
-
-| 브랜치 종류 | 네이밍 규칙            | 예시                    |
-| ----------- | ---------------------- | ----------------------- |
-| 기능 개발   | feature/{이름-작업}    | feature/홍길동-ui       |
-| 버그 수정   | fix/{버그-설명}        | fix/login-button-bug    |
-| 핫픽스      | hotfix/{긴급수정-설명} | hotfix/main-build-error |
-| 문서 수정   | docs/{문서-설명}       | docs/readme-update      |
-
-</br></br></br>
-
-## 💻 Commit Convention
-
-### 🔗 기본 구조
-
-```
-[타입] 제목
-
-본문
-
-꼬리말
-```
-
-### 📑 Commit Type
-
-| 태그     | 의미                        |
-| -------- | --------------------------- |
-| Feat     | ✨ 새로운 기능 추가         |
-| Fix      | 🐛 버그 수정                |
-| Docs     | 📚 문서 수정                |
-| Style    | 💄 포맷팅, 세미콜론 누락 등 |
-| Refactor | 🔨 리팩토링                 |
-| Test     | ✅ 테스트 코드 추가         |
-| Chore    | 🔧 설정, 빌드 변경 등       |
-
-</br></br></br>
-
-### ✍️ 제목 규칙
-
-- 간결하게, 50자 이하
-- 마침표/특수기호 금지
-
-</br></br></br>
-
-### 📝 본문 규칙
-
-- 72자 이하 줄바꿈
-- 변경 이유, 목적을 자세히 기록
-
-</br></br></br>
-
-### 📎 꼬리말 규칙
-
-- 이슈번호 연결: `Resolves: #이슈번호`
-- 참고 이슈는 `Ref: #이슈번호`
-
-</br></br></br>
-
-### 📖 Commit 예시
-
-```
-✨ Feat: 회원가입 화면 및 로직 추가
-
-- 회원가입 화면 UI 구현
-- 사용자 입력 검증 로직 추가
-- API 통신 연결
-
-Resolves: #12
-Related to: #8
-```
-
-</br></br></br>
-
-### 🌈 이모지 가이드
-
-| 이모지 | 의미                |
-| ------ | ------------------- |
-| 🎨     | 코드 형식/구조 개선 |
-| 📰     | 새 파일 추가        |
-| ✨     | 새로운 기능         |
-| 📝     | 사소한 변경         |
-| 💄     | UI / 스타일 수정    |
-| 🐎     | 성능 개선           |
-| 📚     | 문서 수정           |
-| 🐛     | 버그 수정           |
-| 🚑     | 핫픽스              |
-| 🔥     | 코드 삭제           |
-| 🚜     | 구조 변경           |
-| 🔨     | 리팩토링            |
-| 💎     | 새 릴리즈           |
-| 🔖     | 버전 태그           |
-| 🚀     | 배포                |
-
-</br></br></br>
-
-## 🍳 PR Convention (Pull Request 규칙)
-
-| 항목        | 설명                                            |
-| ----------- | ----------------------------------------------- |
-| Summary     | 간단 변경 요약                                  |
-| Changes     | 주요 변경 요약                                  |
-| Checklist   | ✔️ 컨벤션 준수 ✔️ 테스트 ✔️ 설명 ✔️ 브랜치 확인 |
-| Test Plan   | 테스트 방법 및 결과                             |
-| Screenshots | UI 변경 시 캡처 필수                            |
-| Additional  | 리뷰어 참고 사항                                |
-
-</br></br></br>
-
-## 📲 Issue Convention
-
-| 항목        | 설명                                   |
-| ----------- | -------------------------------------- |
-| Summary     | 작업 요약                              |
-| Branch Name | `feature/{작업설명}`, `fix/{버그설명}` |
-| Due Date    | YYYY/MM/DD                             |
-| References  | 관련 자료 링크                         |
-| Checklist   | 할 일 리스트                           |
-
-</br></br></br>
-
-## 🖊️ Git Flow
-
-| 브랜치명   | 설명             |
-| ---------- | ---------------- |
-| main       | 배포 브랜치      |
-| develop    | 통합 개발 브랜치 |
-| feature/\* | 기능 개발 브랜치 |
-
-### 💡 작업 흐름
+## <br>🐳 작업 흐름
 
 1. 이슈 생성
 2. `develop` 최신화
@@ -228,17 +97,58 @@ Related to: #8
 7. PR 작성하고 코드 리뷰 요청
 8. 리뷰 완료 후 develop에 머지
 
-</br></br></br>
+## <br>💡 시작 가이드
 
-## 🔗 배포 주소
+```shell
+### 1. 클론하기
+git clone https://github.com/codeit-sprint-14/wikied.git
 
-</br></br>
+### 2. 디렉토리 이동
+cd wikied
 
-## 🚀 배포 환경
+### 3. 패키지 설치
+npm install
 
-- Vercel
-  </br></br>
+### 4. 프로젝트 실행
+npm run dev
 
-## 📅 프로젝트 기간
+```
+## <br>✨ 주요 기능
 
-2025년 4월 22일 ~ 2025년 5월 12일
+### 🔐 회원가입 및 로그인 기능
+- 이메일 및 소셜 간편 로그인 지원
+- 인증된 사용자만 위키 및 게시물 작성 가능
+
+### 🧏🏻‍♂️ 위키 기능
+- 위키 생성, 수정, 삭제
+  - 인증된 사용자가 자신만의 위키를 자유롭게 작성하고 관리할 수 있습니다
+- 다른 유저의 위키 검색 및 열람
+  - 키워드 기반 검색으로 다양한 위키를 검색하고 열람할 수 있습니다
+
+### 📑 게시물 기능
+-  게시물 작성, 수정, 삭제  
+    - 여러 개의 자유로운 주제 게시글을 작성할 수 있습니다
+-  댓글 및 좋아요 기능  
+    - 게시물에 댓글을 달고 좋아요를 눌러 유저 간 상호작용이 가능합니다
+-  일반 게시물 및 베스트 게시물 열람  
+    - 다른 유저의 게시물을 열람할 수 있으며 좋아요 수를 기준으로 인기 게시물을 강조해서 보여줍니다
+ 
+### 🔥 404 페이지
+- 친화적인 404 페이지 제공
+    - 오류 메세지뿐만 아니라 인기 게시물 추천도 함께 노출됩니다 
+
+### 🔔 알림 기능
+- 댓글 작성, 위키 수정 등 주요 이벤트 발생시 실시간 알림 표시
+- 사용자의 활동 내역 빠르게 확인 가능
+
+### ✒️ 텍스트 에디터
+- 다양한 서식(굵기, 이미지 첨부, 글씨 정렬 등)을 적용한 위키, 게시물 작성 가능
+
+
+
+
+
+
+
+
+
