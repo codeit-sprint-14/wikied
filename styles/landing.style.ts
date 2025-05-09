@@ -341,6 +341,10 @@ export const Container = styled.div`
     &:last-child {
       height: 100%;
       padding: 40px;
+
+      @media (max-width: 768px) {
+        padding: 0 0 10px 0;
+      }
     }
 
     @media (max-width: 768px) {

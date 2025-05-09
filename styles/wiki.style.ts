@@ -15,6 +15,7 @@ export const WikiSection = styled.div`
     flex-direction: column;
     gap: 40px;
     padding-top: 120px;
+    padding: 120px 20px 0px 20px;
   }
 `;
 export const WikiSectionInner = styled.div`

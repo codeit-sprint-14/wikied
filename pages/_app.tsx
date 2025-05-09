@@ -19,6 +19,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         <meta property="og:image" content="https://wikied-steel.vercel.app/images/img-meta.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta
+          name="viewport"
+          content="initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no;"
+        />
       </Head>
       <SessionProvider session={session}>
         <ThemeProvider theme={theme}>
